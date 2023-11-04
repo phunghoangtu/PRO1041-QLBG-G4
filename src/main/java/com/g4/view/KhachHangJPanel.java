@@ -1,18 +1,11 @@
 package com.g4.view;
 
-
-
 public class KhachHangJPanel extends javax.swing.JPanel {
-
-    
 
     public KhachHangJPanel() {
         initComponents();
 
-       
     }
-
-   
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents

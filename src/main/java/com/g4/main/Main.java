@@ -35,9 +35,9 @@ public class Main extends javax.swing.JFrame {
 
     private void setForm(JComponent com) {
         mainPanel.removeAll();
-        mainPanel.add(com);
-        mainPanel.repaint();
+        mainPanel.add(com);   
         mainPanel.revalidate();
+        mainPanel.repaint();
     }
 
     private void init() {
@@ -47,7 +47,7 @@ public class Main extends javax.swing.JFrame {
             @Override
             public void selected(int index) {
                 if (index == 0) {
-                    setForm(giaoCaJPanel);
+                    setForm(giaoCaJPanel);                    
                 } else if (index == 1) {
                     setForm(banHangJPanel);
                 } else if (index == 2) {
@@ -69,8 +69,7 @@ public class Main extends javax.swing.JFrame {
                 }
             }
         });
-        setForm(new Form_Home());
-        
+        setForm(new Form_Home());      
         openLogin();
     }
 
