@@ -9,13 +9,10 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class NhanVien {
-
-    private String id;
-    private String tenNV;
-    private String email;
-    private String sdt;
-    private String matKhau;
-    private boolean vaiTro;
+public class MauSac {
     
+    private String id;
+    private String gia_tri;
+    private int trang_thai;
+
 }

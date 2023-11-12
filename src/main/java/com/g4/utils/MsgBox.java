@@ -21,4 +21,5 @@ public class MsgBox {
         return JOptionPane.showInputDialog(parent, message,
                 "Quản lý bán giày thể thao nam G4", JOptionPane.INFORMATION_MESSAGE);
     }
+
 }

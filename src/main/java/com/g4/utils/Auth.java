@@ -2,9 +2,6 @@ package com.g4.utils;
 
 import com.g4.entity.NhanVien;
 
-
-
-
 public class Auth {
 
     public static NhanVien user = null;

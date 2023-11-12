@@ -5,7 +5,7 @@ import java.sql.*;
 public class JdbcHelper {//Lớp này giải quyết kết nối xử lý truy vấn
 
     private static String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-    private static String connectionSql = "jdbc:sqlserver://localhost:1433;databaseName=";
+    private static String connectionSql = "jdbc:sqlserver://localhost:1433;databaseName=QLBG_DUAN1_JAVA";
     private static String acc = "sa";
     private static String pass = "123456";
 
