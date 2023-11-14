@@ -28,7 +28,7 @@ public class GiaoCaJPanel extends javax.swing.JPanel {
 
         jLabel1 = new javax.swing.JLabel();
 
-        jLabel1.setText("jLabel1");
+        jLabel1.setText("Giao ca");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -37,7 +37,7 @@ public class GiaoCaJPanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(477, 477, 477)
                 .addComponent(jLabel1)
-                .addContainerGap(601, Short.MAX_VALUE))
+                .addContainerGap(600, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
