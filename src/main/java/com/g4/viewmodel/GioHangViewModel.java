@@ -18,17 +18,15 @@ public class GioHangViewModel {
     private String maSP;
     private String tenSP;
     private int soLuong;
-    private Double donGia;
-    DecimalFormat fomat = new DecimalFormat("###,###,###");
+    private double donGia;
 
     public Object[] todataRow() {
-        String formattedDonGia = fomat.format(donGia) + " VND";
-        return new Object[]{maSP, tenSP, soLuong, formattedDonGia};
+        return new Object[]{maSP, tenSP, soLuong, donGia};
     }
     
     
 
-    public GioHangViewModel(String idSP, String maSP, String tenSP, int soLuong, Double donGia) {
+    public GioHangViewModel(String idSP, String maSP, String tenSP, int soLuong, double donGia) {
         this.idSP = idSP;
         this.maSP = maSP;
         this.tenSP = tenSP;
@@ -36,7 +34,7 @@ public class GioHangViewModel {
         this.donGia = donGia;
     }
 
-    public GioHangViewModel(String maSP, String tenSP, int soLuong, Double donGia) {
+    public GioHangViewModel(String maSP, String tenSP, int soLuong, double donGia) {
         this.maSP = maSP;
         this.tenSP = tenSP;
         this.soLuong = soLuong;

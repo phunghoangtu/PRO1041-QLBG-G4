@@ -5,37 +5,37 @@ import com.g4.utils.Auth;
 import com.g4.view.SanPhamJPanel;
 import com.g4.view.KhachHangJPanel;
 import com.g4.view.NhanVienJPanel;
-import com.g4.view.Form_Home;
 import com.g4.view.BanHangJPanel;
-import com.g4.view.DoiTraJPanel;
+import com.g4.view.DailogKhachHangBH;
 import com.g4.view.GiaoCaJPanel;
 import com.g4.view.HoaDonJPanel;
-import com.g4.view.LoginJDialog;
 import com.g4.view.ThongKeJPanel;
 import java.awt.Color;
 import javax.swing.JComponent;
 
 public class Main extends javax.swing.JFrame {
 
-    private Form_Home home = new Form_Home();
-    private SanPhamJPanel sanPhamJPanel = new SanPhamJPanel();
-    private KhachHangJPanel khachHangJPanel = new KhachHangJPanel();
-    private NhanVienJPanel nhanVienJPanel = new NhanVienJPanel();
-    private BanHangJPanel banHangJPanel = new BanHangJPanel();
-    private HoaDonJPanel hoaDonJPanel = new HoaDonJPanel();
-    private ThongKeJPanel thongKeJPanel = new ThongKeJPanel();
-    private GiaoCaJPanel giaoCaJPanel = new GiaoCaJPanel();
-    private DoiTraJPanel doiTraJPanel = new DoiTraJPanel();
-    
+    private final SanPhamJPanel sanPhamJPanel = new SanPhamJPanel();
+    private final KhachHangJPanel khachHangJPanel = new KhachHangJPanel();
+    private final NhanVienJPanel nhanVienJPanel = new NhanVienJPanel();
+    private final BanHangJPanel banHangJPanel = new BanHangJPanel();
+    private final HoaDonJPanel hoaDonJPanel = new HoaDonJPanel();
+    private final ThongKeJPanel thongKeJPanel = new ThongKeJPanel();
+    private final GiaoCaJPanel giaoCaJPanel = new GiaoCaJPanel();
 
     public Main() {
         initComponents();
         init();
     }
 
+    public void openKhachHangNhanh() {
+        DailogKhachHangBH dkh = new DailogKhachHangBH(this, true);
+        dkh.setVisible(true);
+    }
+
     private void setForm(JComponent com) {
         mainPanel.removeAll();
-        mainPanel.add(com);   
+        mainPanel.add(com);
         mainPanel.revalidate();
         mainPanel.repaint();
     }
@@ -47,7 +47,7 @@ public class Main extends javax.swing.JFrame {
             @Override
             public void selected(int index) {
                 if (index == 0) {
-                    setForm(giaoCaJPanel);                    
+                    setForm(giaoCaJPanel);
                 } else if (index == 1) {
                     setForm(banHangJPanel);
                 } else if (index == 2) {
@@ -59,18 +59,15 @@ public class Main extends javax.swing.JFrame {
                 } else if (index == 5) {
                     setForm(khachHangJPanel);
                 } else if (index == 6) {
-                    setForm(doiTraJPanel);
-                } else if (index == 7) {
                     setForm(thongKeJPanel);
-                } else if (index == 8) {
+                } else if (index == 7) {
                     dangXuat();
-                } else if (index == 9) {
+                } else if (index == 8) {
                     System.exit(0);
                 }
             }
         });
-        setForm(new Form_Home());      
-        openLogin();
+        setForm(new GiaoCaJPanel());
     }
 
     void openLogin() {
@@ -81,6 +78,8 @@ public class Main extends javax.swing.JFrame {
         Auth.clear();
         dispose();
         openLogin();
+        Main m = new Main();
+        m.setVisible(true);
     }
 
     @SuppressWarnings("unchecked")

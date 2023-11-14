@@ -21,12 +21,12 @@ public class SanPhamViewModel {
     private String idDG;
     private String idTH;
     private int soLuong;
-    private Double giaBan; 
-    DecimalFormat fomat = new DecimalFormat("###,###,###");
+    private double giaBan;
+    private double giamGia;
 
     public Object[] todataRowSanPham() {
-        String formattedGiaBan = fomat.format(giaBan) + " VND";
-        return new Object[]{maSP, tenSP, idKT, iDMS, idDG, idTH, soLuong, formattedGiaBan};
+   
+        return new Object[]{maSP, tenSP, idKT, iDMS, idDG, idTH, soLuong, giaBan, giamGia};
     }
 
 }

@@ -1,6 +1,7 @@
-package com.g4.view;
+package com.g4.main;
 
 import com.g4.entity.NhanVien;
+import com.g4.main.Main;
 import com.g4.repository.LoginRepository;
 import com.g4.utils.Auth;
 import com.g4.utils.MsgBox;
@@ -9,11 +10,11 @@ import javax.swing.JOptionPane;
 public class LoginJDialog extends java.awt.Dialog {
 
     private LoginRepository lr = new LoginRepository();
-    
+
     public LoginJDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        
+
     }
 
 
@@ -152,6 +153,8 @@ public class LoginJDialog extends java.awt.Dialog {
                 } else {
                     Auth.user = nv;
                     this.dispose();
+                    Main m = new Main();
+                    m.setVisible(true);
                 }
             }
         } catch (Exception e) {

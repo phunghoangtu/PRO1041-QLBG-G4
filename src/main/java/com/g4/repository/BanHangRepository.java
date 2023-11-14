@@ -6,168 +6,192 @@ import com.g4.entity.SanPham;
 import com.g4.utils.JdbcHelper;
 import com.g4.viewmodel.GioHangViewModel;
 import com.g4.viewmodel.HoaDonViewModel;
+import com.g4.viewmodel.KhachHangViewModel;
 import com.g4.viewmodel.SanPhamViewModel;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class BanHangRepository {
 
-    String slect_hd_chua_thanh_toan = "SELECT hd.Id, hd.MaHD, hd.NgayTao, dbo.NhanVien.TenNV, hd.TrangThai\n"
-            + "            FROM dbo.HoaDon hd\n"
-            + "            	INNER JOIN dbo.NhanVien ON hd.IdNV = dbo.NhanVien.Id\n"
-            + "            WHERE hd.TrangThai = 1\n"
-            + "           ORDER BY hd.MaHD DESC";
-    String slect_all_sp = "SELECT SP.Id, SP.MaSP, SP.TenSP, KT.GiaTri, MS.Ten, DG.Ten, TH.Ten, SP.SoLuong, SP.GiaBan\n"
-            + "                    FROM dbo.SanPham SP\n"
-            + "INNER JOIN dbo.KichThuoc KT ON SP.IdKT = KT.Id\n"
-            + "INNER JOIN dbo.MauSac MS ON SP.IdMS = MS.Id\n"
-            + "INNER JOIN dbo.DeGiay DG ON SP.IdDG = DG.Id\n"
-            + "INNER JOIN dbo.ThuongHieu TH ON SP.IdTH = TH.Id";
-    String select_GH = "SELECT HDCT.Id, SP.Id, SP.MaSP, SP.TenSP, HDCT.SoLuong, SP.GiaBan\n"
+    String slect_hd_chua_thanh_toan_bh = "SELECT hd.Id, hd.MaHD, hd.NgayTao, nv.TenNhanVien,kh.TenKhachHang, hd.TrangThai\n"
+            + "FROM dbo.HoaDon hd        \n"
+            + "            INNER JOIN dbo.NhanVien nv ON hd.IdNhanVien = nv.Id\n"
+            + "			INNER JOIN dbo.KhachHang kh ON hd.IdKhachHang = kh.Id\n"
+            + "WHERE hd.TrangThai = 1\n"
+            + "ORDER BY hd.MaHD DESC";
+    String slect_all_sp_bh = "SELECT SP.Id, SP.MaSanPham, SP.TenSanPham, KT.KichCo, MS.TenMauSac, CLG.TenChatLieu, TH.TenThuongHieu, SP.SoLuong, SP.GiaBan\n"
             + "FROM dbo.SanPham SP\n"
-            + "	INNER JOIN dbo.HoaDonChiTiet HDCT ON SP.Id = HDCT.IdSP\n"
-            + "WHERE HDCT.IdHD LIKE ?";
+            + "			INNER JOIN dbo.KichCoGiay KT ON SP.IdKichCoGiay = KT.Id\n"
+            + "			INNER JOIN dbo.MauSac MS ON SP.IdMauSac = MS.Id\n"
+            + "			INNER JOIN dbo.ChatLieuGiay CLG ON SP.IdChatLieuGiay = CLG.Id\n"
+            + "			INNER JOIN dbo.ThuongHieu TH ON SP.IdThuongHieu = TH.Id";
+    String select_gh_bh = "SELECT HDCT.Id, SP.Id, SP.MaSanPham, SP.TenSanPham, HDCT.SoLuong, SP.GiaBan\n"
+            + "FROM dbo.SanPham SP\n"
+            + "	INNER JOIN dbo.HoaDonChiTiet HDCT ON SP.Id = HDCT.IdSanPham\n"
+            + "WHERE HDCT.IdHoaDon LIKE ?";
+    String insert_hdct = "INSERT INTO HoaDonChiTiet (IdHD,IdSP,SoLuong,DonGia) VALUES (?,?,?,?)";
+    String update_soluong_sp_by_id = "UPDATE SanPham SET SoLuong = ? WHERE ID = ?";
+    String delete_hdct_by_idHoaDon = "Delete from HoaDonChiTiet where IdHD = ?";
+    String delete_hd_by_id = "Delete from HoaDon where Id = ?";
+    String update_NVKH = "UPDATE HoaDon SET IdNV = ? WHERE MaHD = ?";
+    String update_thanh_toan = "UPDATE HoaDon SET NgayThanhToan = GETDATE() ,TongTien = ? ,TrangThai = ? WHERE MaHD = ?";
+    String delete_giohang = "Delete from HoaDonChiTiet where Id = ?";
+    String capNhatSoLuong2 = "Update SanPham Set SoLuong = SoLuong - ? where Id = ?";
+    String capNhatSoLuong = "Update SanPham Set SoLuong = SoLuong + ? where Id = ?";
+    String updateSoLuong = "UPDATE SanPham SET SoLuong = ? WHERE ID = ?";
+    String updateSoLuongHDCT = "UPDATE HoaDonChiTiet SET SoLuong = ? WHERE Id = ?";
+    String insert_hoadon = "Insert into HoaDon(IdNV,IdKH, MaHD) values (?,?,?);";
 
-    String getBiggestMa = "SELECT MAX(hd.MaHD) FROM HoaDon hd";
-    String insert_hd = "";
-    String insert_hdct = "INSERT INTO dbo.HoaDonChiTiet (IdHD,IdSP,SoLuong,DonGia) VALUES (?,?,?,?)";
-    String update_soluong_SP = "UPDATE SanPham SET SoLuong = ? WHERE ID = ?";
     String findByIdKH_ma = "SELECT Id FROM KhachHang WHERE MaKH = ?";
+    String select_KHN = "select * from KhachHang";
 
-        public String deleteHDCT(String idHD) {
-        String query = "Delete from HoaDonChiTiet where IdHD = ?";
-        try ( Connection con = JdbcHelper.openDbConnection();  PreparedStatement ps = con.prepareStatement(query)) {
+    public List<KhachHangViewModel> getAllKHN() {
+        return selectBySqlKHN(select_KHN);
+    }
+
+    public List<KhachHangViewModel> selectBySqlKHN(String sql, Object... args) {
+        List<KhachHangViewModel> list = new ArrayList<>();
+        try {
+            ResultSet rs = JdbcHelper.query(sql, args);
+            while (rs.next()) {
+                KhachHangViewModel entity = new KhachHangViewModel();
+                entity.setId(rs.getString(1));
+                entity.setMaKH(rs.getString(2));
+                entity.setTenKH(rs.getString(3));
+                entity.setSdt(rs.getString(4));
+                entity.setNgayTao(rs.getDate(5));
+                list.add(entity);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return list;
+    }
+
+    public String findByIDKH(String maKH) {
+        try ( Connection con = JdbcHelper.openDbConnection();  PreparedStatement ps = con.prepareStatement(findByIdKH_ma)) {
+            ps.setString(1, maKH); // Sử dụng setString() thay vì setObject()
+            ResultSet rs = ps.executeQuery(); // Thực thi truy vấn và lưu kết quả trả về vào ResultSet
+            if (rs.next()) {
+                String id = rs.getString("Id"); // Lấy giá trị cột "Id" từ ResultSet
+                return id; // Trả về giá trị Id nếu tìm thấy khách hàng
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return "Lỗi truy vấn dữ liệu hoặc không tìm thấy khách hàng";
+    }
+
+    public String deleteHDCT(String idHD) {
+        try ( Connection con = JdbcHelper.openDbConnection();  PreparedStatement ps = con.prepareStatement(delete_hdct_by_idHoaDon)) {
             ps.setObject(1, idHD);
             ps.executeUpdate();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return "Ôi hỏng";
     }
 
     public String deleteHD(String idHD) {
-        String query = "Delete from HoaDon where Id = ?";
-        try ( Connection con = JdbcHelper.openDbConnection();  PreparedStatement ps = con.prepareStatement(query)) {
+        try ( Connection con = JdbcHelper.openDbConnection();  PreparedStatement ps = con.prepareStatement(delete_hd_by_id)) {
             ps.setObject(1, idHD);
             ps.executeUpdate();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return "Ôi hỏng";
     }
-    
+
     public String updateNVKH(HoaDon hdUpdate, String ma) {
-        String query = "UPDATE [dbo].[HoaDon] SET IdNV = ? WHERE MaHD = ?";
-        try ( Connection con = JdbcHelper.openDbConnection();  PreparedStatement ps = con.prepareStatement(query)) {
+        try ( Connection con = JdbcHelper.openDbConnection();  PreparedStatement ps = con.prepareStatement(update_NVKH)) {
             ps.setObject(2, ma);
             ps.setObject(1, hdUpdate.getIdNV());
             if (ps.executeUpdate() > 0) {
                 return "Thay đổi thành công";
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return "Thay đổi thất bại";
     }
 
     public String updateTrangThai(HoaDonViewModel hd, String ma) {
-        String query = "UPDATE [dbo].[HoaDon]\n"
-                + "   SET \n"
-                + "      ,[NgayThanhToan] = GETDATE()\n"
-                + "      ,[TongTien] = ?\n"
-                + "      ,[TrangThai] = ?\n"
-                + " WHERE Ma = ?";
-        try ( Connection con = JdbcHelper.openDbConnection();  PreparedStatement ps = con.prepareStatement(query)) {
+        try ( Connection con = JdbcHelper.openDbConnection();  PreparedStatement ps = con.prepareStatement(update_thanh_toan)) {
             ps.setObject(2, hd.getTongTien());
             ps.setObject(3, hd.getTrangThai());
             ps.setObject(4, ma);
-
             if (ps.executeUpdate() > 0) {
                 return "Thành công";
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return "Thất bại";
     }
 
     public String deleteGioHang(String id) {
-        String query = "Delete from HoaDonChiTiet where Id = ?";
-        try ( Connection con = JdbcHelper.openDbConnection();  PreparedStatement ps = con.prepareStatement(query)) {
+        try ( Connection con = JdbcHelper.openDbConnection();  PreparedStatement ps = con.prepareStatement(delete_giohang)) {
             ps.setObject(1, id);
 
             if (ps.executeUpdate() > 0) {
                 return "Xóa sản phẩm thành công";
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return "Để xác nhận vui lòng chọn lại sản phẩm cần xóa";
     }
 
     public String capNhatSoLuong2(SanPham ctsp, String id) {
-        String query = "Update SanPham Set SoLuong = SoLuong - ? where Id = ?";
-        try ( Connection con = JdbcHelper.openDbConnection();  PreparedStatement ps = con.prepareStatement(query)) {
+        try ( Connection con = JdbcHelper.openDbConnection();  PreparedStatement ps = con.prepareStatement(capNhatSoLuong2)) {
             ps.setObject(1, ctsp.getSoLuong());
             ps.setObject(2, id);
-
             ps.executeUpdate();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return null;
-
     }
 
     public String capNhatSoLuong(SanPham ctsp, String id) {
-        String query = "Update SanPham Set SoLuong = SoLuong + ? where Id = ?";
-        try ( Connection con = JdbcHelper.openDbConnection();  PreparedStatement ps = con.prepareStatement(query)) {
+        try ( Connection con = JdbcHelper.openDbConnection();  PreparedStatement ps = con.prepareStatement(capNhatSoLuong)) {
             ps.setObject(1, ctsp.getSoLuong());
             ps.setObject(2, id);
             ps.executeUpdate();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return null;
-
     }
 
     public String updateSoLuong(SanPham ctsp, String id) {
-        String query = "UPDATE [dbo].[SanPham] SET [SoLuong] = ? WHERE ID = ?";
-        try ( Connection con = JdbcHelper.openDbConnection();  PreparedStatement ps = con.prepareStatement(query)) {
+        try ( Connection con = JdbcHelper.openDbConnection();  PreparedStatement ps = con.prepareStatement(updateSoLuong)) {
             ps.setObject(1, ctsp.getSoLuong());
             ps.setObject(2, id);
             ps.executeUpdate();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return null;
-
     }
 
     public String updateSoLuongHDCT(GioHangViewModel gh, String id) {
-        String query = "UPDATE [dbo].[HoaDonChiTiet]\n"
-                + "   SET \n"
-                + "      [SoLuong] = ?\n"
-                + " WHERE Id = ?";
-        try ( Connection con = JdbcHelper.openDbConnection();  PreparedStatement ps = con.prepareStatement(query)) {
+        try ( Connection con = JdbcHelper.openDbConnection();  PreparedStatement ps = con.prepareStatement(updateSoLuongHDCT)) {
             ps.setObject(1, gh.getSoLuong());
             ps.setObject(2, id);
-
             ps.executeUpdate();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return null;
-
     }
 
     public String addHDCT(HoaDonChiTiet hdct) {
         try ( Connection con = JdbcHelper.openDbConnection();  PreparedStatement ps = con.prepareStatement(insert_hdct)) {
-
             ps.setObject(1, hdct.getIdHD());
             ps.setObject(2, hdct.getIdSP());
             ps.setObject(3, hdct.getSoLuong());
@@ -176,38 +200,35 @@ public class BanHangRepository {
                 return "Thêm sản phẩm thành công";
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return "Thêm sản phẩm thất bại";
-
     }
 
-    public String saveHoaDon(HoaDonViewModel hd) {
-        String query = "Insert into HoaDon(IdNV, MaHD, NgayTao) values (?,?,GETDATE());";
-        try ( Connection con = JdbcHelper.openDbConnection();  PreparedStatement ps = con.prepareStatement(query)) {
+    public String addHoaDon(HoaDonViewModel hd) {
+        try ( Connection con = JdbcHelper.openDbConnection();  PreparedStatement ps = con.prepareStatement(insert_hoadon)) {
             ps.setObject(1, hd.getIdNV());
-            ps.setObject(2, hd.getMaHD());        
+            ps.setObject(2, hd.getIdKH());
+            ps.setObject(3, hd.getMaHD());
             if (ps.executeUpdate() > 0) {
                 return "Thêm hóa đơn thành công";
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return "Thêm hóa đơn thất bại";
     }
 
-    
-
     public List<GioHangViewModel> getGioHang(String id) {
-        return this.selectBySqlGH(select_GH, "%" + id + "%");
+        return this.selectBySqlGH(select_gh_bh, "%" + id + "%");
     }
 
     public List<HoaDonViewModel> getALLHD() {
-        return selectBySqlHD(slect_hd_chua_thanh_toan);
+        return selectBySqlHD(slect_hd_chua_thanh_toan_bh);
     }
 
     public List<SanPhamViewModel> getAllSP() {
-        return selectBySqlSP(slect_all_sp);
+        return selectBySqlSP(slect_all_sp_bh);
     }
 
     public List<HoaDonViewModel> selectBySqlHD(String sql, Object... args) {
@@ -220,10 +241,11 @@ public class BanHangRepository {
                 entity.setMaHD(rs.getString(2));
                 entity.setNgayTao(rs.getDate(3));
                 entity.setIdNV(rs.getString(4));
-                entity.setTrangThai(rs.getInt(5));
+                entity.setIdKH(rs.getString(5));
+                entity.setTrangThai(rs.getInt(6));
                 list.add(entity);
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return list;
@@ -246,7 +268,7 @@ public class BanHangRepository {
                 entity.setGiaBan(rs.getDouble(9));
                 list.add(entity);
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return list;
@@ -266,7 +288,7 @@ public class BanHangRepository {
                 entity.setDonGia(rs.getDouble(6));
                 list.add(entity);
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return list;
