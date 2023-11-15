@@ -4,6 +4,14 @@
  */
 package com.g4.repository;
 
+import com.g4.utils.JdbcHelper;
+import com.g4.viewmodel.HoaDonViewModel;
+import com.g4.viewmodel.SanPhamViewModel;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author tuphp
@@ -42,4 +50,46 @@ public class BanHangRepository {
     String findByIdKH_ma = "SELECT Id FROM KhachHang WHERE MaKH = ?";
     String select_KHN = "select * from KhachHang";
 
+    public List<HoaDonViewModel> selectBySqlHD(String sql, Object... args) {
+        List<HoaDonViewModel> list = new ArrayList<>();
+        try {
+            ResultSet rs = JdbcHelper.query(sql, args);
+            while (rs.next()) {
+                HoaDonViewModel entity = new HoaDonViewModel();
+                entity.setId(rs.getString(1));
+                entity.setMaHD(rs.getString(2));
+                entity.setNgayTao(rs.getDate(3));
+                entity.setIdNV(rs.getString(4));
+                entity.setIdKH(rs.getString(5));
+                entity.setTrangThai(rs.getInt(6));
+                list.add(entity);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return list;
+    }
+
+    public List<SanPhamViewModel> selectBySqlSP(String sql, Object... args) {
+        List<SanPhamViewModel> list = new ArrayList<>();
+        try {
+            ResultSet rs = JdbcHelper.query(sql, args);
+            while (rs.next()) {
+                SanPhamViewModel entity = new SanPhamViewModel();
+                entity.setId(rs.getString(1));
+                entity.setMaSP(rs.getString(2));
+                entity.setTenSP(rs.getString(3));
+                entity.setIdKT(rs.getString(4));
+                entity.setIDMS(rs.getString(5));
+                entity.setIdDG(rs.getString(6));
+                entity.setIdTH(rs.getString(7));
+                entity.setSoLuong(rs.getInt(8));
+                entity.setGiaBan(rs.getDouble(9));
+                list.add(entity);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return list;
+    }
 }
