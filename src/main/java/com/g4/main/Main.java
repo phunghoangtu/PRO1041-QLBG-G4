@@ -9,6 +9,7 @@ import com.g4.view.BanHangJPanel;
 import com.g4.view.DailogKhachHangBH;
 import com.g4.view.GiaoCaJPanel;
 import com.g4.view.HoaDonJPanel;
+import com.g4.view.KhuyenMaiJPanel;
 import com.g4.view.ThongKeJPanel;
 import java.awt.Color;
 import javax.swing.JComponent;
@@ -22,7 +23,9 @@ public class Main extends javax.swing.JFrame {
     private final HoaDonJPanel hoaDonJPanel = new HoaDonJPanel();
     private final ThongKeJPanel thongKeJPanel = new ThongKeJPanel();
     private final GiaoCaJPanel giaoCaJPanel = new GiaoCaJPanel();
-
+    private final KhuyenMaiJPanel khuyenMaiJPanel = new KhuyenMaiJPanel();
+    
+    
     public Main() {
         initComponents();
         init();
@@ -61,8 +64,10 @@ public class Main extends javax.swing.JFrame {
                 } else if (index == 6) {
                     setForm(thongKeJPanel);
                 } else if (index == 7) {
-                    dangXuat();
+                    setForm(khuyenMaiJPanel);
                 } else if (index == 8) {
+                    dangXuat();
+                } else if (index == 9) {
                     System.exit(0);
                 }
             }
