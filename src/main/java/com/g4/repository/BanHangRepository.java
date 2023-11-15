@@ -5,6 +5,7 @@
 package com.g4.repository;
 
 import com.g4.utils.JdbcHelper;
+import com.g4.viewmodel.GioHangViewModel;
 import com.g4.viewmodel.HoaDonViewModel;
 import com.g4.viewmodel.SanPhamViewModel;
 import java.sql.ResultSet;
@@ -50,6 +51,20 @@ public class BanHangRepository {
     String findByIdKH_ma = "SELECT Id FROM KhachHang WHERE MaKH = ?";
     String select_KHN = "select * from KhachHang";
 
+    
+    
+    public List<GioHangViewModel> getGioHang(String id) {
+        return this.selectBySqlGH(select_gh_bh, "%" + id + "%");
+    }
+
+    public List<HoaDonViewModel> getALLHD() {
+        return selectBySqlHD(slect_hd_chua_thanh_toan_bh);
+    }
+
+    public List<SanPhamViewModel> getAllSP() {
+        return selectBySqlSP(slect_all_sp_bh);
+    }
+
     public List<HoaDonViewModel> selectBySqlHD(String sql, Object... args) {
         List<HoaDonViewModel> list = new ArrayList<>();
         try {
@@ -92,4 +107,25 @@ public class BanHangRepository {
         }
         return list;
     }
+
+    public List<GioHangViewModel> selectBySqlGH(String sql, Object... args) {
+        List<GioHangViewModel> list = new ArrayList<>();
+        try {
+            ResultSet rs = JdbcHelper.query(sql, args);
+            while (rs.next()) {
+                GioHangViewModel entity = new GioHangViewModel();
+                entity.setId(rs.getString(1));
+                entity.setIdSP(rs.getString(2));
+                entity.setMaSP(rs.getString(3));
+                entity.setTenSP(rs.getString(4));
+                entity.setSoLuong(rs.getInt(5));
+                entity.setDonGia(rs.getDouble(6));
+                list.add(entity);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return list;
+    }
+
 }
