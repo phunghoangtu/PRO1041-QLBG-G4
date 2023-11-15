@@ -64,10 +64,8 @@
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="btnAdd" min="-2" pref="110" max="-2" attributes="0"/>
                       </Group>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="txtMaKH" min="-2" pref="165" max="-2" attributes="0"/>
-                          <Component id="jLabel1" min="-2" pref="143" max="-2" attributes="0"/>
-                      </Group>
+                      <Component id="txtMaKH" min="-2" pref="165" max="-2" attributes="0"/>
+                      <Component id="jLabel1" min="-2" pref="143" max="-2" attributes="0"/>
                       <Component id="jLabel2" alignment="0" min="-2" pref="140" max="-2" attributes="0"/>
                       <Component id="jLabel3" alignment="0" min="-2" pref="138" max="-2" attributes="0"/>
                   </Group>

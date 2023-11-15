@@ -14,7 +14,6 @@ import com.g4.viewmodel.SanPhamViewModel;
 
 public class BanHangJPanel extends javax.swing.JPanel {
 
-    private BanHangRepository bhs = new BanHangRepository();
 
     
 

@@ -28,7 +28,7 @@ public class DailogKhachHangBH extends javax.swing.JDialog {
         String headers[] = {"Mã", "HọTên", "Sđt", "Ngày tạo"};
         tblmodel.setColumnIdentifiers(headers);
         
-        showData(listKHVM = bhs.getAllKHN());
+        //showData(listKHVM = bhs.getAllKHN());
     }
 
     private void showData(List<KhachHangViewModel> lists) {
@@ -244,7 +244,7 @@ public class DailogKhachHangBH extends javax.swing.JDialog {
 
 //                KhachHang kh = new KhachHang(ma, ten, sdt);
 //                JOptionPane.showMessageDialog(this, bhs.add(kh));
-                showData(listKHVM = bhs.getAllKHN());
+               // showData(listKHVM = bhs.getAllKHN());
             }
         }
     }//GEN-LAST:event_btnAddActionPerformed
