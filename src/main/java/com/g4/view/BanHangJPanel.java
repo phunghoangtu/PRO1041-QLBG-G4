@@ -10,12 +10,28 @@ import com.g4.utils.MsgBox;
 import com.g4.viewmodel.GioHangViewModel;
 import com.g4.viewmodel.HoaDonViewModel;
 import com.g4.viewmodel.SanPhamViewModel;
-
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.table.DefaultTableModel;
 
 public class BanHangJPanel extends javax.swing.JPanel {
 
+    private BanHangRepository bhs = new BanHangRepository();
 
-    
+    DecimalFormat fomat = new DecimalFormat("###,###,###");
+
+    private DefaultTableModel tblModelHoaDon = new DefaultTableModel();
+    private DefaultTableModel tblModelGioHang = new DefaultTableModel();
+    private DefaultTableModel tblModelSanPham = new DefaultTableModel();
+
+    private DefaultComboBoxModel cbbModelHTTT = new DefaultComboBoxModel();
+
+    private List<GioHangViewModel> listGH = new ArrayList<>();
+    private List<SanPhamViewModel> listSP = new ArrayList<>();
+    private List<HoaDonViewModel> listHD = new ArrayList<>();
 
     public BanHangJPanel() {
         initComponents();
@@ -23,13 +39,76 @@ public class BanHangJPanel extends javax.swing.JPanel {
     }
 
     void init() {
+        listHD = bhs.getALLHD();
+        loadHoaDon(listHD);
+        listSP = bhs.getAllSP();
+        loadSanPham(listSP);
 
-       
+        if (demTrangThai() > 4) {
+            btnTaoHoaDon.setEnabled(false);
+        }
     }
 
-    
+    public int demTrangThai() {
+        int a = 0;
+        for (HoaDonViewModel x : listHD) {
+            if (x.getTrangThai() == 1) {
+                x.getTrangThai();
+                a++;
+            }
+        }
+        return a;
+    }
 
-    
+    public void loadGioHang(List<GioHangViewModel> listGioHangS) {
+        tblModelGioHang = (DefaultTableModel) tbGioHang.getModel();
+        tblModelGioHang.setRowCount(0);
+        for (GioHangViewModel gh : listGioHangS) {
+            tblModelGioHang.addRow(gh.todataRow());
+        }
+    }
+
+    public void loadSanPham(List<SanPhamViewModel> listSanPhams) {
+        tblModelSanPham = (DefaultTableModel) tbSanPham.getModel();
+        tblModelSanPham.setRowCount(0);
+        for (SanPhamViewModel sp : listSanPhams) {
+            tblModelSanPham.addRow(sp.todataRowSanPham());
+        }
+    }
+
+    public void loadHoaDon(List<HoaDonViewModel> listHoaDons) {
+        tblModelHoaDon = (DefaultTableModel) tbHoaDon.getModel();
+        tblModelHoaDon.setRowCount(0);
+        for (HoaDonViewModel hd : listHoaDons) {
+            tblModelHoaDon.addRow(hd.toRowDataHD());
+        }
+    }
+
+    void insertHoaDon() {
+        // Tạo hóa đơn
+        if (demTrangThai() > 3) {
+            btnTaoHoaDon.setEnabled(false);
+        }
+        // Dùng cả random + listSize để không bị trùng
+        Random random = new Random();
+        int x = random.nextInt(10);
+        int i = listHD.size();
+        i++;
+        long millis = System.currentTimeMillis();
+
+        String maHD = "HD" + x + i;
+        HoaDonViewModel hd = new HoaDonViewModel();
+        String id = Auth.user.getId();
+        hd.setIdNV(id);
+        hd.setIdKH(bhs.findByIDKH(lblMaKH.getText()));
+        hd.setMaHD(maHD);
+        hd.setTrangThai(1);
+        //Lưu hóa đơn tạo vào bảng hóa đơn
+        bhs.addHoaDon(hd);
+        //Hóa đơn chờ
+        listHD = bhs.getALLHD();
+        loadHoaDon(listHD);
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -532,35 +611,35 @@ public class BanHangJPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnTaoHoaDonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTaoHoaDonActionPerformed
-       
+        insertHoaDon();
     }//GEN-LAST:event_btnTaoHoaDonActionPerformed
 
     private void tbSanPhamMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbSanPhamMouseClicked
-     
+
     }//GEN-LAST:event_tbSanPhamMouseClicked
 
     private void tbHoaDonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbHoaDonMouseClicked
-     
+
     }//GEN-LAST:event_tbHoaDonMouseClicked
 
     private void btnCapNhatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCapNhatActionPerformed
-       
+
     }//GEN-LAST:event_btnCapNhatActionPerformed
 
     private void btnXoaSanPhamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaSanPhamActionPerformed
-       
+
     }//GEN-LAST:event_btnXoaSanPhamActionPerformed
 
     private void btnThanhToanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThanhToanActionPerformed
-      
+
     }//GEN-LAST:event_btnThanhToanActionPerformed
 
     private void btnHuyHoaDonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHuyHoaDonActionPerformed
-      
+
     }//GEN-LAST:event_btnHuyHoaDonActionPerformed
 
     private void btnLamMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLamMoiActionPerformed
-       
+
     }//GEN-LAST:event_btnLamMoiActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed

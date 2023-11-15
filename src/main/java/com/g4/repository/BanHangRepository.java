@@ -13,9 +13,11 @@ import com.g4.viewmodel.HoaDonViewModel;
 import com.g4.viewmodel.KhachHangViewModel;
 import com.g4.viewmodel.SanPhamViewModel;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,23 +43,23 @@ public class BanHangRepository {
             + "FROM dbo.SanPham SP\n"
             + "	INNER JOIN dbo.HoaDonChiTiet HDCT ON SP.Id = HDCT.IdSanPham\n"
             + "WHERE HDCT.IdHoaDon LIKE ?";
-    String insert_hdct = "INSERT INTO HoaDonChiTiet (IdHD,IdSP,SoLuong,DonGia) VALUES (?,?,?,?)";
+    String insert_hdct = "INSERT INTO HoaDonChiTiet (IdHoaDon,IdSanPham,SoLuong,DonGia) VALUES (?,?,?,?)";
     String update_soluong_sp_by_id = "UPDATE SanPham SET SoLuong = ? WHERE ID = ?";
-    String delete_hdct_by_idHoaDon = "Delete from HoaDonChiTiet where IdHD = ?";
+    String delete_hdct_by_idHoaDon = "Delete from HoaDonChiTiet where IdHoaDon = ?";
     String delete_hd_by_id = "Delete from HoaDon where Id = ?";
-    String update_NVKH = "UPDATE HoaDon SET IdNV = ? WHERE MaHD = ?";
+    String update_NVKH = "UPDATE HoaDon SET IdNhanVien = ? WHERE MaHD = ?";
     String update_thanh_toan = "UPDATE HoaDon SET NgayThanhToan = GETDATE() ,TongTien = ? ,TrangThai = ? WHERE MaHD = ?";
     String delete_giohang = "Delete from HoaDonChiTiet where Id = ?";
     String capNhatSoLuong2 = "Update SanPham Set SoLuong = SoLuong - ? where Id = ?";
     String capNhatSoLuong = "Update SanPham Set SoLuong = SoLuong + ? where Id = ?";
     String updateSoLuong = "UPDATE SanPham SET SoLuong = ? WHERE ID = ?";
     String updateSoLuongHDCT = "UPDATE HoaDonChiTiet SET SoLuong = ? WHERE Id = ?";
-    String insert_hoadon = "Insert into HoaDon(IdNV,IdKH, MaHD) values (?,?,?);";
+    String insert_hoadon = "Insert into HoaDon(IdNhanVien,IdKhachHang, MaHD) values (?,?,?);";
 
-    String findByIdKH_ma = "SELECT Id FROM KhachHang WHERE MaKH = ?";
+    String findByIdKH_ma = "SELECT Id FROM KhachHang WHERE MaKhachHang = ?";
     String select_KHN = "select * from KhachHang";
 
-        public List<KhachHangViewModel> getAllKHN() {
+    public List<KhachHangViewModel> getAllKHN() {
         return selectBySqlKHN(select_KHN);
     }
 
@@ -226,7 +228,7 @@ public class BanHangRepository {
         }
         return "Thêm hóa đơn thất bại";
     }
-    
+
     public List<GioHangViewModel> getGioHang(String id) {
         return this.selectBySqlGH(select_gh_bh, "%" + id + "%");
     }
