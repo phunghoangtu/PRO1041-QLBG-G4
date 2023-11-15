@@ -18,7 +18,7 @@ public class HoaDonViewModel {
     private String idNV;
     private String idKH;
     private int trangThai;
-    private double TongTien;
+    private Double TongTien;
 
     public String trangThai() {
         if (getTrangThai() == 0) {

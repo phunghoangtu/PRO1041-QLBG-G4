@@ -21,12 +21,11 @@ public class SanPhamViewModel {
     private String idDG;
     private String idTH;
     private int soLuong;
-    private double giaBan;
-    private double giamGia;
+    private Double giaBan;
 
     public Object[] todataRowSanPham() {
    
-        return new Object[]{maSP, tenSP, idKT, iDMS, idDG, idTH, soLuong, giaBan, giamGia};
+        return new Object[]{maSP, tenSP, idKT, iDMS, idDG, idTH, soLuong, giaBan};
     }
 
 }
