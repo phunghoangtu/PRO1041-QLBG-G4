@@ -78,8 +78,6 @@ public class Main extends javax.swing.JFrame {
         Auth.clear();
         dispose();
         openLogin();
-        Main m = new Main();
-        m.setVisible(true);
     }
 
     @SuppressWarnings("unchecked")
