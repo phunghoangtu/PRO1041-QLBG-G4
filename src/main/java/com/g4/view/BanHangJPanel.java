@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class BanHangJPanel extends javax.swing.JPanel {
@@ -95,7 +96,6 @@ public class BanHangJPanel extends javax.swing.JPanel {
         int i = listHD.size();
         i++;
         long millis = System.currentTimeMillis();
-
         String maHD = "HD" + x + i;
         HoaDonViewModel hd = new HoaDonViewModel();
         String id = Auth.user.getId();
@@ -108,6 +108,74 @@ public class BanHangJPanel extends javax.swing.JPanel {
         //Hóa đơn chờ
         listHD = bhs.getALLHD();
         loadHoaDon(listHD);
+    }
+
+    void fillInsertSanPhamGH() {
+        GioHangViewModel gh = new GioHangViewModel();
+        int rowHD = tbHoaDon.getSelectedRow();
+        int row = tbSanPham.getSelectedRow();
+        SanPhamViewModel sp = listSP.get(row);
+        if (rowHD < 0) {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn hóa đơn muốn thêm sản phẩm");
+        } else {
+            String soLuong = JOptionPane.showInputDialog("Mời bạn nhập số lượng: ");
+
+            if (soLuong != null) {
+                if (!soLuong.matches("[0-9]+")) {
+                    JOptionPane.showMessageDialog(this, "Nhập đúng định dạng");
+                } else if (Integer.valueOf(soLuong) > sp.getSoLuong()) {
+                    JOptionPane.showMessageDialog(this, "Số lượng vượt quá -.-");
+                } else {
+                    // Thêm sản phẩm vào giỏ hàng
+                    HoaDonViewModel hd = listHD.get(rowHD);
+                    gh.setSoLuong(Integer.valueOf(soLuong));
+                    gh.setMaSP(sp.getMaSP());
+                    gh.setTenSP(sp.getTenSP());
+                    gh.setDonGia(sp.getGiaBan());
+                    boolean trung = false;
+                    for (GioHangViewModel x : listGH) {
+                        if (x.getMaSP().contains(sp.getMaSP())) {
+                            trung = true;
+                        }
+                    }
+                    if (trung) {
+                        JOptionPane.showMessageDialog(this, "Sản phẩm đã có trong giỏ hàng, để thêm số lượng vui lòng chọn chức năng cập nhật");
+                    } else {
+                        // Thêm sản phẩm vào list giỏ hàng
+                        listGH.add(gh);
+
+                        sp.setSoLuong(sp.getSoLuong() - Integer.valueOf(soLuong));
+                        loadSanPham(listSP);
+
+                        String idHD = hd.getId();
+                        String idCtsp = sp.getId();
+                        int soLuong1 = Integer.valueOf(soLuong);
+                        Double donGia = sp.getGiaBan();
+
+                        // add giỏ hàng vào HDCT
+                        HoaDonChiTiet hdct = new HoaDonChiTiet(idHD, idCtsp, soLuong1, donGia);
+                        JOptionPane.showMessageDialog(this, bhs.addHDCT(hdct));
+                        listGH = bhs.getGioHang(idHD);
+                        loadGioHang(listGH);
+
+                        //Cập nhật số lượng trong bảng Sản phẩm CT
+                        SanPham sp1 = new SanPham(sp.getSoLuong());
+                        bhs.updateSoLuong(sp1, idCtsp);
+
+                        //Fill thành tiền, thanh toán, giảm giá
+                        double thanhTien = 0;
+                        double thanhToan = 0;
+                        double giamGia = 0;
+
+                        for (GioHangViewModel gha : listGH) {
+                            thanhTien += gha.getSoLuong() * gh.getDonGia();
+                        }
+                        lblThanhTien.setText(String.valueOf(fomat.format(thanhTien)));
+                        lblThanhToan.setText(String.valueOf(fomat.format(thanhToan = thanhTien)));
+                    }
+                }
+            }
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -161,7 +229,7 @@ public class BanHangJPanel extends javax.swing.JPanel {
         jSeparator1 = new javax.swing.JSeparator();
         jComboBox1 = new javax.swing.JComboBox<>();
         lblTenTienThua1 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        cbbKhuyemMai = new javax.swing.JComboBox<>();
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Hóa đơn chờ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
 
@@ -439,7 +507,7 @@ public class BanHangJPanel extends javax.swing.JPanel {
         lblTenTienThua1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblTenTienThua1.setText("Hình thức thanh toán");
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0" }));
+        cbbKhuyemMai.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0" }));
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -519,7 +587,7 @@ public class BanHangJPanel extends javax.swing.JPanel {
                                     .addGroup(jPanel4Layout.createSequentialGroup()
                                         .addComponent(lblThanhTien)
                                         .addGap(171, 171, 171))
-                                    .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                    .addComponent(cbbKhuyemMai, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                         .addGap(30, 30, 30))))
             .addComponent(jSeparator1)
         );
@@ -554,7 +622,7 @@ public class BanHangJPanel extends javax.swing.JPanel {
                 .addGap(28, 28, 28)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cbbKhuyemMai, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(26, 26, 26)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
@@ -615,7 +683,7 @@ public class BanHangJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_btnTaoHoaDonActionPerformed
 
     private void tbSanPhamMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbSanPhamMouseClicked
-
+        fillInsertSanPhamGH();
     }//GEN-LAST:event_tbSanPhamMouseClicked
 
     private void tbHoaDonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbHoaDonMouseClicked
@@ -656,9 +724,9 @@ public class BanHangJPanel extends javax.swing.JPanel {
     private javax.swing.JButton btnThanhToan;
     private javax.swing.JButton btnXoaSanPham;
     private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JComboBox<String> cbbKhuyemMai;
     private javax.swing.JButton jButton1;
     private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel17;
