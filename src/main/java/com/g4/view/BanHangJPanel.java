@@ -222,6 +222,56 @@ public class BanHangJPanel extends javax.swing.JPanel {
         btnLamMoi.setEnabled(true);
     }
 
+    void updateSanPhamGioHang() {
+        int indexHD = tbHoaDon.getSelectedRow();
+        int indexGH = tbGioHang.getSelectedRow();
+        if (indexGH < 0) {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn sản phẩm cần cập nhật số lượng");
+
+        } else {
+            String soLuongMoi = JOptionPane.showInputDialog("Mời nhập số lượng cần cập nhật: ");
+            if (soLuongMoi != null) {
+                if (!soLuongMoi.matches("[0-9]+")) {
+                    JOptionPane.showMessageDialog(this, "Nhập đúng định dạng");
+                } else {
+                    GioHangViewModel gh = listGH.get(indexGH);
+                    HoaDonViewModel hd = listHD.get(indexHD);
+                    String idCTSP = gh.getIdSP();
+                    String id = gh.getId();
+                    String idHD = hd.getId();
+                    int soLuongCu = gh.getSoLuong();
+                    int soLuongCapNhat = 0;
+                    if (Integer.valueOf(soLuongMoi) < soLuongCu) {
+                        soLuongCapNhat = soLuongCu - Integer.valueOf(soLuongMoi);
+                        SanPham ctsp = new SanPham(soLuongCapNhat);
+                        bhs.capNhatSoLuong(ctsp, idCTSP);
+                    } else {
+                        soLuongCapNhat = Integer.valueOf(soLuongMoi) - soLuongCu;
+                        SanPham ctsp = new SanPham(soLuongCapNhat);
+                        bhs.capNhatSoLuong2(ctsp, idCTSP);
+                    }
+                    gh.setSoLuong(Integer.valueOf(soLuongMoi));
+                    bhs.updateSoLuongHDCT(gh, id);
+                    listGH = bhs.getGioHang(idHD);
+                    loadGioHang(listGH);
+                    listSP = bhs.getAllSP();
+                    loadSanPham(listSP);
+                    double thanhTien = 0;
+                    double thanhToan = 0;
+                    double giamGia = 0;
+                  
+                    for (GioHangViewModel gha : listGH) {
+                        thanhTien += gha.getSoLuong() * gha.getDonGia();
+                    }
+         
+                    lblThanhTien.setText(String.valueOf(fomat.format(thanhTien)));
+                    lblThanhToan.setText(String.valueOf(fomat.format(thanhToan = thanhTien)));
+
+                }
+            }
+        }
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -423,12 +473,12 @@ public class BanHangJPanel extends javax.swing.JPanel {
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 482, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 533, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnXoaSanPham)
-                    .addComponent(btnCapNhat, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(45, Short.MAX_VALUE))
+                    .addComponent(btnCapNhat, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnXoaSanPham, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -757,7 +807,7 @@ public class BanHangJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_tbHoaDonMouseClicked
 
     private void btnCapNhatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCapNhatActionPerformed
-
+        updateSanPhamGioHang();
     }//GEN-LAST:event_btnCapNhatActionPerformed
 
     private void btnXoaSanPhamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaSanPhamActionPerformed
