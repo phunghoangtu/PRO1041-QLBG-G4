@@ -286,7 +286,7 @@ public class ThongKeJPanel extends javax.swing.JPanel {
                 .addComponent(jLabel11)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(847, Short.MAX_VALUE))
+                .addContainerGap(846, Short.MAX_VALUE))
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(pnl_doanhThu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -318,7 +318,7 @@ public class ThongKeJPanel extends javax.swing.JPanel {
         pnl_khachHang.setLayout(pnl_khachHangLayout);
         pnl_khachHangLayout.setHorizontalGroup(
             pnl_khachHangLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 700, Short.MAX_VALUE)
+            .addGap(0, 714, Short.MAX_VALUE)
         );
         pnl_khachHangLayout.setVerticalGroup(
             pnl_khachHangLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
