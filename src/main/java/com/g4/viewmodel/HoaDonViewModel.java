@@ -1,5 +1,6 @@
 package com.g4.viewmodel;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,8 +18,10 @@ public class HoaDonViewModel {
     private Date ngayTao;
     private String idNV;
     private String idKH;
+    private String tenKhachHang;
     private int trangThai;
     private Double TongTien;
+    
 
     public String trangThai() {
         if (getTrangThai() == 0) {
@@ -31,7 +34,10 @@ public class HoaDonViewModel {
     }
 
     public Object[] toRowDataHD() {
-        return new Object[]{maHD, ngayTao, idNV, idKH, trangThai()};
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        String formattedDate = dateFormat.format(ngayTao);
+
+        return new Object[]{maHD, formattedDate, idNV, tenKhachHang, trangThai()};
     }
 
 }

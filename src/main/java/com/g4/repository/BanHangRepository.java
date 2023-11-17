@@ -27,7 +27,7 @@ import java.util.List;
  */
 public class BanHangRepository {
 
-    String slect_hd_chua_thanh_toan_bh = "SELECT hd.Id, hd.MaHD, hd.NgayTao, nv.TenNhanVien,kh.TenKhachHang, hd.TrangThai\n"
+    String slect_hd_chua_thanh_toan_bh = "SELECT hd.Id, hd.MaHD, hd.NgayTao, nv.TenNhanVien,kh.MaKhachHang ,kh.TenKhachHang, hd.TrangThai\n"
             + "FROM dbo.HoaDon hd        \n"
             + "            INNER JOIN dbo.NhanVien nv ON hd.IdNhanVien = nv.Id\n"
             + "			INNER JOIN dbo.KhachHang kh ON hd.IdKhachHang = kh.Id\n"
@@ -59,31 +59,9 @@ public class BanHangRepository {
     String findByIdKH_ma = "SELECT Id FROM KhachHang WHERE MaKhachHang = ?";
     String select_KHN = "select * from KhachHang";
 
-    public List<KhachHangViewModel> getAllKHN() {
-        return selectBySqlKHN(select_KHN);
-    }
-
-    public List<KhachHangViewModel> selectBySqlKHN(String sql, Object... args) {
-        List<KhachHangViewModel> list = new ArrayList<>();
-        try {
-            ResultSet rs = JdbcHelper.query(sql, args);
-            while (rs.next()) {
-                KhachHangViewModel entity = new KhachHangViewModel();
-                entity.setId(rs.getString(1));
-                entity.setMaKH(rs.getString(2));
-                entity.setTenKH(rs.getString(3));
-                entity.setSdt(rs.getString(4));
-                entity.setNgayTao(rs.getDate(5));
-                list.add(entity);
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return list;
-    }
-
+    // tìm id khách hàng theo mã
     public String findByIDKH(String maKH) {
-        try ( Connection con = JdbcHelper.openDbConnection();  PreparedStatement ps = con.prepareStatement(findByIdKH_ma)) {
+        try (Connection con = JdbcHelper.openDbConnection(); PreparedStatement ps = con.prepareStatement(findByIdKH_ma)) {
             ps.setString(1, maKH); // Sử dụng setString() thay vì setObject()
             ResultSet rs = ps.executeQuery(); // Thực thi truy vấn và lưu kết quả trả về vào ResultSet
             if (rs.next()) {
@@ -96,90 +74,97 @@ public class BanHangRepository {
         return "Lỗi truy vấn dữ liệu hoặc không tìm thấy khách hàng";
     }
 
-    public String deleteHDCT(String idHD) {
-        try ( Connection con = JdbcHelper.openDbConnection();  PreparedStatement ps = con.prepareStatement(delete_hdct_by_idHoaDon)) {
-            ps.setObject(1, idHD);
-            ps.executeUpdate();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        return "Ôi hỏng";
-    }
-
-    public String deleteHD(String idHD) {
-        try ( Connection con = JdbcHelper.openDbConnection();  PreparedStatement ps = con.prepareStatement(delete_hd_by_id)) {
-            ps.setObject(1, idHD);
-            ps.executeUpdate();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        return "Ôi hỏng";
-    }
-
-    public String updateNVKH(HoaDon hdUpdate, String ma) {
-        try ( Connection con = JdbcHelper.openDbConnection();  PreparedStatement ps = con.prepareStatement(update_NVKH)) {
-            ps.setObject(2, ma);
-            ps.setObject(1, hdUpdate.getIdNV());
-            if (ps.executeUpdate() > 0) {
-                return "Thay đổi thành công";
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        return "Thay đổi thất bại";
-    }
-
-    public String updateTrangThai(HoaDonViewModel hd, String ma) {
-        try ( Connection con = JdbcHelper.openDbConnection();  PreparedStatement ps = con.prepareStatement(update_thanh_toan)) {
-            ps.setObject(2, hd.getTongTien());
-            ps.setObject(3, hd.getTrangThai());
-            ps.setObject(4, ma);
-            if (ps.executeUpdate() > 0) {
-                return "Thành công";
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        return "Thất bại";
-    }
-
-    public String deleteGioHang(String id) {
-        try ( Connection con = JdbcHelper.openDbConnection();  PreparedStatement ps = con.prepareStatement(delete_giohang)) {
-            ps.setObject(1, id);
-
-            if (ps.executeUpdate() > 0) {
-                return "Xóa sản phẩm thành công";
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        return "Để xác nhận vui lòng chọn lại sản phẩm cần xóa";
-    }
-
-    public String capNhatSoLuong2(SanPham ctsp, String id) {
-        try ( Connection con = JdbcHelper.openDbConnection();  PreparedStatement ps = con.prepareStatement(capNhatSoLuong2)) {
-            ps.setObject(1, ctsp.getSoLuong());
-            ps.setObject(2, id);
-            ps.executeUpdate();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        return null;
-    }
-
-    public String capNhatSoLuong(SanPham ctsp, String id) {
-        try ( Connection con = JdbcHelper.openDbConnection();  PreparedStatement ps = con.prepareStatement(capNhatSoLuong)) {
-            ps.setObject(1, ctsp.getSoLuong());
-            ps.setObject(2, id);
-            ps.executeUpdate();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        return null;
-    }
-
+//    public String deleteHDCT(String idHD) {
+//        try (Connection con = JdbcHelper.openDbConnection(); PreparedStatement ps = con.prepareStatement(delete_hdct_by_idHoaDon)) {
+//            ps.setObject(1, idHD);
+//            ps.executeUpdate();
+//        } catch (Exception e) {
+//            throw new RuntimeException(e);
+//        }
+//        return "Ôi hỏng";
+//    }
+//
+//    public String deleteHD(String idHD) {
+//        try (Connection con = JdbcHelper.openDbConnection(); PreparedStatement ps = con.prepareStatement(delete_hd_by_id)) {
+//            ps.setObject(1, idHD);
+//            ps.executeUpdate();
+//        } catch (Exception e) {
+//            throw new RuntimeException(e);
+//        }
+//        return "Ôi hỏng";
+//    }
+    //    public String deleteGioHang(String id) {
+//        try (Connection con = JdbcHelper.openDbConnection(); PreparedStatement ps = con.prepareStatement(delete_giohang)) {
+//            ps.setObject(1, id);
+//
+//            if (ps.executeUpdate() > 0) {
+//                return "Xóa sản phẩm thành công";
+//            }
+//        } catch (Exception e) {
+//            throw new RuntimeException(e);
+//        }
+//        return "Để xác nhận vui lòng chọn lại sản phẩm cần xóa";
+//    }
+//    public String updateNVKH(HoaDon hdUpdate, String ma) {
+//        try (Connection con = JdbcHelper.openDbConnection(); PreparedStatement ps = con.prepareStatement(update_NVKH)) {
+//            ps.setObject(2, ma);
+//            ps.setObject(1, hdUpdate.getIdNV());
+//            if (ps.executeUpdate() > 0) {
+//                return "Thay đổi thành công";
+//            }
+//        } catch (Exception e) {
+//            throw new RuntimeException(e);
+//        }
+//        return "Thay đổi thất bại";
+//    }
+//    public String updateTrangThai(HoaDonViewModel hd, String ma) {
+//        try (Connection con = JdbcHelper.openDbConnection(); PreparedStatement ps = con.prepareStatement(update_thanh_toan)) {
+//            ps.setObject(2, hd.getTongTien());
+//            ps.setObject(3, hd.getTrangThai());
+//            ps.setObject(4, ma);
+//            if (ps.executeUpdate() > 0) {
+//                return "Thành công";
+//            }
+//        } catch (Exception e) {
+//            throw new RuntimeException(e);
+//        }
+//        return "Thất bại";
+//    }
+//    public String capNhatSoLuong2(SanPham ctsp, String id) {
+//        try (Connection con = JdbcHelper.openDbConnection(); PreparedStatement ps = con.prepareStatement(capNhatSoLuong2)) {
+//            ps.setObject(1, ctsp.getSoLuong());
+//            ps.setObject(2, id);
+//            ps.executeUpdate();
+//        } catch (Exception e) {
+//            throw new RuntimeException(e);
+//        }
+//        return null;
+//    }
+//
+//    
+//    public String capNhatSoLuong(SanPham ctsp, String id) {
+//        try (Connection con = JdbcHelper.openDbConnection(); PreparedStatement ps = con.prepareStatement(capNhatSoLuong)) {
+//            ps.setObject(1, ctsp.getSoLuong());
+//            ps.setObject(2, id);
+//            ps.executeUpdate();
+//        } catch (Exception e) {
+//            throw new RuntimeException(e);
+//        }
+//        return null;
+//    }
+    //    public String updateSoLuongHDCT(GioHangViewModel gh, String id) {
+//        try ( Connection con = JdbcHelper.openDbConnection();  PreparedStatement ps = con.prepareStatement(updateSoLuongHDCT)) {
+//            ps.setObject(1, gh.getSoLuong());
+//            ps.setObject(2, id);
+//            ps.executeUpdate();
+//        } catch (Exception e) {
+//            throw new RuntimeException(e);
+//        }
+//        return null;
+//    }
+    // hàm này cập nhật lại số lượng khi thêm vào giỏ hàng
     public String updateSoLuong(SanPham ctsp, String id) {
-        try ( Connection con = JdbcHelper.openDbConnection();  PreparedStatement ps = con.prepareStatement(updateSoLuong)) {
+        try (Connection con = JdbcHelper.openDbConnection(); PreparedStatement ps = con.prepareStatement(updateSoLuong)) {
             ps.setObject(1, ctsp.getSoLuong());
             ps.setObject(2, id);
             ps.executeUpdate();
@@ -189,19 +174,9 @@ public class BanHangRepository {
         return null;
     }
 
-    public String updateSoLuongHDCT(GioHangViewModel gh, String id) {
-        try ( Connection con = JdbcHelper.openDbConnection();  PreparedStatement ps = con.prepareStatement(updateSoLuongHDCT)) {
-            ps.setObject(1, gh.getSoLuong());
-            ps.setObject(2, id);
-            ps.executeUpdate();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        return null;
-    }
-
+    // insert hóa đơn chi tiết
     public String addHDCT(HoaDonChiTiet hdct) {
-        try ( Connection con = JdbcHelper.openDbConnection();  PreparedStatement ps = con.prepareStatement(insert_hdct)) {
+        try (Connection con = JdbcHelper.openDbConnection(); PreparedStatement ps = con.prepareStatement(insert_hdct)) {
             ps.setObject(1, hdct.getIdHD());
             ps.setObject(2, hdct.getIdSP());
             ps.setObject(3, hdct.getSoLuong());
@@ -215,8 +190,9 @@ public class BanHangRepository {
         return "Thêm sản phẩm thất bại";
     }
 
+    // insert hóa đơn
     public String addHoaDon(HoaDonViewModel hd) {
-        try ( Connection con = JdbcHelper.openDbConnection();  PreparedStatement ps = con.prepareStatement(insert_hoadon)) {
+        try (Connection con = JdbcHelper.openDbConnection(); PreparedStatement ps = con.prepareStatement(insert_hoadon)) {
             ps.setObject(1, hd.getIdNV());
             ps.setObject(2, hd.getIdKH());
             ps.setObject(3, hd.getMaHD());
@@ -229,16 +205,24 @@ public class BanHangRepository {
         return "Thêm hóa đơn thất bại";
     }
 
+    // load data giỏ hàng
     public List<GioHangViewModel> getGioHang(String id) {
         return this.selectBySqlGH(select_gh_bh, "%" + id + "%");
     }
 
+    // load data hóa đơn
     public List<HoaDonViewModel> getALLHD() {
         return selectBySqlHD(slect_hd_chua_thanh_toan_bh);
     }
 
+    // load data sản phẩm
     public List<SanPhamViewModel> getAllSP() {
         return selectBySqlSP(slect_all_sp_bh);
+    }
+
+    // load data thêm nhanh khách hàng
+    public List<KhachHangViewModel> getAllKHN() {
+        return selectBySqlKHN(select_KHN);
     }
 
     public List<HoaDonViewModel> selectBySqlHD(String sql, Object... args) {
@@ -252,7 +236,8 @@ public class BanHangRepository {
                 entity.setNgayTao(rs.getDate(3));
                 entity.setIdNV(rs.getString(4));
                 entity.setIdKH(rs.getString(5));
-                entity.setTrangThai(rs.getInt(6));
+                entity.setTenKhachHang(rs.getString(6));
+                entity.setTrangThai(rs.getInt(7));
                 list.add(entity);
             }
         } catch (SQLException e) {
@@ -296,6 +281,25 @@ public class BanHangRepository {
                 entity.setTenSP(rs.getString(4));
                 entity.setSoLuong(rs.getInt(5));
                 entity.setDonGia(rs.getDouble(6));
+                list.add(entity);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return list;
+    }
+
+    public List<KhachHangViewModel> selectBySqlKHN(String sql, Object... args) {
+        List<KhachHangViewModel> list = new ArrayList<>();
+        try {
+            ResultSet rs = JdbcHelper.query(sql, args);
+            while (rs.next()) {
+                KhachHangViewModel entity = new KhachHangViewModel();
+                entity.setId(rs.getString(1));
+                entity.setMaKH(rs.getString(2));
+                entity.setTenKH(rs.getString(3));
+                entity.setSdt(rs.getString(4));
+                entity.setNgayTao(rs.getDate(5));
                 list.add(entity);
             }
         } catch (SQLException e) {

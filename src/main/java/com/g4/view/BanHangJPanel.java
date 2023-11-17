@@ -11,6 +11,7 @@ import com.g4.viewmodel.GioHangViewModel;
 import com.g4.viewmodel.HoaDonViewModel;
 import com.g4.viewmodel.SanPhamViewModel;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -178,6 +179,49 @@ public class BanHangJPanel extends javax.swing.JPanel {
         }
     }
 
+    private void fillDataHD(int index) {
+        //fill data hoa don
+        HoaDonViewModel hd = listHD.get(index);
+        lblMaHD.setText(hd.getMaHD());
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-YYYY");
+        lblMaKH.setText(hd.getIdKH());
+        lblTenKhachHangNhanh.setText(hd.getTenKhachHang());
+        lblNgayTao.setText(sdf.format(hd.getNgayTao()));
+
+    }
+
+    void fillHoaDonCho() {
+        int index = tbHoaDon.getSelectedRow();
+        HoaDonViewModel hd = listHD.get(index);
+        String idHD = hd.getId();
+        listGH = bhs.getGioHang(idHD);
+        loadGioHang(listGH);
+//        if (hd.getTrangThai() == 1) {
+//            btnThanhToan.setEnabled(true);
+//        } else {
+//            btnThanhToan.setEnabled(false);
+//        }
+//        if (hd.getTrangThai() == 0 || hd.getTrangThai() == 3) {
+//            btnHuyHoaDon.setEnabled(false);
+//        } else {
+//            btnHuyHoaDon.setEnabled(true);
+//        }
+        double thanhTien = 0;
+        double thanhToan = 0;
+        double giamGia = 0;
+
+        lblThanhTien.setText(String.valueOf(fomat.format(thanhTien)));
+        lblThanhToan.setText(String.valueOf(fomat.format(thanhToan = thanhTien * giamGia)));
+        fillDataHD(index);
+
+        txtTienKhachDua.setText("0");
+        lblTienThua.setText("0");
+
+        btnThanhToan.setEnabled(true);
+        btnHuyHoaDon.setEnabled(true);
+        btnLamMoi.setEnabled(true);
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -223,7 +267,7 @@ public class BanHangJPanel extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         lblMaKH = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
+        lblTenKhachHangNhanh = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         btnTaoHoaDon = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
@@ -484,7 +528,7 @@ public class BanHangJPanel extends javax.swing.JPanel {
 
         lblMaKH.setText("KH00");
 
-        jLabel10.setText("Khách vãng lai");
+        lblTenKhachHangNhanh.setText("Khách vãng lai");
 
         jButton1.setText("Chọn");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -536,7 +580,7 @@ public class BanHangJPanel extends javax.swing.JPanel {
                             .addGroup(jPanel4Layout.createSequentialGroup()
                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addComponent(lblMaKH, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel10))
+                                    .addComponent(lblTenKhachHangNhanh))
                                 .addGap(47, 47, 47)
                                 .addComponent(jButton1)
                                 .addContainerGap(25, Short.MAX_VALUE))
@@ -602,7 +646,7 @@ public class BanHangJPanel extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jLabel10))
+                    .addComponent(lblTenKhachHangNhanh))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -687,7 +731,7 @@ public class BanHangJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_tbSanPhamMouseClicked
 
     private void tbHoaDonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbHoaDonMouseClicked
-
+        fillHoaDonCho();
     }//GEN-LAST:event_tbHoaDonMouseClicked
 
     private void btnCapNhatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCapNhatActionPerformed
@@ -728,7 +772,6 @@ public class BanHangJPanel extends javax.swing.JPanel {
     private javax.swing.JButton jButton1;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
@@ -751,6 +794,7 @@ public class BanHangJPanel extends javax.swing.JPanel {
     private javax.swing.JLabel lblMaHD;
     private javax.swing.JLabel lblMaKH;
     private javax.swing.JLabel lblNgayTao;
+    private javax.swing.JLabel lblTenKhachHangNhanh;
     private javax.swing.JLabel lblTenTienKhachDua;
     private javax.swing.JLabel lblTenTienThua;
     private javax.swing.JLabel lblTenTienThua1;
