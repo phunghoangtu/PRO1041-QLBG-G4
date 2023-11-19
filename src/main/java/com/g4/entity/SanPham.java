@@ -15,6 +15,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SanPham {
+    
     private int id;//Id INT IDENTITY(1,1) PRIMARY KEY,
     private int idkichcogiay;//IdKichCoGiay INT DEFAULT NULL,
     private int idmausac;//IdMauSac INT DEFAULT NULL,
@@ -26,5 +27,9 @@ public class SanPham {
     private int soluong;//SoLuong INT DEFAULT 0,
     private String mota;//MoTa NVARCHAR(50) DEFAULT NULL,
     private int trangthai;//TrangThai INT DEFAULT 1,
+
+    public SanPham(int soluong) {
+        this.soluong = soluong;
+    }
 
 }
