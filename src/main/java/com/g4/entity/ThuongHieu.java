@@ -11,9 +11,8 @@ import lombok.Setter;
 @AllArgsConstructor
 public class ThuongHieu {
     
-    private String id;
-    private String ten;
-    private String mo_ta;
-    private int trang_thai;
+    private int id;
+    private String tenthuonghieu;
+    private int trangthai;
     
 }

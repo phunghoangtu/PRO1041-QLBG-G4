@@ -17,8 +17,8 @@ import lombok.Setter;
 public class KichCoGiay {
     
     @Id 
-    private String id;
-    private String ten;
-    private int trang_thai;
+    private int id;
+    private String kichco;
+    private int trangthai;
     
 }
