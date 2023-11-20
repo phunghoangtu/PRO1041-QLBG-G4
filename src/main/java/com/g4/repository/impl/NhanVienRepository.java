@@ -2,10 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
  */
-package com.g4.repository;
+package com.g4.repository.impl;
 
 import com.g4.entity.NhanVien;
-import com.g4.repository.impl.G4Repository;
+import com.g4.repository.G4Repository;
 import java.util.List;
 
 /**

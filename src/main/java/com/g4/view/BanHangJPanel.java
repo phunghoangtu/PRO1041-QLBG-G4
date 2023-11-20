@@ -3,7 +3,7 @@ package com.g4.view;
 import com.g4.entity.HoaDonChiTiet;
 import com.g4.entity.SanPham;
 import com.g4.main.Main;
-import com.g4.repository.BanHangRepository;
+import com.g4.repository.impl.BanHangRepository;
 import com.g4.utils.Auth;
 import com.g4.viewmodel.GioHangViewModel;
 import com.g4.viewmodel.HoaDonViewModel;

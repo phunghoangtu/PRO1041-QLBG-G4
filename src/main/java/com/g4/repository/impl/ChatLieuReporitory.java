@@ -2,8 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.g4.repository;
+package com.g4.repository.impl;
 
+import com.g4.entity.ChatLieu;
 import com.g4.entity.MauSac;
 import com.g4.utils.JdbcHelper;
 import java.sql.Connection;
@@ -16,20 +17,20 @@ import java.util.List;
  *
  * @author DELL
  */
-public class MauSacRepository {
-    public List<MauSac> getMau(){
+public class ChatLieuReporitory {
+    public List<ChatLieu> getChatLieu(){
         try {
             Connection conn = JdbcHelper.openDbConnection();
-            List<MauSac> listmau = new ArrayList<>();
-            String caulenh = "select * from MauSac where TrangThai like 1";
+            List<ChatLieu> listmau = new ArrayList<>();
+            String caulenh = "select * from ChatLieuGiay where TrangThai like 1";
         
             PreparedStatement stm = conn.prepareStatement(caulenh);
             ResultSet rs = stm.executeQuery();
             
             while (rs.next()) {                
-                MauSac layMau  = new MauSac();
+                ChatLieu layMau  = new ChatLieu();
                 layMau.setId(rs.getInt("Id"));
-                layMau.setTenmausac(rs.getString("TenMauSac"));
+                layMau.setTenchatlieu(rs.getString("TenChatLieu"));
                 layMau.setTrangthai(1);
                 
                 listmau.add(layMau);
@@ -43,9 +44,9 @@ public class MauSacRepository {
         }
     }
     
-    public MauSac getByID(int id){
-        MauSac banmau = new MauSac();
-        for(MauSac cl: getMau()){
+    public ChatLieu getByID(int id){
+        ChatLieu banmau = new ChatLieu();
+        for(ChatLieu cl: getChatLieu()){
             if(id==cl.getId()){
                 banmau =  cl;
                 break;
@@ -53,5 +54,4 @@ public class MauSacRepository {
         }
         return banmau;
     }
-    
 }

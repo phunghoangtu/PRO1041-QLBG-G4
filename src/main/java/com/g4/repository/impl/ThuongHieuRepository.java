@@ -2,10 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.g4.repository;
+package com.g4.repository.impl;
 
-import com.g4.entity.ChatLieu;
 import com.g4.entity.MauSac;
+import com.g4.entity.ThuongHieu;
 import com.g4.utils.JdbcHelper;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -17,20 +17,20 @@ import java.util.List;
  *
  * @author DELL
  */
-public class ChatLieuReporitory {
-    public List<ChatLieu> getChatLieu(){
+public class ThuongHieuRepository {
+    public List<ThuongHieu> getThuongHieu(){
         try {
             Connection conn = JdbcHelper.openDbConnection();
-            List<ChatLieu> listmau = new ArrayList<>();
-            String caulenh = "select * from ChatLieuGiay where TrangThai like 1";
+            List<ThuongHieu> listmau = new ArrayList<>();
+            String caulenh = "select * from ThuongHieu where TrangThai like 1";
         
             PreparedStatement stm = conn.prepareStatement(caulenh);
             ResultSet rs = stm.executeQuery();
             
             while (rs.next()) {                
-                ChatLieu layMau  = new ChatLieu();
+                ThuongHieu layMau  = new ThuongHieu();
                 layMau.setId(rs.getInt("Id"));
-                layMau.setTenchatlieu(rs.getString("TenChatLieu"));
+                layMau.setTenthuonghieu(rs.getString("TenThuongHieu"));
                 layMau.setTrangthai(1);
                 
                 listmau.add(layMau);
@@ -44,9 +44,9 @@ public class ChatLieuReporitory {
         }
     }
     
-    public ChatLieu getByID(int id){
-        ChatLieu banmau = new ChatLieu();
-        for(ChatLieu cl: getChatLieu()){
+    public ThuongHieu getByID(int id){
+        ThuongHieu banmau = new ThuongHieu();
+        for(ThuongHieu cl: getThuongHieu()){
             if(id==cl.getId()){
                 banmau =  cl;
                 break;

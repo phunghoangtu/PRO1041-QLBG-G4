@@ -1,4 +1,4 @@
-package com.g4.repository;
+package com.g4.repository.impl;
 
 import com.g4.entity.NhanVien;
 

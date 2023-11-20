@@ -5,7 +5,7 @@
 package com.g4.view;
 
 import com.g4.entity.NhanVien;
-import com.g4.repository.NhanVienRepository;
+import com.g4.repository.impl.NhanVienRepository;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
