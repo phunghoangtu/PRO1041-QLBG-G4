@@ -5,7 +5,7 @@
 package com.g4.view;
 
 import com.g4.entity.NhanVien;
-import com.g4.repository.impl.NhanVienRepository;
+import com.g4.repository.NhanVienRepository;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
@@ -29,14 +29,14 @@ public class NhanVienJPanel extends javax.swing.JPanel {
     }
     
     public void loadData(){
-        List<NhanVien> list = nhanVienRepository.getAllNV();
-        defaultTableModel = (DefaultTableModel) TBL.getModel();
-        defaultTableModel.setRowCount(0);
-        for (NhanVien x : list) {
-            defaultTableModel.addRow(new Object[]{
-            x.getTenNV(), x.getEmail(), x.getSdt(), x.getMatKhau()
-            });
-        }
+//        List<NhanVien> list = nhanVienRepository.getAllNV();
+//        defaultTableModel = (DefaultTableModel) TBL.getModel();
+//        defaultTableModel.setRowCount(0);
+//        for (NhanVien x : list) {
+//            defaultTableModel.addRow(new Object[]{
+//            x.getTenNV(), x.getEmail(), x.getSdt(), x.getMatKhau()
+//            });
+//        }
         
     }
 
