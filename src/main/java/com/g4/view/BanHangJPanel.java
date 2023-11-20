@@ -273,6 +273,66 @@ public class BanHangJPanel extends javax.swing.JPanel {
         }
     }
 
+    private void deleteGioHang() {
+        int indexHD = tbHoaDon.getSelectedRow();
+        int indexGH = tbGioHang.getSelectedRow();
+        if (indexGH < 0) {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn sản phẩm cần xóa");
+
+        } else {
+
+            GioHangViewModel gh = listGH.get(indexGH);
+            HoaDonViewModel hd = listHD.get(indexHD);
+            int soLuongGH = gh.getSoLuong();
+            String idHD = hd.getId();
+
+            String id = gh.getId();
+            String idCTSP = gh.getIdSP();
+            int tempTT = JOptionPane.showOptionDialog(this, "Bạn có chắc muốn xóa sản phẩm khỏi giỏ hàng không ?", "Xóa sản phẩm", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+            if (tempTT == JOptionPane.YES_OPTION) {
+                SanPham ctsp = new SanPham(soLuongGH);
+                bhs.capNhatSoLuong(ctsp, idCTSP);
+                JOptionPane.showMessageDialog(this, bhs.deleteGioHang(id));
+                listSP = bhs.getAllSP();
+                listGH = bhs.getGioHang(idHD);
+
+                loadGioHang(listGH);
+                loadSanPham(listSP);
+                double thanhTien = 0;
+                double thanhToan = 0;
+                double giamGia = 0;
+                String cbbVoucher = cbbGiaGiam.getSelectedItem().toString();
+                for (GioHangViewModel gha : listGH) {
+                    thanhTien += gha.getSoLuong() * gha.getDonGia();
+                }
+                if (cbbVoucher.equals("5%")) {
+                    giamGia = 0.95;
+                } else if (cbbVoucher.equals("10%")) {
+                    giamGia = 0.90;
+                } else if (cbbVoucher.equals("15%")) {
+                    giamGia = 0.85;
+                } else if (cbbVoucher.equals("20%")) {
+                    giamGia = 0.80;
+                } else if (cbbVoucher.equals("25%")) {
+                    giamGia = 0.75;
+                } else if (cbbVoucher.equals("30%")) {
+                    giamGia = 0.70;
+                } else if (cbbVoucher.equals("35%")) {
+                    giamGia = 0.65;
+                } else if (cbbVoucher.equals("40%")) {
+                    giamGia = 0.60;
+                } else if (cbbVoucher.equals("45%")) {
+                    giamGia = 0.55;
+                } else {
+                    giamGia = 0.5;
+                }
+                lblThanhTien.setText(String.valueOf(fomat.format(thanhTien)));
+                lblThanhToan.setText(String.valueOf(fomat.format(thanhToan = thanhTien * giamGia)));
+
+            }
+        }
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -311,7 +371,7 @@ public class BanHangJPanel extends javax.swing.JPanel {
         lblMaHD = new javax.swing.JLabel();
         lblNgayTao = new javax.swing.JLabel();
         lblThanhTien = new javax.swing.JLabel();
-        cbbKhuyemMai = new javax.swing.JComboBox<>();
+        cbbGiaGiam = new javax.swing.JComboBox<>();
         lblThanhToan = new javax.swing.JLabel();
         cbbHTTT = new javax.swing.JComboBox<>();
         txtTienKhachDua = new javax.swing.JTextField();
@@ -579,7 +639,7 @@ public class BanHangJPanel extends javax.swing.JPanel {
         lblThanhTien.setForeground(new java.awt.Color(255, 0, 0));
         lblThanhTien.setText("0");
 
-        cbbKhuyemMai.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0" }));
+        cbbGiaGiam.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0" }));
 
         lblThanhToan.setForeground(new java.awt.Color(255, 0, 0));
         lblThanhToan.setText("0");
@@ -627,7 +687,7 @@ public class BanHangJPanel extends javax.swing.JPanel {
                     .addComponent(jLabel24))
                 .addGap(36, 36, 36)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(cbbKhuyemMai, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbbGiaGiam, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblNgayTao)
                     .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel5Layout.createSequentialGroup()
@@ -661,7 +721,7 @@ public class BanHangJPanel extends javax.swing.JPanel {
                 .addGap(28, 28, 28)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(cbbKhuyemMai, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cbbGiaGiam, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(27, 27, 27)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
@@ -785,7 +845,7 @@ public class BanHangJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_btnCapNhatActionPerformed
 
     private void btnXoaSanPhamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaSanPhamActionPerformed
-
+        deleteGioHang();
     }//GEN-LAST:event_btnXoaSanPhamActionPerformed
 
     private void btnThanhToanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThanhToanActionPerformed
@@ -821,8 +881,8 @@ public class BanHangJPanel extends javax.swing.JPanel {
     private javax.swing.JButton btnThanhToan;
     private javax.swing.JButton btnXoaSanPham;
     private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JComboBox<String> cbbGiaGiam;
     private javax.swing.JComboBox<String> cbbHTTT;
-    private javax.swing.JComboBox<String> cbbKhuyemMai;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
