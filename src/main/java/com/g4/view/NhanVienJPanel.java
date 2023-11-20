@@ -4,6 +4,11 @@
  */
 package com.g4.view;
 
+import com.g4.entity.NhanVien;
+import com.g4.repository.impl.NhanVienRepository;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author tuphp
@@ -13,8 +18,26 @@ public class NhanVienJPanel extends javax.swing.JPanel {
     /**
      * Creates new form NhanVienJPanel
      */
+    
+    private NhanVienRepository nhanVienRepository = new NhanVienRepository();
+    private DefaultTableModel defaultTableModel = new DefaultTableModel();
+    
+    
     public NhanVienJPanel() {
         initComponents();
+        
+    }
+    
+    public void loadData(){
+        List<NhanVien> list = nhanVienRepository.getAllNV();
+        defaultTableModel = (DefaultTableModel) TBL.getModel();
+        defaultTableModel.setRowCount(0);
+        for (NhanVien x : list) {
+            defaultTableModel.addRow(new Object[]{
+            x.getTenNV(), x.getEmail(), x.getSdt(), x.getMatKhau()
+            });
+        }
+        
     }
 
     /**
@@ -230,12 +253,11 @@ public class NhanVienJPanel extends javax.swing.JPanel {
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jLabel10)
                                 .addComponent(cbTrangthai, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnThem, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnSua, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnXoa))))
-                .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
