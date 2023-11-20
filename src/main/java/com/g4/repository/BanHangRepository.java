@@ -133,7 +133,7 @@ public class BanHangRepository {
     // chỉnh lại số lượng đã thêm vào giỏ hàng
     public String capNhatSoLuong2(SanPham ctsp, String id) {
         try (Connection con = JdbcHelper.openDbConnection(); PreparedStatement ps = con.prepareStatement(capNhatSoLuong2)) {
-            ps.setObject(1, ctsp.getSoLuong());
+            ps.setObject(1, ctsp.getSoluong());
             ps.setObject(2, id);
             ps.executeUpdate();
         } catch (Exception e) {
@@ -144,7 +144,7 @@ public class BanHangRepository {
 
     public String capNhatSoLuong(SanPham ctsp, String id) {
         try (Connection con = JdbcHelper.openDbConnection(); PreparedStatement ps = con.prepareStatement(capNhatSoLuong)) {
-            ps.setObject(1, ctsp.getSoLuong());
+            ps.setObject(1, ctsp.getSoluong());
             ps.setObject(2, id);
             ps.executeUpdate();
         } catch (Exception e) {
@@ -168,7 +168,7 @@ public class BanHangRepository {
     // hàm này cập nhật lại số lượng khi thêm vào giỏ hàng
     public String updateSoLuong(SanPham ctsp, String id) {
         try (Connection con = JdbcHelper.openDbConnection(); PreparedStatement ps = con.prepareStatement(updateSoLuong)) {
-            ps.setObject(1, ctsp.getSoLuong());
+            ps.setObject(1, ctsp.getSoluong());
             ps.setObject(2, id);
             ps.executeUpdate();
         } catch (Exception e) {

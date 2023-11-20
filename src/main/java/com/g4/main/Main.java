@@ -53,6 +53,7 @@ public class Main extends javax.swing.JFrame {
                     setForm(giaoCaJPanel);
                 } else if (index == 1) {
                     setForm(banHangJPanel);
+                    
                 } else if (index == 2) {
                     setForm(hoaDonJPanel);
                 } else if (index == 3) {
