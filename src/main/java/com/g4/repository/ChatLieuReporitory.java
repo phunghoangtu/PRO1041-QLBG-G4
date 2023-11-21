@@ -54,4 +54,57 @@ public class ChatLieuReporitory {
         }
         return banmau;
     }
+    
+    public void themChat(String tenMau) {
+        try {
+            Connection conn = JdbcHelper.openDbConnection();
+            String caulenh = "insert into ChatLieuGiay(TenChatLieu, TrangThai)"
+                                        + "values(?,1)";
+
+            PreparedStatement stm = conn.prepareStatement(caulenh);
+
+            stm.setString(1, tenMau);
+
+            stm.executeQuery();
+
+            stm.close();
+            conn.close();
+        } catch (Exception e) {
+        }
+    }
+
+    public void suaChat(String tenMau, int IDmau) {
+        try {
+            Connection conn = JdbcHelper.openDbConnection();
+            String caulenh = "update ChatLieuGiay set TenChatLieu = ? where Id = ?";
+
+            PreparedStatement stm = conn.prepareStatement(caulenh);
+
+            stm.setString(1, tenMau);
+            stm.setInt(2, IDmau);
+
+            stm.executeQuery();
+
+            stm.close();
+            conn.close();
+        } catch (Exception e) {
+        }
+    }
+    
+    public void xoaChat(int IDmau) {
+        try {
+            Connection conn = JdbcHelper.openDbConnection();
+            String caulenh = "update ChatLieuGiay set TrangThai = 0 where Id = ?";
+
+            PreparedStatement stm = conn.prepareStatement(caulenh);
+
+            stm.setInt(1, IDmau);
+
+            stm.executeQuery();
+
+            stm.close();
+            conn.close();
+        } catch (Exception e) {
+        }
+    }
 }

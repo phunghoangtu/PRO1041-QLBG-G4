@@ -54,4 +54,57 @@ public class KichCoRepository {
         }
         return banmau;
     }
+    
+    public void themKich(String tenMau) {
+        try {
+            Connection conn = JdbcHelper.openDbConnection();
+            String caulenh = "insert into KichCoGiay(KichCo, TrangThai)"
+                                        + "values(?,1)";
+
+            PreparedStatement stm = conn.prepareStatement(caulenh);
+
+            stm.setString(1, tenMau);
+
+            stm.executeQuery();
+
+            stm.close();
+            conn.close();
+        } catch (Exception e) {
+        }
+    }
+
+    public void suaKich(String tenMau, int IDmau) {
+        try {
+            Connection conn = JdbcHelper.openDbConnection();
+            String caulenh = "update KichCoGiay set KichCo = ? where Id = ?";
+
+            PreparedStatement stm = conn.prepareStatement(caulenh);
+
+            stm.setString(1, tenMau);
+            stm.setInt(2, IDmau);
+
+            stm.executeQuery();
+
+            stm.close();
+            conn.close();
+        } catch (Exception e) {
+        }
+    }
+    
+    public void xoaKich(int IDmau) {
+        try {
+            Connection conn = JdbcHelper.openDbConnection();
+            String caulenh = "update KichCoGiay set TrangThai = 0 where Id = ?";
+
+            PreparedStatement stm = conn.prepareStatement(caulenh);
+
+            stm.setInt(1, IDmau);
+
+            stm.executeQuery();
+
+            stm.close();
+            conn.close();
+        } catch (Exception e) {
+        }
+    }
 }

@@ -54,4 +54,57 @@ public class ThuongHieuRepository {
         }
         return banmau;
     }
+    
+    public void themHieu(String tenMau) {
+        try {
+            Connection conn = JdbcHelper.openDbConnection();
+            String caulenh = "insert into ThuongHieu(TenThuongHieu, TrangThai)"
+                                        + "values(?,1)";
+
+            PreparedStatement stm = conn.prepareStatement(caulenh);
+
+            stm.setString(1, tenMau);
+
+            stm.executeQuery();
+
+            stm.close();
+            conn.close();
+        } catch (Exception e) {
+        }
+    }
+
+    public void suaHieu(String tenMau, int IDmau) {
+        try {
+            Connection conn = JdbcHelper.openDbConnection();
+            String caulenh = "update ThuongHieu set TenThuongHieu = ? where Id = ?";
+
+            PreparedStatement stm = conn.prepareStatement(caulenh);
+
+            stm.setString(1, tenMau);
+            stm.setInt(2, IDmau);
+
+            stm.executeQuery();
+
+            stm.close();
+            conn.close();
+        } catch (Exception e) {
+        }
+    }
+    
+    public void xoaHieu(int IDmau) {
+        try {
+            Connection conn = JdbcHelper.openDbConnection();
+            String caulenh = "update ThuongHieu set TrangThai = 0 where Id = ?";
+
+            PreparedStatement stm = conn.prepareStatement(caulenh);
+
+            stm.setInt(1, IDmau);
+
+            stm.executeQuery();
+
+            stm.close();
+            conn.close();
+        } catch (Exception e) {
+        }
+    }
 }

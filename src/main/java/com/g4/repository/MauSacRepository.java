@@ -53,5 +53,58 @@ public class MauSacRepository {
         }
         return banmau;
     }
+
+    public void themMau(String tenMau) {
+        try {
+            Connection conn = JdbcHelper.openDbConnection();
+            String caulenh = "insert into MauSac(TenMauSac, TrangThai)"
+                                        + "values(?,1)";
+
+            PreparedStatement stm = conn.prepareStatement(caulenh);
+
+            stm.setString(1, tenMau);
+
+            stm.executeQuery();
+
+            stm.close();
+            conn.close();
+        } catch (Exception e) {
+        }
+    }
+
+    public void suaMau(String tenMau, int IDmau) {
+        try {
+            Connection conn = JdbcHelper.openDbConnection();
+            String caulenh = "update MauSac set TenMauSac = ? where Id = ?";
+
+            PreparedStatement stm = conn.prepareStatement(caulenh);
+
+            stm.setString(1, tenMau);
+            stm.setInt(2, IDmau);
+
+            stm.executeQuery();
+
+            stm.close();
+            conn.close();
+        } catch (Exception e) {
+        }
+    }
+    
+    public void xoaMau(int IDmau) {
+        try {
+            Connection conn = JdbcHelper.openDbConnection();
+            String caulenh = "update MauSac set TrangThai = 0 where Id = ?";
+
+            PreparedStatement stm = conn.prepareStatement(caulenh);
+
+            stm.setInt(1, IDmau);
+
+            stm.executeQuery();
+
+            stm.close();
+            conn.close();
+        } catch (Exception e) {
+        }
+    }
     
 }
