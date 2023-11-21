@@ -6,44 +6,31 @@ package com.g4.repository.impl;
 
 import com.g4.entity.NhanVien;
 import com.g4.repository.G4Repository;
+import com.g4.repository.INhanVienRepository;
+import com.g4.utils.HibernateUtil;
+import java.util.ArrayList;
 import java.util.List;
+import org.hibernate.Session;
+import org.hibernate.query.Query;
 
 /**
  *
  * @author Ddawng
  */
-public class NhanVienRepository extends G4Repository<NhanVien, String>{
+public class NhanVienRepository implements INhanVienRepository {
 
     @Override
-    public void insert(NhanVien entity) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+    public List<NhanVien> getAll() {
 
-    @Override
-    public void update(NhanVien entity) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+        List<NhanVien> list = new ArrayList<>();
+        try ( Session session = HibernateUtil.getFACTORY().openSession()) {
 
-    @Override
-    public void delete(String id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+            String hql = "Select nv from NhanVien nv";
+            Query query = session.createQuery(hql);
+            list = query.getResultList();
 
-    @Override
-    public List<NhanVien> selectAll() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        } catch (Exception e) {
+        }
+        return list;
     }
-
-    @Override
-    public NhanVien selectById(String id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public List<NhanVien> selectBySql(String sql, Object... args) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-    
-    
-   
 }

@@ -1,5 +1,6 @@
 package com.g4.utils;
 
+import com.g4.entity.NhanVien;
 import java.util.Properties;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
@@ -25,7 +26,7 @@ public class HibernateUtil {
         //properties.put(Environment.HBM2DDL_AUTO, "create");
 
         conf.setProperties(properties);
-        //conf.addAnnotatedClass(DeGiayHiber.class);
+        conf.addAnnotatedClass(NhanVien.class);
     
 
         ServiceRegistry registry = new StandardServiceRegistryBuilder()

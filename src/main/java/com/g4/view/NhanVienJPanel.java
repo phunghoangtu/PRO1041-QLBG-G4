@@ -5,6 +5,7 @@
 package com.g4.view;
 
 import com.g4.entity.NhanVien;
+import com.g4.repository.INhanVienRepository;
 import com.g4.repository.impl.NhanVienRepository;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
@@ -19,18 +20,18 @@ public class NhanVienJPanel extends javax.swing.JPanel {
      * Creates new form NhanVienJPanel
      */
     
-    private NhanVienRepository nhanVienRepository = new NhanVienRepository();
+   private INhanVienRepository repository = new NhanVienRepository();
     private DefaultTableModel defaultTableModel = new DefaultTableModel();
     
     
     public NhanVienJPanel() {
         initComponents();
-//        loadData();
+        loadData();
         
     }
     
     public void loadData(){
-        List<NhanVien> list = nhanVienRepository.selectAll();
+        List<NhanVien> list = repository.getAll();
         defaultTableModel = (DefaultTableModel) TBL.getModel();
         defaultTableModel.setRowCount(0);
         for (NhanVien x : list) {
