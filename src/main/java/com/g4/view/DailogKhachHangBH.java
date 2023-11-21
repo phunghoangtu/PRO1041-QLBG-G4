@@ -2,7 +2,7 @@ package com.g4.view;
 
 
 import com.g4.entity.KhachHang;
-import com.g4.repository.BanHangRepository;
+import com.g4.repository.impl.BanHangRepository;
 import com.g4.utils.Utility;
 import com.g4.viewmodel.KhachHangViewModel;
 import java.sql.Date;

@@ -1,9 +1,6 @@
 package com.g4.view;
 
-/**
- *
- * @author tuphp
- */
+
 public class ThongKeJPanel extends javax.swing.JPanel {
 
     
@@ -24,7 +21,7 @@ public class ThongKeJPanel extends javax.swing.JPanel {
         jLabel9 = new javax.swing.JLabel();
         jPanel8 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
-        lbl_khachHang1 = new javax.swing.JLabel();
+        lbl_loinhuan = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
@@ -64,7 +61,7 @@ public class ThongKeJPanel extends javax.swing.JPanel {
 
         lbl_doanhThu.setFont(new java.awt.Font("Segoe UI Historic", 1, 18)); // NOI18N
         lbl_doanhThu.setForeground(new java.awt.Color(204, 0, 0));
-        lbl_doanhThu.setText("20.000.000");
+        lbl_doanhThu.setText("0");
 
         jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel9.setText("VNĐ");
@@ -102,9 +99,9 @@ public class ThongKeJPanel extends javax.swing.JPanel {
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel6.setText("Lợi nhuận");
 
-        lbl_khachHang1.setFont(new java.awt.Font("Segoe UI Historic", 1, 18)); // NOI18N
-        lbl_khachHang1.setForeground(new java.awt.Color(204, 0, 0));
-        lbl_khachHang1.setText("20.000.000");
+        lbl_loinhuan.setFont(new java.awt.Font("Segoe UI Historic", 1, 18)); // NOI18N
+        lbl_loinhuan.setForeground(new java.awt.Color(204, 0, 0));
+        lbl_loinhuan.setText("0");
 
         jLabel15.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel15.setText("VNĐ");
@@ -117,7 +114,7 @@ public class ThongKeJPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
-                        .addComponent(lbl_khachHang1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lbl_loinhuan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel15)
                         .addContainerGap())
@@ -133,7 +130,7 @@ public class ThongKeJPanel extends javax.swing.JPanel {
                 .addComponent(jLabel6)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lbl_khachHang1)
+                    .addComponent(lbl_loinhuan)
                     .addComponent(jLabel15))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -146,7 +143,7 @@ public class ThongKeJPanel extends javax.swing.JPanel {
 
         lbl_sanPhamtk.setFont(new java.awt.Font("Segoe UI Historic", 1, 18)); // NOI18N
         lbl_sanPhamtk.setForeground(new java.awt.Color(204, 0, 0));
-        lbl_sanPhamtk.setText("270");
+        lbl_sanPhamtk.setText("0");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -156,11 +153,11 @@ public class ThongKeJPanel extends javax.swing.JPanel {
                 .addContainerGap(27, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                        .addComponent(lbl_sanPhamtk, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(75, 75, 75))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                         .addComponent(jLabel3)
-                        .addContainerGap())))
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                        .addComponent(lbl_sanPhamtk, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(62, 62, 62))))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -180,20 +177,17 @@ public class ThongKeJPanel extends javax.swing.JPanel {
 
         lbl_hoaDon.setFont(new java.awt.Font("Segoe UI Historic", 1, 18)); // NOI18N
         lbl_hoaDon.setForeground(new java.awt.Color(204, 0, 0));
-        lbl_hoaDon.setText("209");
+        lbl_hoaDon.setText("0");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(82, 82, 82)
-                        .addComponent(lbl_hoaDon, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(55, 55, 55)
-                        .addComponent(jLabel2)))
+                .addGap(55, 55, 55)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lbl_hoaDon, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(60, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -214,7 +208,7 @@ public class ThongKeJPanel extends javax.swing.JPanel {
 
         lbl_khachHang.setFont(new java.awt.Font("Segoe UI Historic", 1, 18)); // NOI18N
         lbl_khachHang.setForeground(new java.awt.Color(204, 0, 0));
-        lbl_khachHang.setText("200");
+        lbl_khachHang.setText("0");
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -223,11 +217,11 @@ public class ThongKeJPanel extends javax.swing.JPanel {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGap(84, 84, 84)
-                        .addComponent(lbl_khachHang, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel5Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jLabel4)))
+                        .addComponent(jLabel4))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGap(59, 59, 59)
+                        .addComponent(lbl_khachHang, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(12, 12, 12))
         );
         jPanel5Layout.setVerticalGroup(
@@ -311,6 +305,11 @@ public class ThongKeJPanel extends javax.swing.JPanel {
         jLabel8.setText("Năm");
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
 
         pnl_khachHang.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
@@ -461,6 +460,10 @@ public class ThongKeJPanel extends javax.swing.JPanel {
 
     }//GEN-LAST:event_btn_thongKeLBLActionPerformed
 
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        
+    }//GEN-LAST:event_jComboBox1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_reset;
@@ -493,7 +496,7 @@ public class ThongKeJPanel extends javax.swing.JPanel {
     private javax.swing.JLabel lbl_doanhThu;
     private javax.swing.JLabel lbl_hoaDon;
     private javax.swing.JLabel lbl_khachHang;
-    private javax.swing.JLabel lbl_khachHang1;
+    private javax.swing.JLabel lbl_loinhuan;
     private javax.swing.JLabel lbl_sanPhamtk;
     private javax.swing.JPanel pnl_doanhThu;
     private javax.swing.JPanel pnl_khachHang;

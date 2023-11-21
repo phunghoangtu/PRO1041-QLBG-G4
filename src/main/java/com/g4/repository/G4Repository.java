@@ -1,5 +1,5 @@
 
-package com.g4.repository.impl;
+package com.g4.repository;
 
 import java.util.List;
 

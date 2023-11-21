@@ -2,7 +2,7 @@ package com.g4.main;
 
 import com.g4.entity.NhanVien;
 import com.g4.main.Main;
-import com.g4.repository.LoginRepository;
+import com.g4.repository.impl.LoginRepository;
 import com.g4.utils.Auth;
 import com.g4.utils.MsgBox;
 import javax.swing.JOptionPane;

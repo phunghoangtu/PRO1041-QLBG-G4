@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.g4.repository;
+package com.g4.repository.impl;
 
 import com.g4.entity.HoaDon;
 import com.g4.entity.HoaDonChiTiet;
@@ -74,37 +74,39 @@ public class BanHangRepository {
         return "Lỗi truy vấn dữ liệu hoặc không tìm thấy khách hàng";
     }
 
-//    public String deleteHDCT(String idHD) {
-//        try (Connection con = JdbcHelper.openDbConnection(); PreparedStatement ps = con.prepareStatement(delete_hdct_by_idHoaDon)) {
-//            ps.setObject(1, idHD);
-//            ps.executeUpdate();
-//        } catch (Exception e) {
-//            throw new RuntimeException(e);
-//        }
-//        return "Ôi hỏng";
-//    }
-//
-//    public String deleteHD(String idHD) {
-//        try (Connection con = JdbcHelper.openDbConnection(); PreparedStatement ps = con.prepareStatement(delete_hd_by_id)) {
-//            ps.setObject(1, idHD);
-//            ps.executeUpdate();
-//        } catch (Exception e) {
-//            throw new RuntimeException(e);
-//        }
-//        return "Ôi hỏng";
-//    }
-    //    public String deleteGioHang(String id) {
-//        try (Connection con = JdbcHelper.openDbConnection(); PreparedStatement ps = con.prepareStatement(delete_giohang)) {
-//            ps.setObject(1, id);
-//
-//            if (ps.executeUpdate() > 0) {
-//                return "Xóa sản phẩm thành công";
-//            }
-//        } catch (Exception e) {
-//            throw new RuntimeException(e);
-//        }
-//        return "Để xác nhận vui lòng chọn lại sản phẩm cần xóa";
-//    }
+    public String deleteHDCT(String idHD) {
+        try (Connection con = JdbcHelper.openDbConnection(); PreparedStatement ps = con.prepareStatement(delete_hdct_by_idHoaDon)) {
+            ps.setObject(1, idHD);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return "Ôi hỏng";
+    }
+
+    public String deleteHD(String idHD) {
+        try (Connection con = JdbcHelper.openDbConnection(); PreparedStatement ps = con.prepareStatement(delete_hd_by_id)) {
+            ps.setObject(1, idHD);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return "Ôi hỏng";
+    }
+
+    public String deleteGioHang(String id) {
+        try (Connection con = JdbcHelper.openDbConnection(); PreparedStatement ps = con.prepareStatement(delete_giohang)) {
+            ps.setObject(1, id);
+
+            if (ps.executeUpdate() > 0) {
+                return "Xóa sản phẩm thành công";
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return "Để xác nhận vui lòng chọn lại sản phẩm cần xóa";
+    }
+
     public String updateNVKH(HoaDon hdUpdate, String ma) {
         try (Connection con = JdbcHelper.openDbConnection(); PreparedStatement ps = con.prepareStatement(update_NVKH)) {
             ps.setObject(2, ma);
@@ -131,6 +133,7 @@ public class BanHangRepository {
 //        return "Thất bại";
 //    }
     // chỉnh lại số lượng đã thêm vào giỏ hàng
+
     public String capNhatSoLuong2(SanPham ctsp, String id) {
         try (Connection con = JdbcHelper.openDbConnection(); PreparedStatement ps = con.prepareStatement(capNhatSoLuong2)) {
             ps.setObject(1, ctsp.getSoluong());

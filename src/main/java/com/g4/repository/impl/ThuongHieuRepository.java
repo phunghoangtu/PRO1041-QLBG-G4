@@ -2,9 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.g4.repository;
+package com.g4.repository.impl;
 
 import com.g4.entity.MauSac;
+import com.g4.entity.ThuongHieu;
 import com.g4.utils.JdbcHelper;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,20 +17,20 @@ import java.util.List;
  *
  * @author DELL
  */
-public class MauSacRepository {
-    public List<MauSac> getMau(){
+public class ThuongHieuRepository {
+    public List<ThuongHieu> getThuongHieu(){
         try {
             Connection conn = JdbcHelper.openDbConnection();
-            List<MauSac> listmau = new ArrayList<>();
-            String caulenh = "select * from MauSac where TrangThai like 1";
+            List<ThuongHieu> listmau = new ArrayList<>();
+            String caulenh = "select * from ThuongHieu where TrangThai like 1";
         
             PreparedStatement stm = conn.prepareStatement(caulenh);
             ResultSet rs = stm.executeQuery();
             
             while (rs.next()) {                
-                MauSac layMau  = new MauSac();
+                ThuongHieu layMau  = new ThuongHieu();
                 layMau.setId(rs.getInt("Id"));
-                layMau.setTenmausac(rs.getString("TenMauSac"));
+                layMau.setTenthuonghieu(rs.getString("TenThuongHieu"));
                 layMau.setTrangthai(1);
                 
                 listmau.add(layMau);
@@ -43,9 +44,9 @@ public class MauSacRepository {
         }
     }
     
-    public MauSac getByID(int id){
-        MauSac banmau = new MauSac();
-        for(MauSac cl: getMau()){
+    public ThuongHieu getByID(int id){
+        ThuongHieu banmau = new ThuongHieu();
+        for(ThuongHieu cl: getThuongHieu()){
             if(id==cl.getId()){
                 banmau =  cl;
                 break;
@@ -53,11 +54,11 @@ public class MauSacRepository {
         }
         return banmau;
     }
-
-    public void themMau(String tenMau) {
+    
+    public void themHieu(String tenMau) {
         try {
             Connection conn = JdbcHelper.openDbConnection();
-            String caulenh = "insert into MauSac(TenMauSac, TrangThai)"
+            String caulenh = "insert into ThuongHieu(TenThuongHieu, TrangThai)"
                                         + "values(?,1)";
 
             PreparedStatement stm = conn.prepareStatement(caulenh);
@@ -72,10 +73,10 @@ public class MauSacRepository {
         }
     }
 
-    public void suaMau(String tenMau, int IDmau) {
+    public void suaHieu(String tenMau, int IDmau) {
         try {
             Connection conn = JdbcHelper.openDbConnection();
-            String caulenh = "update MauSac set TenMauSac = ? where Id = ?";
+            String caulenh = "update ThuongHieu set TenThuongHieu = ? where Id = ?";
 
             PreparedStatement stm = conn.prepareStatement(caulenh);
 
@@ -90,10 +91,10 @@ public class MauSacRepository {
         }
     }
     
-    public void xoaMau(int IDmau) {
+    public void xoaHieu(int IDmau) {
         try {
             Connection conn = JdbcHelper.openDbConnection();
-            String caulenh = "update MauSac set TrangThai = 0 where Id = ?";
+            String caulenh = "update ThuongHieu set TrangThai = 0 where Id = ?";
 
             PreparedStatement stm = conn.prepareStatement(caulenh);
 
@@ -106,5 +107,4 @@ public class MauSacRepository {
         } catch (Exception e) {
         }
     }
-    
 }

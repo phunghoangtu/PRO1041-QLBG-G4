@@ -2,9 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.g4.repository;
+package com.g4.repository.impl;
 
-import com.g4.entity.ChatLieu;
+import com.g4.entity.KichCoGiay;
 import com.g4.entity.MauSac;
 import com.g4.utils.JdbcHelper;
 import java.sql.Connection;
@@ -17,20 +17,20 @@ import java.util.List;
  *
  * @author DELL
  */
-public class ChatLieuReporitory {
-    public List<ChatLieu> getChatLieu(){
+public class KichCoRepository {
+    public List<KichCoGiay> getKichCo(){
         try {
             Connection conn = JdbcHelper.openDbConnection();
-            List<ChatLieu> listmau = new ArrayList<>();
-            String caulenh = "select * from ChatLieuGiay where TrangThai like 1";
+            List<KichCoGiay> listmau = new ArrayList<>();
+            String caulenh = "select * from KichCoGiay where TrangThai like 1";
         
             PreparedStatement stm = conn.prepareStatement(caulenh);
             ResultSet rs = stm.executeQuery();
             
             while (rs.next()) {                
-                ChatLieu layMau  = new ChatLieu();
+                KichCoGiay layMau  = new KichCoGiay();
                 layMau.setId(rs.getInt("Id"));
-                layMau.setTenchatlieu(rs.getString("TenChatLieu"));
+                layMau.setKichco(rs.getString("KichCo"));
                 layMau.setTrangthai(1);
                 
                 listmau.add(layMau);
@@ -44,9 +44,9 @@ public class ChatLieuReporitory {
         }
     }
     
-    public ChatLieu getByID(int id){
-        ChatLieu banmau = new ChatLieu();
-        for(ChatLieu cl: getChatLieu()){
+    public KichCoGiay getByID(int id){
+        KichCoGiay banmau = new KichCoGiay();
+        for(KichCoGiay cl: getKichCo()){
             if(id==cl.getId()){
                 banmau =  cl;
                 break;
@@ -55,10 +55,10 @@ public class ChatLieuReporitory {
         return banmau;
     }
     
-    public void themChat(String tenMau) {
+    public void themKich(String tenMau) {
         try {
             Connection conn = JdbcHelper.openDbConnection();
-            String caulenh = "insert into ChatLieuGiay(TenChatLieu, TrangThai)"
+            String caulenh = "insert into KichCoGiay(KichCo, TrangThai)"
                                         + "values(?,1)";
 
             PreparedStatement stm = conn.prepareStatement(caulenh);
@@ -73,10 +73,10 @@ public class ChatLieuReporitory {
         }
     }
 
-    public void suaChat(String tenMau, int IDmau) {
+    public void suaKich(String tenMau, int IDmau) {
         try {
             Connection conn = JdbcHelper.openDbConnection();
-            String caulenh = "update ChatLieuGiay set TenChatLieu = ? where Id = ?";
+            String caulenh = "update KichCoGiay set KichCo = ? where Id = ?";
 
             PreparedStatement stm = conn.prepareStatement(caulenh);
 
@@ -91,10 +91,10 @@ public class ChatLieuReporitory {
         }
     }
     
-    public void xoaChat(int IDmau) {
+    public void xoaKich(int IDmau) {
         try {
             Connection conn = JdbcHelper.openDbConnection();
-            String caulenh = "update ChatLieuGiay set TrangThai = 0 where Id = ?";
+            String caulenh = "update KichCoGiay set TrangThai = 0 where Id = ?";
 
             PreparedStatement stm = conn.prepareStatement(caulenh);
 

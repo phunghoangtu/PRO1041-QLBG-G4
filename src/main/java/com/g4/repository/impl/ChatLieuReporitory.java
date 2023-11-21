@@ -2,10 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.g4.repository;
+package com.g4.repository.impl;
 
+import com.g4.entity.ChatLieu;
 import com.g4.entity.MauSac;
-import com.g4.entity.ThuongHieu;
 import com.g4.utils.JdbcHelper;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -17,20 +17,20 @@ import java.util.List;
  *
  * @author DELL
  */
-public class ThuongHieuRepository {
-    public List<ThuongHieu> getThuongHieu(){
+public class ChatLieuReporitory {
+    public List<ChatLieu> getChatLieu(){
         try {
             Connection conn = JdbcHelper.openDbConnection();
-            List<ThuongHieu> listmau = new ArrayList<>();
-            String caulenh = "select * from ThuongHieu where TrangThai like 1";
+            List<ChatLieu> listmau = new ArrayList<>();
+            String caulenh = "select * from ChatLieuGiay where TrangThai like 1";
         
             PreparedStatement stm = conn.prepareStatement(caulenh);
             ResultSet rs = stm.executeQuery();
             
             while (rs.next()) {                
-                ThuongHieu layMau  = new ThuongHieu();
+                ChatLieu layMau  = new ChatLieu();
                 layMau.setId(rs.getInt("Id"));
-                layMau.setTenthuonghieu(rs.getString("TenThuongHieu"));
+                layMau.setTenchatlieu(rs.getString("TenChatLieu"));
                 layMau.setTrangthai(1);
                 
                 listmau.add(layMau);
@@ -44,9 +44,9 @@ public class ThuongHieuRepository {
         }
     }
     
-    public ThuongHieu getByID(int id){
-        ThuongHieu banmau = new ThuongHieu();
-        for(ThuongHieu cl: getThuongHieu()){
+    public ChatLieu getByID(int id){
+        ChatLieu banmau = new ChatLieu();
+        for(ChatLieu cl: getChatLieu()){
             if(id==cl.getId()){
                 banmau =  cl;
                 break;
@@ -55,10 +55,10 @@ public class ThuongHieuRepository {
         return banmau;
     }
     
-    public void themHieu(String tenMau) {
+    public void themChat(String tenMau) {
         try {
             Connection conn = JdbcHelper.openDbConnection();
-            String caulenh = "insert into ThuongHieu(TenThuongHieu, TrangThai)"
+            String caulenh = "insert into ChatLieuGiay(TenChatLieu, TrangThai)"
                                         + "values(?,1)";
 
             PreparedStatement stm = conn.prepareStatement(caulenh);
@@ -73,10 +73,10 @@ public class ThuongHieuRepository {
         }
     }
 
-    public void suaHieu(String tenMau, int IDmau) {
+    public void suaChat(String tenMau, int IDmau) {
         try {
             Connection conn = JdbcHelper.openDbConnection();
-            String caulenh = "update ThuongHieu set TenThuongHieu = ? where Id = ?";
+            String caulenh = "update ChatLieuGiay set TenChatLieu = ? where Id = ?";
 
             PreparedStatement stm = conn.prepareStatement(caulenh);
 
@@ -91,10 +91,10 @@ public class ThuongHieuRepository {
         }
     }
     
-    public void xoaHieu(int IDmau) {
+    public void xoaChat(int IDmau) {
         try {
             Connection conn = JdbcHelper.openDbConnection();
-            String caulenh = "update ThuongHieu set TrangThai = 0 where Id = ?";
+            String caulenh = "update ChatLieuGiay set TrangThai = 0 where Id = ?";
 
             PreparedStatement stm = conn.prepareStatement(caulenh);
 
