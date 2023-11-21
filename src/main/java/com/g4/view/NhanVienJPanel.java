@@ -25,18 +25,19 @@ public class NhanVienJPanel extends javax.swing.JPanel {
     
     public NhanVienJPanel() {
         initComponents();
+//        loadData();
         
     }
     
     public void loadData(){
-//        List<NhanVien> list = nhanVienRepository.getAllNV();
-//        defaultTableModel = (DefaultTableModel) TBL.getModel();
-//        defaultTableModel.setRowCount(0);
-//        for (NhanVien x : list) {
-//            defaultTableModel.addRow(new Object[]{
-//            x.getTenNV(), x.getEmail(), x.getSdt(), x.getMatKhau()
-//            });
-//        }
+        List<NhanVien> list = nhanVienRepository.selectAll();
+        defaultTableModel = (DefaultTableModel) TBL.getModel();
+        defaultTableModel.setRowCount(0);
+        for (NhanVien x : list) {
+            defaultTableModel.addRow(new Object[]{   
+            x.getId(), x.getTenNV(), x.getEmail(), x.getSdt(), x.getMatKhau(), x.getNgaySinh(), x.getNgayTao(), x.getDiaChi(), x.getTrangThai()
+            });
+        }
         
     }
 
@@ -84,13 +85,13 @@ public class NhanVienJPanel extends javax.swing.JPanel {
 
         TBL.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "ID", "Ten Nhan Vien", "Email", "SDT", "Mat Khau", "Ngay Sinh", "Ngay Tao", "Dia Chi", "Trang Thai"
             }
         ));
         jScrollPane1.setViewportView(TBL);
@@ -146,9 +147,9 @@ public class NhanVienJPanel extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(38, 38, 38)
+                .addGap(39, 39, 39)
                 .addComponent(btnThem, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(34, 34, 34)
+                .addGap(35, 35, 35)
                 .addComponent(btnSua, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(40, 40, 40)
                 .addComponent(btnXoa)
@@ -253,11 +254,12 @@ public class NhanVienJPanel extends javax.swing.JPanel {
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jLabel10)
                                 .addComponent(cbTrangthai, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnThem, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnSua, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnXoa))))
+                            .addComponent(btnXoa))
+                        .addGap(18, 18, 18)))
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
