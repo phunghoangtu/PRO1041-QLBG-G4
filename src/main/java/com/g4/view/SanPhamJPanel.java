@@ -1618,6 +1618,14 @@ public class SanPhamJPanel extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(pnConHoatDong, "Nhập mô tả");
                 return null;
             }
+            else if(giaban<=0){
+                JOptionPane.showMessageDialog(pnConHoatDong, "Giá bán phải lớn hơn 0");
+                return null;
+            }
+            else if(soluong<0){
+                JOptionPane.showMessageDialog(pnConHoatDong, "Số lượng phải là một số dương");
+                return null;
+            }
             else{
                 
                 boolean checktontai = false;
