@@ -30,7 +30,8 @@ public class LoginRepository {
                 NhanVien entity = new NhanVien();
                 entity.setId(rs.getString("Id"));
                 entity.setEmail(rs.getString("Email"));
-                entity.setMatKhau(rs.getString("MatKhau"));              
+                entity.setMatKhau(rs.getString("MatKhau"));
+                entity.setVaiTro(rs.getBoolean("VaiTro"));   
                 list.add(entity);
             }
         } catch (SQLException e) {
