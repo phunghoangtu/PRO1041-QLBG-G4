@@ -55,6 +55,17 @@ public class ThuongHieuRepository {
         return banmau;
     }
     
+    public ThuongHieu getByThuongHieu(String ten){
+        ThuongHieu banmau = new ThuongHieu();
+        for(ThuongHieu cl: getThuongHieu()){
+            if(ten.equalsIgnoreCase(cl.getTenthuonghieu())){
+                banmau =  cl;
+                break;
+            }
+        }
+        return banmau;
+    }
+    
     public void themHieu(String tenMau) {
         try {
             Connection conn = JdbcHelper.openDbConnection();

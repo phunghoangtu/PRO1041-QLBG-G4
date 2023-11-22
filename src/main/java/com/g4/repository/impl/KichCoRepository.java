@@ -55,6 +55,17 @@ public class KichCoRepository {
         return banmau;
     }
     
+    public KichCoGiay getBySoKichCo(String ten){
+        KichCoGiay banmau = new KichCoGiay();
+        for(KichCoGiay cl: getKichCo()){
+            if(ten.equalsIgnoreCase(cl.getKichco())){
+                banmau =  cl;
+                break;
+            }
+        }
+        return banmau;
+    }
+    
     public void themKich(String tenMau) {
         try {
             Connection conn = JdbcHelper.openDbConnection();

@@ -55,6 +55,17 @@ public class ChatLieuReporitory {
         return banmau;
     }
     
+    public ChatLieu getByTenChatLieu(String ten){
+        ChatLieu banmau = new ChatLieu();
+        for(ChatLieu cl: getChatLieu()){
+            if(ten.equalsIgnoreCase(cl.getTenchatlieu())){
+                banmau =  cl;
+                break;
+            }
+        }
+        return banmau;
+    }
+    
     public void themChat(String tenMau) {
         try {
             Connection conn = JdbcHelper.openDbConnection();

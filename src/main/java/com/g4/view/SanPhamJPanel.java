@@ -14,12 +14,23 @@ import com.g4.repository.impl.KichCoRepository;
 import com.g4.repository.impl.MauSacRepository;
 import com.g4.repository.impl.SanPhamRepository;
 import com.g4.repository.impl.ThuongHieuRepository;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
  *
@@ -264,7 +275,7 @@ public class SanPhamJPanel extends javax.swing.JPanel {
         lblKichCo.setText("Kích cỡ:");
 
         btnExcel.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        btnExcel.setText("Import Excel");
+        btnExcel.setText("Thêm từ Excel");
         btnExcel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnExcelActionPerformed(evt);
@@ -297,12 +308,12 @@ public class SanPhamJPanel extends javax.swing.JPanel {
                             .addComponent(btnLamMoi)
                             .addComponent(btnThem, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnExcel)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(btnSua, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnXoa, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(btnXoa, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnExcel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(29, 29, 29))))
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -377,8 +388,8 @@ public class SanPhamJPanel extends javax.swing.JPanel {
                     .addComponent(btnSua, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnXoa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnLamMoi, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnLamMoi, javax.swing.GroupLayout.DEFAULT_SIZE, 59, Short.MAX_VALUE)
                     .addComponent(btnExcel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -1118,7 +1129,93 @@ public class SanPhamJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_tblDaNgungMouseClicked
 
     private void btnExcelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcelActionPerformed
-        
+        FileInputStream excelFIS = null;
+        BufferedInputStream excelBIS = null;
+        XSSFWorkbook excelImportWorkBook = null;
+
+        String currentDirectoryPath = "đường dẫn file";
+        JFileChooser excelFileChooserImport = new JFileChooser(currentDirectoryPath);
+
+        // Đặt bộ lọc cho JFileChooser để chỉ lấy các tệp tin có đuôi xlsx
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Excel Files", "xlsx");
+        excelFileChooserImport.setFileFilter(filter);
+
+        int excelChooser = excelFileChooserImport.showOpenDialog(null);
+
+        if (excelChooser == JFileChooser.APPROVE_OPTION) {
+            File excelFile = excelFileChooserImport.getSelectedFile();
+            try {
+                excelFIS = new FileInputStream(excelFile);
+                excelBIS = new BufferedInputStream(excelFIS);
+                excelImportWorkBook = new XSSFWorkbook(excelBIS);
+
+                XSSFSheet excelSheet = excelImportWorkBook.getSheetAt(0);
+
+                for (int i = 0; i < excelSheet.getLastRowNum(); i++) {
+                    XSSFRow excelRow = excelSheet.getRow(i);
+                    String ma = String.valueOf(excelRow.getCell(0));
+                    String ten = String.valueOf(excelRow.getCell(1));
+                    String gia = String.valueOf(excelRow.getCell(2));
+                    String so = String.valueOf(excelRow.getCell(3));
+                    String mota = String.valueOf(excelRow.getCell(4));
+                    
+                    String kichco = String.valueOf(excelRow.getCell(5));
+                    String mau = String.valueOf(excelRow.getCell(6));
+                    String chatlieu = String.valueOf(excelRow.getCell(7));
+                    String hang = String.valueOf(excelRow.getCell(8));
+
+                    int soThat = (int) Double.parseDouble(so.trim());
+                    double giathat = Double.parseDouble(gia.trim());
+                    
+                    if(KichCoRP.getBySoKichCo(String.valueOf((int) Double.parseDouble(kichco)) ).getKichco()==null){
+                        KichCoRP.themKich(String.valueOf((int) Double.parseDouble(kichco)));
+                    }
+                    
+                    if(MauSacRP.getByMau(mau).getTenmausac()==null){
+                        MauSacRP.themMau(mau);
+                    }
+                    
+                    if(ChatLieuRP.getByTenChatLieu(chatlieu).getTenchatlieu()==null){
+                        ChatLieuRP.themChat(chatlieu);
+                    }
+                    
+                    if(ThuongHieuRP.getByThuongHieu(hang).getTenthuonghieu()==null){
+                        ThuongHieuRP.themHieu(hang);
+                    }
+                    
+                    SanPham tuXLSX = new SanPham();
+                    
+                    tuXLSX.setMasanpham(ma);
+                    tuXLSX.setTensanpham(ten);
+                    tuXLSX.setGiaban(giathat);
+                    tuXLSX.setSoluong(soThat);
+                    tuXLSX.setMota(mota);
+                    
+                    tuXLSX.setIdkichcogiay(KichCoRP.getBySoKichCo(String.valueOf((int) Double.parseDouble(kichco)) ).getId());
+                    tuXLSX.setIdmausac(MauSacRP.getByMau(mau).getId());
+                    tuXLSX.setIdchatlieugiay(ChatLieuRP.getByTenChatLieu(chatlieu).getId());
+                    tuXLSX.setIdthuonghieu(ThuongHieuRP.getByThuongHieu(hang).getId());
+                    
+                    tuXLSX.setTrangthai(1);
+                    
+                    try {
+                        SanPhamRP.luu(tuXLSX);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(SanPhamJPanel.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    
+                    fillConBan();
+                    fillHetBan();
+                    fillThuocTinh();
+
+                }
+
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(ImportDataFromExcel.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(ImportDataFromExcel.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_btnExcelActionPerformed
 
     private void btnmauThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnmauThemActionPerformed

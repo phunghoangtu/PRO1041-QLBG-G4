@@ -106,13 +106,13 @@
                                       <Component id="btnThem" min="-2" pref="99" max="-2" attributes="0"/>
                                   </Group>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="btnExcel" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Group type="102" alignment="0" attributes="0">
+                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                      <Group type="102" attributes="0">
                                           <Component id="btnSua" min="-2" pref="104" max="-2" attributes="0"/>
                                           <EmptySpace max="-2" attributes="0"/>
                                           <Component id="btnXoa" min="-2" pref="99" max="-2" attributes="0"/>
                                       </Group>
+                                      <Component id="btnExcel" max="32767" attributes="0"/>
                                   </Group>
                                   <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
                               </Group>
@@ -210,9 +210,9 @@
                               <Component id="btnXoa" alignment="0" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="btnLamMoi" alignment="3" min="-2" pref="59" max="-2" attributes="0"/>
-                              <Component id="btnExcel" alignment="3" max="32767" attributes="0"/>
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="btnLamMoi" pref="59" max="32767" attributes="0"/>
+                              <Component id="btnExcel" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace max="32767" attributes="0"/>
                       </Group>
@@ -470,7 +470,7 @@
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Segoe UI" size="18" style="0"/>
                     </Property>
-                    <Property name="text" type="java.lang.String" value="Import Excel"/>
+                    <Property name="text" type="java.lang.String" value="Th&#xea;m t&#x1eeb; Excel"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnExcelActionPerformed"/>
