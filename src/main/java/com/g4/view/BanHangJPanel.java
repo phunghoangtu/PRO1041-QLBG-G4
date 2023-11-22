@@ -376,15 +376,6 @@ public class BanHangJPanel extends javax.swing.JPanel {
         }
     }
 
-    private void loadTableTimKiemSP(String ten) {
-        ArrayList<SanPhamViewModel> list = bhs.timKiemSP(ten);
-        tblModelSanPham = (DefaultTableModel) tbSanPham.getModel();
-        tblModelSanPham.setRowCount(0);
-        for (SanPhamViewModel sp : list) {
-            tblModelSanPham.addRow(sp.todataRowSanPham());
-        }
-    }
-
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -507,9 +498,9 @@ public class BanHangJPanel extends javax.swing.JPanel {
             tbSanPham.getColumnModel().getColumn(6).setMaxWidth(60);
         }
 
-        txtTimSP.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtTimSPKeyPressed(evt);
+        txtTimSP.addCaretListener(new javax.swing.event.CaretListener() {
+            public void caretUpdate(javax.swing.event.CaretEvent evt) {
+                txtTimSPCaretUpdate(evt);
             }
         });
 
@@ -967,9 +958,10 @@ public class BanHangJPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_cbbHTTTActionPerformed
 
-    private void txtTimSPKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTimSPKeyPressed
-        loadTableTimKiemSP(txtTimSP.getText());
-    }//GEN-LAST:event_txtTimSPKeyPressed
+    private void txtTimSPCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_txtTimSPCaretUpdate
+        listSP = bhs.SearchSPBH(txtTimSP.getText());
+        loadSanPham(listSP);
+    }//GEN-LAST:event_txtTimSPCaretUpdate
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
