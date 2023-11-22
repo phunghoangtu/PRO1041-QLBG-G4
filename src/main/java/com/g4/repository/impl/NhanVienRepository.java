@@ -69,6 +69,7 @@ public class NhanVienRepository extends G4Repository<NhanVien, String> {
                 entity.setNgayTao(rs.getDate("NgayTao"));
                 entity.setMatKhau(rs.getString("MatKhau"));
                 entity.setVaiTro(rs.getBoolean("VaiTro"));
+                list.add(entity);
             }
         } catch (Exception e) {
         }
