@@ -6,6 +6,8 @@ package com.g4.view;
 
 import com.g4.entity.NhanVien;
 import com.g4.repository.impl.NhanVienRepository;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
@@ -35,10 +37,26 @@ public class NhanVienJPanel extends javax.swing.JPanel {
         defaultTableModel.setRowCount(0);
         for (NhanVien x : list) {
             defaultTableModel.addRow(new Object[]{   
-            x.getId(), x.getTenNV(), x.getEmail(), x.getSdt(), x.getMatKhau(), x.getNgaySinh(), x.getNgayTao(), x.getDiaChi(), x.getTrangThai()
+            x.getId(), x.getTenNV(), x.getEmail(), x.getSdt(), x.getMatKhau(), x.getNgaySinh(), x.getNgayTao(), x.getDiaChi(), x.getTrangThai(),x.isVaiTro()
             });
         }
         
+    }
+    
+    public NhanVien getNVInput(){
+        NhanVien nv = new NhanVien();
+        nv.setTenNV(txtTen.getText());
+        nv.setDiaChi(txtDiachi.getText());
+        nv.setEmail(txtEmail.getText());
+        if(rdNam.isSelected()){
+            nv.setGioiTinh(1);
+        }else{
+            nv.setGioiTinh(0);
+        }
+        nv.setMatKhau(new String(txtMatkhau.getPassword()));
+        
+        
+        return nv;
     }
 
     /**
@@ -85,18 +103,23 @@ public class NhanVienJPanel extends javax.swing.JPanel {
 
         TBL.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "Ten Nhan Vien", "Email", "SDT", "Mat Khau", "Ngay Sinh", "Ngay Tao", "Dia Chi", "Trang Thai"
+                "ID", "Ten Nhan Vien", "Email", "SDT", "Mat Khau", "Ngay Sinh", "Ngay Tao", "Dia Chi", "Trang Thai", "Vai Tro"
             }
         ));
         jScrollPane1.setViewportView(TBL);
 
         btnThem.setText("Them");
+        btnThem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnThemActionPerformed(evt);
+            }
+        });
 
         jLabel2.setText("Gioi tinh");
 
@@ -139,8 +162,18 @@ public class NhanVienJPanel extends javax.swing.JPanel {
         cbTrangthai.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         btnSua.setText("Sua");
+        btnSua.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSuaActionPerformed(evt);
+            }
+        });
 
         btnXoa.setText("Xoa");
+        btnXoa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXoaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -271,6 +304,18 @@ public class NhanVienJPanel extends javax.swing.JPanel {
     private void txtNgayTaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNgayTaoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtNgayTaoActionPerformed
+
+    private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
+        
+    }//GEN-LAST:event_btnThemActionPerformed
+
+    private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnSuaActionPerformed
+
+    private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnXoaActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
