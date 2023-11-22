@@ -2,7 +2,6 @@ package com.g4.main;
 
 import com.g4.swing.EventMenuSelected;
 import com.g4.utils.Auth;
-import com.g4.utils.MsgBox;
 import com.g4.view.SanPhamJPanel;
 import com.g4.view.KhachHangJPanel;
 import com.g4.view.NhanVienJPanel;
@@ -28,14 +27,7 @@ public class Main extends javax.swing.JFrame {
 
     public Main() {
         initComponents();
-        init();
-
-        if (Auth.isManager()) {
-            MsgBox.alert(this, "bạn đang đăng nhập với quyền quản lý");
-        } else {
-            MsgBox.alert(this, "bạn đang đăng nhập với quyền nhân viên");
-        }
-
+        init(); 
     }
 
     public void openKhachHangNhanh() {
@@ -60,7 +52,6 @@ public class Main extends javax.swing.JFrame {
                     setForm(giaoCaJPanel);
                 } else if (index == 1) {
                     setForm(banHangJPanel);
-
                 } else if (index == 2) {
                     setForm(hoaDonJPanel);
                 } else if (index == 3) {

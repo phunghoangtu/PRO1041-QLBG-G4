@@ -29,6 +29,7 @@ public class LoginRepository {
             while (rs.next()) {
                 NhanVien entity = new NhanVien();
                 entity.setId(rs.getString("Id"));
+                entity.setTenNV(rs.getString("TenNhanVien"));
                 entity.setEmail(rs.getString("Email"));
                 entity.setMatKhau(rs.getString("MatKhau"));
                 entity.setVaiTro(rs.getBoolean("VaiTro"));   
