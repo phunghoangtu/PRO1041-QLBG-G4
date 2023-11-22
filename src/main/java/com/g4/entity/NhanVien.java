@@ -14,6 +14,7 @@ public class NhanVien {
 
     private String id;
     private String tenNV;
+    private int gioiTinh;
     private Date ngaySinh;
     private Date ngayTao;
     
@@ -22,6 +23,6 @@ public class NhanVien {
     private String sdt;
     private String matKhau;
     private int trangThai;
-    private boolean vaiTro;
+    private int vaiTro;
     
 }

@@ -20,7 +20,7 @@ public class NhanVienJPanel extends javax.swing.JPanel {
      * Creates new form NhanVienJPanel
      */
     
-   private INhanVienRepository repository = new NhanVienRepository();
+    private NhanVienRepository repository = new NhanVienRepository();
     private DefaultTableModel defaultTableModel = new DefaultTableModel();
     
     
@@ -28,10 +28,10 @@ public class NhanVienJPanel extends javax.swing.JPanel {
         initComponents();
         loadData();
         
-    }
+    }   
     
     public void loadData(){
-        List<NhanVien> list = repository.getAll();
+        List<NhanVien> list = repository.selectAll();
         defaultTableModel = (DefaultTableModel) TBL.getModel();
         defaultTableModel.setRowCount(0);
         for (NhanVien x : list) {
