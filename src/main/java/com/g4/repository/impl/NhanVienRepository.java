@@ -20,7 +20,7 @@ public class NhanVienRepository extends G4Repository<NhanVien, String> {
     String insert_sql = "Insert into NhanVien(Manv, MatKhau, Hoten, vaiTro)values(?,?,?,?)";
     String update_sql = "Update NhanVien set MatKhau = ?, Hoten = ?, VaiTro = ? Where MaNV = ?";
     String delete_sql = "Delete from NhanVien Where MaNV = ?";
-    String select_all_sql = "Select * from NhanVien";
+    String select_all_sql = "select * from NhanVien";
     String select_by_id_sql = "Select * from NhanVien Where MaNV = ?";
 
     @Override
