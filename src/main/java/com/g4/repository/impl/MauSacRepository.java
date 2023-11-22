@@ -53,6 +53,17 @@ public class MauSacRepository {
         }
         return banmau;
     }
+    
+    public MauSac getByMau(String ten){
+        MauSac banmau = new MauSac();
+        for(MauSac cl: getMau()){
+            if(ten.equalsIgnoreCase(cl.getTenmausac())){
+                banmau =  cl;
+                break;
+            }
+        }
+        return banmau;
+    }
 
     public void themMau(String tenMau) {
         try {
