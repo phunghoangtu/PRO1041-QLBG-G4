@@ -23,6 +23,6 @@ public class NhanVien {
     private String sdt;
     private String matKhau;
     private int trangThai;
-    private int vaiTro;
+    private boolean vaiTro;
     
 }

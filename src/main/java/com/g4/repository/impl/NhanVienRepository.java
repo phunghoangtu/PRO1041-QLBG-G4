@@ -25,12 +25,12 @@ public class NhanVienRepository extends G4Repository<NhanVien, String> {
 
     @Override
     public void insert(NhanVien entity) {
-        JdbcHelper.update(insert_sql, entity.getId(), entity.getMatKhau(), entity.getTenNV(), entity.getVaiTro());
+        JdbcHelper.update(insert_sql, entity.getId(), entity.getMatKhau(), entity.getTenNV(), entity.isVaiTro());
     }
 
     @Override
     public void update(NhanVien entity) {
-        JdbcHelper.update(update_sql, entity.getId(), entity.getMatKhau(), entity.getTenNV(), entity.getVaiTro());
+        JdbcHelper.update(update_sql, entity.getId(), entity.getMatKhau(), entity.getTenNV(), entity.isVaiTro());
     }
 
     @Override
