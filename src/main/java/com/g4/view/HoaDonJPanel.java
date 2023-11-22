@@ -26,30 +26,115 @@ public class HoaDonJPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
+        cbo_locHD = new javax.swing.JComboBox<>();
+        lbl_loc = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tbl_HDCT = new javax.swing.JTable();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tbl_HD = new javax.swing.JTable();
+        btn_timKiem = new javax.swing.JButton();
+        btn_inHD = new javax.swing.JButton();
+        txt_timKiem = new javax.swing.JTextField();
+        lblHoaDon = new javax.swing.JLabel();
+        lbl_HDCT = new javax.swing.JLabel();
 
-        jLabel1.setText("Hóa đơn");
+        cbo_locHD.setToolTipText("Lọc");
+
+        lbl_loc.setText("LỌC");
+
+        tbl_HDCT.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID HÓA ĐƠN", "ID SẢN PHẨM", "SỐ LƯỢNG", "ĐƠN GIÁ"
+            }
+        ));
+        jScrollPane1.setViewportView(tbl_HDCT);
+
+        tbl_HD.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "HÓA ĐƠN", "NGÀY TẠO", "NGÀY THANH TOÁN", "TỔNG TIỀN", "GHI CHÚ", "TRẠNG THÁI", "TTTT", "ID NHÂN VIÊN"
+            }
+        ));
+        jScrollPane2.setViewportView(tbl_HD);
+
+        btn_timKiem.setBackground(new java.awt.Color(255, 255, 204));
+        btn_timKiem.setText("TÌM KIẾM");
+
+        btn_inHD.setBackground(new java.awt.Color(0, 102, 255));
+        btn_inHD.setForeground(new java.awt.Color(255, 255, 255));
+        btn_inHD.setText("IN HÓA ĐƠN");
+
+        lblHoaDon.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lblHoaDon.setText("HÓA ĐƠN");
+
+        lbl_HDCT.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lbl_HDCT.setText("HÓA ĐƠN CHI TIẾT");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(477, 477, 477)
-                .addComponent(jLabel1)
-                .addContainerGap(587, Short.MAX_VALUE))
+                .addGap(47, 47, 47)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 963, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addComponent(cbo_locHD, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(lbl_loc)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txt_timKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 303, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(btn_timKiem)
+                            .addGap(83, 83, 83)
+                            .addComponent(btn_inHD)
+                            .addGap(43, 43, 43))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblHoaDon)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 963, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lbl_HDCT))))
+                .addContainerGap(70, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(252, 252, 252)
-                .addComponent(jLabel1)
-                .addContainerGap(384, Short.MAX_VALUE))
+                .addGap(22, 22, 22)
+                .addComponent(lblHoaDon, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btn_timKiem)
+                    .addComponent(btn_inHD)
+                    .addComponent(txt_timKiem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbo_locHD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbl_loc))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(12, 12, 12)
+                .addComponent(lbl_HDCT, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(56, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JButton btn_inHD;
+    private javax.swing.JButton btn_timKiem;
+    private javax.swing.JComboBox<String> cbo_locHD;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel lblHoaDon;
+    private javax.swing.JLabel lbl_HDCT;
+    private javax.swing.JLabel lbl_loc;
+    private javax.swing.JTable tbl_HD;
+    private javax.swing.JTable tbl_HDCT;
+    private javax.swing.JTextField txt_timKiem;
     // End of variables declaration//GEN-END:variables
 }
