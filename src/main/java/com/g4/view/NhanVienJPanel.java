@@ -31,7 +31,7 @@ public class NhanVienJPanel extends javax.swing.JPanel {
     
     public void loadData(){
         List<NhanVien> list = repository.selectAll();
-//        defaultTableModel = (DefaultTableModel) TBL.getModel();
+        defaultTableModel = (DefaultTableModel) TBL.getModel();
         defaultTableModel.setRowCount(0);
         for (NhanVien x : list) {
             defaultTableModel.addRow(new Object[]{   
