@@ -58,6 +58,12 @@ public class BanHangRepository {
 
     String findByIdKH_ma = "SELECT Id FROM KhachHang WHERE MaKhachHang = ?";
     String select_KHN = "select * from KhachHang";
+    String timKiem_sp = "";
+    
+    
+    public ArrayList<SanPhamViewModel> timKiemSP(String ten) {
+        return null;
+    }
 
     // tìm id khách hàng theo mã
     public String findByIDKH(String maKH) {

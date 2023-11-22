@@ -107,7 +107,6 @@ public class BanHangJPanel extends javax.swing.JPanel {
         //Hóa đơn chờ
         listHD = bhs.getALLHD();
         loadHoaDon(listHD);
-
     }
 
     private void fillInsertSanPhamGH() {
@@ -334,6 +333,58 @@ public class BanHangJPanel extends javax.swing.JPanel {
         }
     }
 
+    private void huyHoaDon() {
+        int index = tbHoaDon.getSelectedRow();
+        int sl = listGH.size();
+
+        if (index < 0) {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn hóa đơn muốn hủy");
+        } else {
+            var temp = JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn hủy hóa đơn không ?");
+            if (temp == 0) {
+                if (listHD != null) {
+                    for (GioHangViewModel ghu : listGH) {
+                        int soLuongGH = ghu.getSoLuong();
+                        String idCTSP = ghu.getIdSP();
+                        SanPham ctsp = new SanPham(soLuongGH);
+                        bhs.capNhatSoLuong(ctsp, idCTSP);
+
+                    }
+                    HoaDonViewModel hdid = listHD.get(index);
+                    String idHD = hdid.getId();
+                    bhs.deleteHDCT(idHD);
+                    bhs.deleteHD(idHD);
+                    listSP = bhs.getAllSP();
+                    listHD = bhs.getALLHD();
+                    listGH = bhs.getGioHang(idHD);
+                    loadHoaDon(listHD);
+                    loadSanPham(listSP);
+                    loadGioHang(listGH);
+//                    btnThanhToan.setEnabled(false);
+                    if (demTrangThai() < 6) {
+                        btnTaoHoaDon.setEnabled(true);
+                    }
+                    lblMaHD.setText("HD++");
+                    lblNgayTao.setText("date");
+                    lblThanhTien.setText("0");
+                    cbbGiaGiam.setSelectedItem("0");
+                    lblThanhToan.setText("0");
+                    txtTienKhachDua.setText("0");
+                    lblTienThua.setText("0");
+                }
+            }
+        }
+    }
+
+    private void loadTableTimKiemSP(String ten) {
+        ArrayList<SanPhamViewModel> list = bhs.timKiemSP(ten);
+        tblModelSanPham = (DefaultTableModel) tbSanPham.getModel();
+        tblModelSanPham.setRowCount(0);
+        for (SanPhamViewModel sp : list) {
+            tblModelSanPham.addRow(sp.todataRowSanPham());
+        }
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -455,6 +506,12 @@ public class BanHangJPanel extends javax.swing.JPanel {
             tbSanPham.getColumnModel().getColumn(6).setMinWidth(60);
             tbSanPham.getColumnModel().getColumn(6).setMaxWidth(60);
         }
+
+        txtTimSP.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtTimSPKeyPressed(evt);
+            }
+        });
 
         jLabel2.setText("Tìm kiếm sản phẩm:");
 
@@ -884,7 +941,7 @@ public class BanHangJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_btnThanhToanActionPerformed
 
     private void btnHuyHoaDonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHuyHoaDonActionPerformed
-
+        huyHoaDon();
     }//GEN-LAST:event_btnHuyHoaDonActionPerformed
 
     private void btnLamMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLamMoiActionPerformed
@@ -908,8 +965,11 @@ public class BanHangJPanel extends javax.swing.JPanel {
             txtTienKhachDua.setVisible(false);
             lblTienThua.setVisible(false);
         }
-
     }//GEN-LAST:event_cbbHTTTActionPerformed
+
+    private void txtTimSPKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTimSPKeyPressed
+        loadTableTimKiemSP(txtTimSP.getText());
+    }//GEN-LAST:event_txtTimSPKeyPressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
