@@ -14,6 +14,7 @@ import com.g4.repository.impl.KichCoRepository;
 import com.g4.repository.impl.MauSacRepository;
 import com.g4.repository.impl.SanPhamRepository;
 import com.g4.repository.impl.ThuongHieuRepository;
+import com.g4.utils.Auth;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -1090,6 +1091,10 @@ public class SanPhamJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_tblConBanMouseClicked
 
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
+        if(!Auth.isManager()){
+            JOptionPane.showMessageDialog(jpnSanPham, "Chỉ quản lý mới có quyền ngừng bán sản phẩm");
+        }
+        else{
             int muonxoa = Integer.parseInt(txtsanphamID.getText());
             int quyetDinh = JOptionPane.showConfirmDialog(pnConHoatDong, "Bạn có muốn xóa không", "", JOptionPane.YES_NO_OPTION);
             if(quyetDinh==JOptionPane.YES_OPTION){
@@ -1105,6 +1110,7 @@ public class SanPhamJPanel extends javax.swing.JPanel {
             fillHetBan();
             fillThuocTinh();
             clearForm();
+        }
     }//GEN-LAST:event_btnXoaActionPerformed
 
     private void btnTimSPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimSPActionPerformed
