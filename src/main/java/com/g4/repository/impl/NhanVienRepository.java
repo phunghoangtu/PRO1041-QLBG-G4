@@ -17,7 +17,7 @@ import java.util.List;
  */
 public class NhanVienRepository extends G4Repository<NhanVien, String> {
 
-    String insert_sql = "Insert into NhanVien(Manv, MatKhau, Hoten, vaiTro)values(?,?,?,?)";
+    String insert_sql = "Insert into NhanVien(MatKhau, TenNhanVien, vaiTro, GioiTinh, Email, DiaChi, NgaySinh, SoDienThoai)values(?,?,?,?,?,?,?,?)";
     String update_sql = "Update NhanVien set MatKhau = ?, Hoten = ?, VaiTro = ? Where MaNV = ?";
     String delete_sql = "Delete from NhanVien Where MaNV = ?";
     String select_all_sql = "select * from NhanVien";
@@ -25,7 +25,7 @@ public class NhanVienRepository extends G4Repository<NhanVien, String> {
 
     @Override
     public void insert(NhanVien entity) {
-        JdbcHelper.update(insert_sql, entity.getId(), entity.getMatKhau(), entity.getTenNV(), entity.isVaiTro());
+        JdbcHelper.update(insert_sql, entity.getMatKhau(), entity.getTenNV(), entity.isVaiTro(), entity.getGioiTinh(), entity.getEmail(), entity.getDiaChi(), entity.getNgaySinh(), entity.getSdt());
     }
 
     @Override
