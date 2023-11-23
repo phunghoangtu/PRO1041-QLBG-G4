@@ -33,7 +33,7 @@ public class BanHangRepository {
             + "			INNER JOIN dbo.KhachHang kh ON hd.IdKhachHang = kh.Id\n"
             + "WHERE hd.TrangThai = 1\n"
             + "ORDER BY hd.MaHD DESC";
-    String slect_all_sp_bh = "SELECT SP.Id, SP.MaSanPham, SP.TenSanPham, KT.KichCo, MS.TenMauSac, CLG.TenChatLieu, TH.TenThuongHieu, SP.SoLuong, SP.GiaBan\n"
+    String slect_all_sp_bh = "SELECT SP.MaSanPham, SP.TenSanPham, KT.KichCo, MS.TenMauSac, CLG.TenChatLieu, TH.TenThuongHieu, SP.SoLuong, SP.GiaBan\n"
             + "FROM dbo.SanPham SP\n"
             + "			INNER JOIN dbo.KichCoGiay KT ON SP.IdKichCoGiay = KT.Id\n"
             + "			INNER JOIN dbo.MauSac MS ON SP.IdMauSac = MS.Id\n"
@@ -58,6 +58,37 @@ public class BanHangRepository {
 
     String findByIdKH_ma = "SELECT Id FROM KhachHang WHERE MaKhachHang = ?";
     String select_KHN = "select * from KhachHang";
+
+    String timKiem_sp = "SELECT SP.MaSanPham, SP.TenSanPham, KT.KichCo, MS.TenMauSac, CLG.TenChatLieu, TH.TenThuongHieu, SP.SoLuong, SP.GiaBan\n"
+            + "       FROM dbo.SanPham SP\n"
+            + "          		INNER JOIN dbo.KichCoGiay KT ON SP.IdKichCoGiay = KT.Id\n"
+            + "          		INNER JOIN dbo.MauSac MS ON SP.IdMauSac = MS.Id\n"
+            + "         		INNER JOIN dbo.ChatLieuGiay CLG ON SP.IdChatLieuGiay = CLG.Id\n"
+            + "          		INNER JOIN dbo.ThuongHieu TH ON SP.IdThuongHieu = TH.Id\n"
+            + "          WHERE SP.MaSanPham like ? \n"
+            + "			OR SP.TenSanPham LIKE ? \n"
+            + "			OR KT.KichCo LIKE ? \n"
+            + "			OR MS.TenMauSac LIKE ? \n"
+            + "          	OR CLG.TenChatLieu LIKE ? \n"
+            + "         	OR TH.TenThuongHieu LIKE ? ;";
+
+    public List<SanPhamViewModel> SearchSPBH(String input) {
+        List<SanPhamViewModel> listNV = new ArrayList<>();
+        if (input == null) {
+            return getAllSP();
+        }
+        for (SanPhamViewModel x : getAllSP()) {
+            if (x.getMaSP().contains(input)
+                    || x.getTenSP().contains(input)
+                    || x.getIdKT().contains(input)
+                    || x.getIDMS().contains(input)
+                    || x.getIdDG().contains(input)
+                    || x.getIdTH().contains(input)) {
+                listNV.add(x);
+            }
+        }
+        return listNV;
+    }
 
     // tìm id khách hàng theo mã
     public String findByIDKH(String maKH) {
@@ -258,15 +289,14 @@ public class BanHangRepository {
             ResultSet rs = JdbcHelper.query(sql, args);
             while (rs.next()) {
                 SanPhamViewModel entity = new SanPhamViewModel();
-                entity.setId(rs.getString(1));
-                entity.setMaSP(rs.getString(2));
-                entity.setTenSP(rs.getString(3));
-                entity.setIdKT(rs.getString(4));
-                entity.setIDMS(rs.getString(5));
-                entity.setIdDG(rs.getString(6));
-                entity.setIdTH(rs.getString(7));
-                entity.setSoLuong(rs.getInt(8));
-                entity.setGiaBan(rs.getDouble(9));
+                entity.setMaSP(rs.getString(1));
+                entity.setTenSP(rs.getString(2));
+                entity.setIdKT(rs.getString(3));
+                entity.setIDMS(rs.getString(4));
+                entity.setIdDG(rs.getString(5));
+                entity.setIdTH(rs.getString(6));
+                entity.setSoLuong(rs.getInt(7));
+                entity.setGiaBan(rs.getDouble(8));
                 list.add(entity);
             }
         } catch (SQLException e) {
