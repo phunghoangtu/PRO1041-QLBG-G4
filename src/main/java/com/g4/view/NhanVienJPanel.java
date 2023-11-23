@@ -36,7 +36,7 @@ public class NhanVienJPanel extends javax.swing.JPanel {
         defaultTableModel.setRowCount(0);
         for (NhanVien x : list) {
             defaultTableModel.addRow(new Object[]{
-                x.getId(), x.getTenNV(), x.getEmail(), x.getSdt(), x.getMatKhau(), x.getNgaySinh(), x.getNgayTao(), x.getDiaChi(), x.getTrangThai(), x.isVaiTro()
+                x.getId(), x.getTenNV(), x.getGioiTinh(), x.getEmail(), x.getSdt(), x.getMatKhau(), x.getNgaySinh(), x.getNgayTao(), x.getDiaChi(), x.getTrangThai(), x.isVaiTro()
             });
         }
 
@@ -100,6 +100,22 @@ public class NhanVienJPanel extends javax.swing.JPanel {
         }
         loadData();
     }
+    
+    public void chuotclick(){
+        NhanVien nv = new NhanVien();
+        int row = TBL.getSelectedRow();
+        txtTen.setText(TBL.getValueAt(row, 1).toString());
+        txtDiachi.setText(TBL.getValueAt(row, 8).toString());
+        txtEmail.setText(TBL.getValueAt(row, 3).toString());
+        txtSDT.setText(TBL.getValueAt(row, 4).toString());
+        if(TBL.getValueAt(row, 2).toString().equals("1")){
+            rdNam.setSelected(true);
+             rdNu.setSelected(false);
+        }else{
+            rdNu.setSelected(true);
+             rdNam.setSelected(false);
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -141,15 +157,20 @@ public class NhanVienJPanel extends javax.swing.JPanel {
 
         TBL.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "Ten Nhan Vien", "Email", "SDT", "Mat Khau", "Ngay Sinh", "Ngay Tao", "Dia Chi", "Trang Thai", "Vai Tro"
+                "ID", "Ten Nhan Vien", "Gioi Tinh", "Email", "SDT", "Mat Khau", "Ngay Sinh", "Ngay Tao", "Dia Chi", "Trang Thai", "Vai Tro"
             }
         ));
+        TBL.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                TBLMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(TBL);
 
         btnThem.setText("Them");
@@ -339,6 +360,10 @@ public class NhanVienJPanel extends javax.swing.JPanel {
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnXoaActionPerformed
+
+    private void TBLMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TBLMouseClicked
+      chuotclick(); // TODO add your handling code here:
+    }//GEN-LAST:event_TBLMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
