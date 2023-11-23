@@ -18,8 +18,8 @@ import java.util.List;
 public class NhanVienRepository extends G4Repository<NhanVien, String> {
 
     String insert_sql = "Insert into NhanVien(MatKhau, TenNhanVien, vaiTro, GioiTinh, Email, DiaChi, NgaySinh, SoDienThoai)values(?,?,?,?,?,?,?,?)";
-    String update_sql = "Update NhanVien set MatKhau = ?, Hoten = ?, VaiTro = ? Where MaNV = ?";
-    String delete_sql = "Delete from NhanVien Where MaNV = ?";
+    String update_sql = "Update NhanVien set MatKhau = ?, TenNhanVien = ?, VaiTro = ?, GioiTinh = ?, Email = ?, NgaySinh = ?, SoDienThoai = ?, DiaChi = ? Where Id = ?";
+    String delete_sql = "Delete from NhanVien Where Id = ?";
     String select_all_sql = "select * from NhanVien";
     String select_by_id_sql = "Select * from NhanVien Where MaNV = ?";
 
@@ -30,7 +30,7 @@ public class NhanVienRepository extends G4Repository<NhanVien, String> {
 
     @Override
     public void update(NhanVien entity) {
-        JdbcHelper.update(update_sql, entity.getId(), entity.getMatKhau(), entity.getTenNV(), entity.isVaiTro());
+        JdbcHelper.update(update_sql,entity.getMatKhau(), entity.getTenNV(), entity.isVaiTro(), entity.getGioiTinh(), entity.getEmail(), entity.getNgaySinh(), entity.getSdt(), entity.getDiaChi(), entity.getId());
     }
 
     @Override

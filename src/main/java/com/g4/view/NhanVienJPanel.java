@@ -6,9 +6,12 @@ package com.g4.view;
 
 import com.g4.entity.NhanVien;
 import com.g4.repository.impl.NhanVienRepository;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -36,7 +39,7 @@ public class NhanVienJPanel extends javax.swing.JPanel {
         defaultTableModel.setRowCount(0);
         for (NhanVien x : list) {
             defaultTableModel.addRow(new Object[]{
-                x.getId(), x.getTenNV(), x.getGioiTinh(), x.getEmail(), x.getSdt(), x.getMatKhau(), x.getNgaySinh(), x.getNgayTao(), x.getDiaChi(), x.getTrangThai(), x.isVaiTro()
+                x.getId(), x.getTenNV(), x.GioiTinh(x.getGioiTinh()), x.getEmail(), x.getSdt(), x.getMatKhau(), x.getNgaySinh(), x.getNgayTao(), x.getDiaChi(), x.getTrangThai(), x.VaiTro(x.isVaiTro())
             });
         }
 
@@ -55,7 +58,8 @@ public class NhanVienJPanel extends javax.swing.JPanel {
         nv.setMatKhau(new String(txtMatkhau.getPassword()));
         nv.setNgaySinh(date_ngaySInh.getDate());
         nv.setSdt(txtSDT.getText());
-        nv.setVaiTro((boolean) cbVaitro.getSelectedItem());
+//        nv.setVaiTro((boolean) cbVaitro.getSelectedItem());
+        
         return nv;
     }
 
@@ -90,7 +94,7 @@ public class NhanVienJPanel extends javax.swing.JPanel {
     
     public void save(){
         if(validateform()){
-            NhanVien nv = new NhanVien();
+            NhanVien nv = getNVInput();
             try {
                 repository.insert(nv);
             } catch (Exception e) {
@@ -108,13 +112,52 @@ public class NhanVienJPanel extends javax.swing.JPanel {
         txtDiachi.setText(TBL.getValueAt(row, 8).toString());
         txtEmail.setText(TBL.getValueAt(row, 3).toString());
         txtSDT.setText(TBL.getValueAt(row, 4).toString());
-        if(TBL.getValueAt(row, 2).toString().equals("1")){
+        if(TBL.getValueAt(row, 2).toString().equals("Nam")){
             rdNam.setSelected(true);
              rdNu.setSelected(false);
         }else{
             rdNu.setSelected(true);
              rdNam.setSelected(false);
         }
+        if(TBL.getValueAt(row, 12).toString().equals("Quan Li")){
+            cbVaitro.setSelectedIndex(1);
+        }else{
+            cbVaitro.setSelectedIndex(0);
+        }
+        txtMatkhau.setText((TBL.getValueAt(row, 7).toString()));
+    }
+    
+      public void deleteNV() throws SQLException {
+        int row = TBL.getSelectedRow();
+        if (row < 0) {
+            JOptionPane.showMessageDialog(this, "Hãy chọn 1 dòng");
+        }
+        String id = TBL.getValueAt(row, 0).toString();
+        JOptionPane.showMessageDialog(this, "Xóa thành công");
+        repository.delete(id);
+        loadData();
+
+    }
+      
+    public void UpdateNV(){
+        int row  = TBL.getSelectedRow();
+        if(row < 0){
+            JOptionPane.showMessageDialog(this, "Hãy chọn 1 dòng");
+        }
+        NhanVien nv = new NhanVien();
+        nv.setDiaChi(txtDiachi.getText());
+        nv.setEmail(txtEmail.getText());
+        if(rdNam.isSelected()){
+            nv.setGioiTinh(1);
+        }else{
+            nv.setGioiTinh(0);
+        }
+        nv.setMatKhau(new String(txtMatkhau.getPassword()));
+        nv.setSdt(txtSDT.getText());
+        nv.setTenNV(txtTen.getText());
+        repository.update(nv);
+        loadData();
+        
     }
 
     /**
@@ -354,11 +397,15 @@ public class NhanVienJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_btnThemActionPerformed
 
     private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
-        // TODO add your handling code here:
+       UpdateNV();
     }//GEN-LAST:event_btnSuaActionPerformed
 
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
-        // TODO add your handling code here:
+        try {
+            deleteNV();
+        } catch (SQLException ex) {
+            Logger.getLogger(NhanVienJPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnXoaActionPerformed
 
     private void TBLMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TBLMouseClicked

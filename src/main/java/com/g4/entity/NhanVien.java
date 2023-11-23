@@ -25,4 +25,21 @@ public class NhanVien {
     private int trangThai;
     private boolean vaiTro;
     
+    
+    public String GioiTinh(int gioiTinh){
+        if(gioiTinh == 1){
+            return "Nam";
+        }else{
+            return "Nu";
+        }
+    }
+    
+    public String VaiTro(boolean vaiTro){
+        if(vaiTro == true){
+            return "Nhan vien";
+        }else{
+            return "Quan li";
+        }
+    }
+    
 }
