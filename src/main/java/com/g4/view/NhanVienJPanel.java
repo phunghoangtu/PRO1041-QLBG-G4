@@ -7,6 +7,8 @@ package com.g4.view;
 import com.g4.entity.NhanVien;
 import com.g4.repository.impl.NhanVienRepository;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
@@ -56,9 +58,31 @@ public class NhanVienJPanel extends javax.swing.JPanel {
             nv.setGioiTinh(0);
         }
         nv.setMatKhau(new String(txtMatkhau.getPassword()));
-        nv.setNgaySinh(date_ngaySInh.getDate());
+//        nv.setNgaySinh(date_ngaySInh.getDate());
+
+     if (date_ngaySInh.getDate() != null) {
+            Date ngaySinh = date_ngaySInh.getDate();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            String strNgaySinh = dateFormat.format(ngaySinh);
+
+            try {
+                ngaySinh = dateFormat.parse(strNgaySinh);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            nv.setNgaySinh(ngaySinh);
+        } else {
+            JOptionPane.showMessageDialog(this, "Ngay sinh trong");
+            return null; 
+        }
+        
         nv.setSdt(txtSDT.getText());
-//        nv.setVaiTro((boolean) cbVaitro.getSelectedItem());
+        if(cbVaitro.getSelectedItem().equals("Nhan vien")){
+            nv.setVaiTro(true);
+        }else{
+            nv.setVaiTro(false);
+        }
         
         return nv;
     }
@@ -119,10 +143,10 @@ public class NhanVienJPanel extends javax.swing.JPanel {
             rdNu.setSelected(true);
              rdNam.setSelected(false);
         }
-        if(TBL.getValueAt(row, 12).toString().equals("Quan Li")){
-            cbVaitro.setSelectedIndex(1);
-        }else{
+        if(TBL.getValueAt(row, 12).toString().equals("Nhan vien")){
             cbVaitro.setSelectedIndex(0);
+        }else{
+            cbVaitro.setSelectedIndex(1);
         }
         txtMatkhau.setText((TBL.getValueAt(row, 7).toString()));
     }
@@ -156,6 +180,7 @@ public class NhanVienJPanel extends javax.swing.JPanel {
         nv.setSdt(txtSDT.getText());
         nv.setTenNV(txtTen.getText());
         repository.update(nv);
+        JOptionPane.showMessageDialog(this, "Sửa thành công");
         loadData();
         
     }
