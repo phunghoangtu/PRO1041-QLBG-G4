@@ -60,30 +60,37 @@ public class NhanVienJPanel extends javax.swing.JPanel {
         nv.setMatKhau(new String(txtMatkhau.getPassword()));
 //        nv.setNgaySinh(date_ngaySInh.getDate());
 
-     if (date_ngaySInh.getDate() != null) {
+//     if (date_ngaySInh.getDate() != null) {
+//            Date ngaySinh = date_ngaySInh.getDate();
+//            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//            String strNgaySinh = dateFormat.format(ngaySinh);
+//
+//            try {
+//                ngaySinh = dateFormat.parse(strNgaySinh);
+//            } catch (ParseException e) {
+//                e.printStackTrace();
+//            }
+//
+//            nv.setNgaySinh(ngaySinh);
+//        } else {
+//            JOptionPane.showMessageDialog(this, "Ngay sinh trong");
+//            return null; 
+//        }
+        if (date_ngaySInh.getDate() != null) {
             Date ngaySinh = date_ngaySInh.getDate();
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            String strNgaySinh = dateFormat.format(ngaySinh);
-
-            try {
-                ngaySinh = dateFormat.parse(strNgaySinh);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-
             nv.setNgaySinh(ngaySinh);
         } else {
-            JOptionPane.showMessageDialog(this, "Ngay sinh trong");
-            return null; 
+            JOptionPane.showMessageDialog(this, "Vui long nhap ngay sinhs");
+            return null;
         }
-        
+
         nv.setSdt(txtSDT.getText());
-        if(cbVaitro.getSelectedItem().equals("Nhan vien")){
+        if (cbVaitro.getSelectedItem().equals("Nhan vien")) {
             nv.setVaiTro(true);
-        }else{
+        } else {
             nv.setVaiTro(false);
         }
-        
+
         return nv;
     }
 
@@ -112,12 +119,15 @@ public class NhanVienJPanel extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Vui long chon gioi tinh");
             return false;
         }
+        if (txtMatkhau.getPassword().equals("")) {
+            JOptionPane.showMessageDialog(this, "Vui long nhap mat khau");
+        }
 
         return true;
     }
-    
-    public void save(){
-        if(validateform()){
+
+    public void save() {
+        if (validateform()) {
             NhanVien nv = getNVInput();
             try {
                 repository.insert(nv);
@@ -128,30 +138,30 @@ public class NhanVienJPanel extends javax.swing.JPanel {
         }
         loadData();
     }
-    
-    public void chuotclick(){
+
+    public void chuotclick() {
         NhanVien nv = new NhanVien();
         int row = TBL.getSelectedRow();
         txtTen.setText(TBL.getValueAt(row, 1).toString());
         txtDiachi.setText(TBL.getValueAt(row, 8).toString());
         txtEmail.setText(TBL.getValueAt(row, 3).toString());
         txtSDT.setText(TBL.getValueAt(row, 4).toString());
-        if(TBL.getValueAt(row, 2).toString().equals("Nam")){
+        if (TBL.getValueAt(row, 2).toString().equals("Nam")) {
             rdNam.setSelected(true);
-             rdNu.setSelected(false);
-        }else{
+            rdNu.setSelected(false);
+        } else {
             rdNu.setSelected(true);
-             rdNam.setSelected(false);
+            rdNam.setSelected(false);
         }
-        if(TBL.getValueAt(row, 12).toString().equals("Nhan vien")){
+        if (TBL.getValueAt(row, 12).toString().equals("Nhan vien")) {
             cbVaitro.setSelectedIndex(0);
-        }else{
+        } else {
             cbVaitro.setSelectedIndex(1);
         }
         txtMatkhau.setText((TBL.getValueAt(row, 7).toString()));
     }
-    
-      public void deleteNV() throws SQLException {
+
+    public void deleteNV() throws SQLException {
         int row = TBL.getSelectedRow();
         if (row < 0) {
             JOptionPane.showMessageDialog(this, "Hãy chọn 1 dòng");
@@ -162,18 +172,18 @@ public class NhanVienJPanel extends javax.swing.JPanel {
         loadData();
 
     }
-      
-    public void UpdateNV(){
-        int row  = TBL.getSelectedRow();
-        if(row < 0){
+
+    public void UpdateNV() {
+        int row = TBL.getSelectedRow();
+        if (row < 0) {
             JOptionPane.showMessageDialog(this, "Hãy chọn 1 dòng");
         }
         NhanVien nv = new NhanVien();
         nv.setDiaChi(txtDiachi.getText());
         nv.setEmail(txtEmail.getText());
-        if(rdNam.isSelected()){
+        if (rdNam.isSelected()) {
             nv.setGioiTinh(1);
-        }else{
+        } else {
             nv.setGioiTinh(0);
         }
         nv.setMatKhau(new String(txtMatkhau.getPassword()));
@@ -182,7 +192,7 @@ public class NhanVienJPanel extends javax.swing.JPanel {
         repository.update(nv);
         JOptionPane.showMessageDialog(this, "Sửa thành công");
         loadData();
-        
+
     }
 
     /**
@@ -422,7 +432,7 @@ public class NhanVienJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_btnThemActionPerformed
 
     private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
-       UpdateNV();
+        UpdateNV();
     }//GEN-LAST:event_btnSuaActionPerformed
 
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
@@ -434,7 +444,7 @@ public class NhanVienJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_btnXoaActionPerformed
 
     private void TBLMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TBLMouseClicked
-      chuotclick(); // TODO add your handling code here:
+        chuotclick(); // TODO add your handling code here:
     }//GEN-LAST:event_TBLMouseClicked
 
 
