@@ -146,19 +146,19 @@ public class BanHangJPanel extends javax.swing.JPanel {
                         loadSanPham(listSP);
 
                         String idHD = hd.getId();
-                        String idCtsp = sp.getId();
+                        String idSP = sp.getId();
                         int soLuong1 = Integer.parseInt(soLuong);
                         Double donGia = sp.getGiaBan();
 
                         // add giỏ hàng vào HDCT
-                        HoaDonChiTiet hdct = new HoaDonChiTiet(idHD, idCtsp, soLuong1, donGia);
+                        HoaDonChiTiet hdct = new HoaDonChiTiet(idHD, idSP, soLuong1, donGia);
                         JOptionPane.showMessageDialog(this, bhs.addHDCT(hdct));
                         listGH = bhs.getGioHang(idHD);
                         loadGioHang(listGH);
 
                         //Cập nhật số lượng trong bảng Sản phẩm CT
                         SanPham sp1 = new SanPham(sp.getSoLuong());
-                        bhs.updateSoLuong(sp1, idCtsp);
+                        bhs.updateSoLuong(sp1, idSP);
 
                         //Fill thành tiền, thanh toán, giảm giá
                         double thanhTien = 0;
@@ -497,12 +497,6 @@ public class BanHangJPanel extends javax.swing.JPanel {
             tbSanPham.getColumnModel().getColumn(6).setMinWidth(60);
             tbSanPham.getColumnModel().getColumn(6).setMaxWidth(60);
         }
-
-        txtTimSP.addCaretListener(new javax.swing.event.CaretListener() {
-            public void caretUpdate(javax.swing.event.CaretEvent evt) {
-                txtTimSPCaretUpdate(evt);
-            }
-        });
 
         jLabel2.setText("Tìm kiếm sản phẩm:");
 
@@ -957,11 +951,6 @@ public class BanHangJPanel extends javax.swing.JPanel {
             lblTienThua.setVisible(false);
         }
     }//GEN-LAST:event_cbbHTTTActionPerformed
-
-    private void txtTimSPCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_txtTimSPCaretUpdate
-        listSP = bhs.SearchSPBH(txtTimSP.getText());
-        loadSanPham(listSP);
-    }//GEN-LAST:event_txtTimSPCaretUpdate
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
