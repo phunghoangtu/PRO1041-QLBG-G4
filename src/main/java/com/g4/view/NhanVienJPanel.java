@@ -66,7 +66,7 @@ public class NhanVienJPanel extends javax.swing.JPanel {
 //            Date ngaySinh = date_ngaySInh.getDate();
 //            nv.setNgaySinh(ngaySinh);
 //        } else {
-//            JOptionPane.showMessageDialog(this, "Vui long nhap ngay sinhs");
+//            JOptionPane.showMessageDialog(this, "Vui long nhap ngay sinh");
 //            return null;
 //        }
 
@@ -101,10 +101,10 @@ public class NhanVienJPanel extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Ngay sinh trong");
             return false;
         }
-        if (!rdNam.isSelected() || rdNu.isSelected()) {
-            JOptionPane.showMessageDialog(this, "Vui long chon gioi tinh");
-            return false;
-        }
+//        if (!rdNam.isSelected() || !rdNu.isSelected()) {
+//            JOptionPane.showMessageDialog(this, "Vui long chon gioi tinh");
+//            return false;
+//        }
         if (txtMatkhau.getPassword().equals("")) {
             JOptionPane.showMessageDialog(this, "Vui long nhap mat khau");
         }
@@ -125,7 +125,9 @@ public class NhanVienJPanel extends javax.swing.JPanel {
         loadData();
     }
 
-    public void chuotclick() {
+    public void chuotclick() throws ParseException {
+        
+        defaultTableModel = (DefaultTableModel) TBL.getModel();
         NhanVien nv = new NhanVien();
         int row = TBL.getSelectedRow();
         txtTen.setText(TBL.getValueAt(row, 1).toString());
@@ -139,12 +141,17 @@ public class NhanVienJPanel extends javax.swing.JPanel {
             rdNu.setSelected(true);
             rdNam.setSelected(false);
         }
+        
+//        Date date = new SimpleDateFormat("yyyy-MM-dd").parse((String)defaultTableModel.getValueAt(row, 6));
+//        date_ngaySInh.setDate(date);
+        
+//        date_ngaySInh.setDate((Date) TBL.getValueAt(row, 8));
 //        if (TBL.getValueAt(row, 12).toString().equals("Nhan vien")) {
 //            cbVaitro.setSelectedIndex(0);
 //        } else {
 //            cbVaitro.setSelectedIndex(1);
 //        }
-        txtMatkhau.setText((TBL.getValueAt(row, 7).toString()));
+        txtMatkhau.setText((TBL.getValueAt(row, 5).toString()));
     }
 
     public void deleteNV() throws SQLException {
@@ -433,7 +440,11 @@ public class NhanVienJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_btnXoaActionPerformed
 
     private void TBLMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TBLMouseClicked
-        chuotclick(); // TODO add your handling code here:
+        try {
+            chuotclick();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_TBLMouseClicked
 
 
