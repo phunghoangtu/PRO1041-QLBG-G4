@@ -14,6 +14,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ButtonGroup;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -34,6 +35,8 @@ public class NhanVienJPanel extends javax.swing.JPanel {
         loadData();
 
     }
+    
+   
 
     public void loadData() {
         List<NhanVien> list = repository.selectAll();
@@ -58,31 +61,14 @@ public class NhanVienJPanel extends javax.swing.JPanel {
             nv.setGioiTinh(0);
         }
         nv.setMatKhau(new String(txtMatkhau.getPassword()));
-//        nv.setNgaySinh(date_ngaySInh.getDate());
 
-//     if (date_ngaySInh.getDate() != null) {
+//        if (date_ngaySInh.getDate() != null) {
 //            Date ngaySinh = date_ngaySInh.getDate();
-//            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-//            String strNgaySinh = dateFormat.format(ngaySinh);
-//
-//            try {
-//                ngaySinh = dateFormat.parse(strNgaySinh);
-//            } catch (ParseException e) {
-//                e.printStackTrace();
-//            }
-//
 //            nv.setNgaySinh(ngaySinh);
 //        } else {
-//            JOptionPane.showMessageDialog(this, "Ngay sinh trong");
-//            return null; 
+//            JOptionPane.showMessageDialog(this, "Vui long nhap ngay sinhs");
+//            return null;
 //        }
-        if (date_ngaySInh.getDate() != null) {
-            Date ngaySinh = date_ngaySInh.getDate();
-            nv.setNgaySinh(ngaySinh);
-        } else {
-            JOptionPane.showMessageDialog(this, "Vui long nhap ngay sinhs");
-            return null;
-        }
 
         nv.setSdt(txtSDT.getText());
         if (cbVaitro.getSelectedItem().equals("Nhan vien")) {
@@ -115,7 +101,7 @@ public class NhanVienJPanel extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Ngay sinh trong");
             return false;
         }
-        if (!rdNam.isSelected() && rdNu.isSelected()) {
+        if (!rdNam.isSelected() || rdNu.isSelected()) {
             JOptionPane.showMessageDialog(this, "Vui long chon gioi tinh");
             return false;
         }
@@ -153,11 +139,11 @@ public class NhanVienJPanel extends javax.swing.JPanel {
             rdNu.setSelected(true);
             rdNam.setSelected(false);
         }
-        if (TBL.getValueAt(row, 12).toString().equals("Nhan vien")) {
-            cbVaitro.setSelectedIndex(0);
-        } else {
-            cbVaitro.setSelectedIndex(1);
-        }
+//        if (TBL.getValueAt(row, 12).toString().equals("Nhan vien")) {
+//            cbVaitro.setSelectedIndex(0);
+//        } else {
+//            cbVaitro.setSelectedIndex(1);
+//        }
         txtMatkhau.setText((TBL.getValueAt(row, 7).toString()));
     }
 
@@ -181,7 +167,7 @@ public class NhanVienJPanel extends javax.swing.JPanel {
         NhanVien nv = new NhanVien();
         nv.setDiaChi(txtDiachi.getText());
         nv.setEmail(txtEmail.getText());
-        if (rdNam.isSelected()) {
+         if (rdNam.isSelected()) {
             nv.setGioiTinh(1);
         } else {
             nv.setGioiTinh(0);
@@ -204,6 +190,7 @@ public class NhanVienJPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         TBL = new javax.swing.JTable();
@@ -266,8 +253,10 @@ public class NhanVienJPanel extends javax.swing.JPanel {
 
         jLabel5.setText("Dia chi");
 
+        buttonGroup1.add(rdNam);
         rdNam.setText("Nam");
 
+        buttonGroup1.add(rdNu);
         rdNu.setText("Nu");
 
         txtDiachi.setColumns(20);
@@ -454,6 +443,7 @@ public class NhanVienJPanel extends javax.swing.JPanel {
     private javax.swing.JButton btnThem;
     private javax.swing.JButton btnTim;
     private javax.swing.JButton btnXoa;
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JComboBox<String> cbVaitro;
     private com.toedter.calendar.JDateChooser date_ngaySInh;
     private javax.swing.JLabel jLabel1;
