@@ -16,6 +16,7 @@ public class HoaDonViewModel {
     private String id;
     private String maHD;
     private Date ngayTao;
+    private Date ngayThanhToan;
     private String idNV;
     private String idKH;
     private String tenKhachHang;

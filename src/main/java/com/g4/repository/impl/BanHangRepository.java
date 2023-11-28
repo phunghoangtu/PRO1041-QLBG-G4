@@ -48,7 +48,7 @@ public class BanHangRepository {
     String delete_hdct_by_idHoaDon = "Delete from HoaDonChiTiet where IdHoaDon = ?";
     String delete_hd_by_id = "Delete from HoaDon where Id = ?";
     String update_NVKH = "UPDATE HoaDon SET IdNhanVien = ? WHERE MaHD = ?";
-    String update_thanh_toan = "UPDATE HoaDon SET NgayThanhToan = GETDATE() ,TongTien = ? ,TrangThai = ? WHERE MaHD = ?";
+    String update_thanh_toan = "UPDATE HoaDon SET NgayThanhToan = GETDATE(), TongTien = ?, TrangThai = ? WHERE MaHD = ?";
     String delete_giohang = "Delete from HoaDonChiTiet where Id = ?";
     String capNhatSoLuong2 = "Update SanPham Set SoLuong = SoLuong - ? where Id = ?";
     String capNhatSoLuong = "Update SanPham Set SoLuong = SoLuong + ? where Id = ?";
@@ -150,21 +150,22 @@ public class BanHangRepository {
         }
         return "Thay đổi thất bại";
     }
-//    public String updateTrangThai(HoaDonViewModel hd, String ma) {
-//        try (Connection con = JdbcHelper.openDbConnection(); PreparedStatement ps = con.prepareStatement(update_thanh_toan)) {
-//            ps.setObject(2, hd.getTongTien());
-//            ps.setObject(3, hd.getTrangThai());
-//            ps.setObject(4, ma);
-//            if (ps.executeUpdate() > 0) {
-//                return "Thành công";
-//            }
-//        } catch (Exception e) {
-//            throw new RuntimeException(e);
-//        }
-//        return "Thất bại";
-//    }
-    // chỉnh lại số lượng đã thêm vào giỏ hàng
 
+    public String updateTrangThai(HoaDonViewModel hd, String ma) {
+        try (Connection con = JdbcHelper.openDbConnection(); PreparedStatement ps = con.prepareStatement(update_thanh_toan)) {
+            ps.setObject(1, hd.getTongTien());
+            ps.setObject(2, hd.getTrangThai());
+            ps.setObject(3, ma);
+            if (ps.executeUpdate() > 0) {
+                return "Thành công";
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return "Thất bại";
+    }
+
+    // chỉnh lại số lượng đã thêm vào giỏ hàng
     public String capNhatSoLuong2(SanPham ctsp, String id) {
         try (Connection con = JdbcHelper.openDbConnection(); PreparedStatement ps = con.prepareStatement(capNhatSoLuong2)) {
             ps.setObject(1, ctsp.getSoluong());
