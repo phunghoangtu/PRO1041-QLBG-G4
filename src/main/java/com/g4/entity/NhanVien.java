@@ -42,4 +42,12 @@ public class NhanVien {
         }
     }
     
+    public String TrangThai(int trangthai){
+        if(trangthai == 0){
+            return "Con lam";
+        }else{
+            return "Da nghi lam";
+        }
+    }
+    
 }
