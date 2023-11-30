@@ -1,6 +1,5 @@
 package com.g4.view;
 
-
 import com.g4.entity.KhachHang;
 import com.g4.repository.impl.BanHangRepository;
 import com.g4.utils.Utility;
@@ -12,7 +11,6 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-
 public class DailogKhachHangBH extends javax.swing.JDialog {
 
     private DefaultTableModel tblmodel = new DefaultTableModel();
@@ -20,23 +18,26 @@ public class DailogKhachHangBH extends javax.swing.JDialog {
     private List<KhachHangViewModel> listKHVM = new ArrayList<>();
     private BanHangRepository bhs = new BanHangRepository();
     private Utility uti = new Utility();
-    
+
+    private String maKH;
+    private String tenKH;
+
     public DailogKhachHangBH(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         tblKhachHang.setModel(tblmodel);
         String headers[] = {"Mã", "HọTên", "Sđt", "Ngày tạo"};
         tblmodel.setColumnIdentifiers(headers);
-        
-        //showData(listKHVM = bhs.getAllKHN());
+
+        showData(listKHVM = bhs.getAllKHN());
     }
 
     private void showData(List<KhachHangViewModel> lists) {
         tblmodel.setRowCount(0);
-        int i = 1;
+
         for (KhachHangViewModel kh : lists) {
             Object[] data = new Object[]{
-                i++, kh.getMaKH(), kh.getTenKH(), kh.getSdt(), kh.getNgayTao()
+                kh.getMaKH(), kh.getTenKH(), kh.getSdt(), kh.getNgayTao()
             };
             tblmodel.addRow(data);
         }
@@ -91,6 +92,14 @@ public class DailogKhachHangBH extends javax.swing.JDialog {
         return false;
     }
 
+    public String getMaKH() {
+        return maKH;
+    }
+
+    public String getTenKH() {
+        return tenKH;
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -106,6 +115,7 @@ public class DailogKhachHangBH extends javax.swing.JDialog {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblKhachHang = new javax.swing.JTable();
         btnClear = new javax.swing.JButton();
+        btnChon = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -159,6 +169,16 @@ public class DailogKhachHangBH extends javax.swing.JDialog {
             }
         });
 
+        btnChon.setBackground(new java.awt.Color(255, 204, 51));
+        btnChon.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        btnChon.setForeground(new java.awt.Color(255, 255, 255));
+        btnChon.setText("Chọn");
+        btnChon.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnChonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -169,13 +189,16 @@ public class DailogKhachHangBH extends javax.swing.JDialog {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(txtSdt, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(btnClear, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnChon, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 502, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(txtTenKH, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
+                        .addComponent(btnClear, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(txtMaKH, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
                         .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(txtMaKH, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -187,19 +210,21 @@ public class DailogKhachHangBH extends javax.swing.JDialog {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
-                .addComponent(txtMaKH, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, 41, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtMaKH, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnAdd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, 35, Short.MAX_VALUE)
                 .addComponent(jLabel2)
                 .addGap(19, 19, 19)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtTenKH)
-                    .addComponent(btnAdd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnClear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel3)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(txtSdt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnClear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnChon, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(26, 26, 26))
@@ -226,10 +251,10 @@ public class DailogKhachHangBH extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-     
+
         String ma = txtMaKH.getText();
         String ten = txtTenKH.getText();
-        String sdt = txtSdt.getText();      
+        String sdt = txtSdt.getText();
         boolean trung = false;
         for (KhachHangViewModel cv : listKHVM) {
             if (cv.getMaKH().contains(ma)) {
@@ -243,14 +268,14 @@ public class DailogKhachHangBH extends javax.swing.JDialog {
 
 //                KhachHang kh = new KhachHang(ma, ten, sdt);
 //                JOptionPane.showMessageDialog(this, bhs.add(kh));
-               // showData(listKHVM = bhs.getAllKHN());
+                // showData(listKHVM = bhs.getAllKHN());
             }
         }
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void tblKhachHangMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblKhachHangMouseClicked
         int row = tblKhachHang.getSelectedRow();
-        fillData(row);       
+        fillData(row);
     }//GEN-LAST:event_tblKhachHangMouseClicked
 
     private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
@@ -259,7 +284,13 @@ public class DailogKhachHangBH extends javax.swing.JDialog {
         txtSdt.setText("");
     }//GEN-LAST:event_btnClearActionPerformed
 
-    
+    private void btnChonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChonActionPerformed
+        maKH = txtMaKH.getText(); // Lấy giá trị từ thành phần txtMaKH
+        tenKH = txtTenKH.getText(); // Lấy giá trị từ thành phần txtTenKH
+
+        dispose(); // Đóng JDialog
+    }//GEN-LAST:event_btnChonActionPerformed
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -286,6 +317,10 @@ public class DailogKhachHangBH extends javax.swing.JDialog {
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -304,6 +339,7 @@ public class DailogKhachHangBH extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
+    private javax.swing.JButton btnChon;
     private javax.swing.JButton btnClear;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

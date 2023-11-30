@@ -22,7 +22,7 @@ public class HoaDonViewModel {
     private String tenKhachHang;
     private int trangThai;
     private Double TongTien;
-    
+    private boolean hinhThucThanhToan;
 
     public String trangThai() {
         if (getTrangThai() == 0) {

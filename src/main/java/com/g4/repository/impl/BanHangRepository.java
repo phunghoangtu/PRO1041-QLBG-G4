@@ -48,7 +48,7 @@ public class BanHangRepository {
     String delete_hdct_by_idHoaDon = "Delete from HoaDonChiTiet where IdHoaDon = ?";
     String delete_hd_by_id = "Delete from HoaDon where Id = ?";
     String update_NVKH = "UPDATE HoaDon SET IdNhanVien = ? WHERE MaHD = ?";
-    String update_thanh_toan = "UPDATE HoaDon SET NgayThanhToan = GETDATE(), TongTien = ?, TrangThai = ? WHERE MaHD = ?";
+    String update_thanh_toan = "UPDATE HoaDon SET NgayThanhToan = GETDATE(), TongTien = ?, HinhThucThanhToan = ?, TrangThai = ? WHERE MaHD = ?";
     String delete_giohang = "Delete from HoaDonChiTiet where Id = ?";
     String capNhatSoLuong2 = "Update SanPham Set SoLuong = SoLuong - ? where Id = ?";
     String capNhatSoLuong = "Update SanPham Set SoLuong = SoLuong + ? where Id = ?";
@@ -154,8 +154,9 @@ public class BanHangRepository {
     public String updateTrangThai(HoaDonViewModel hd, String ma) {
         try (Connection con = JdbcHelper.openDbConnection(); PreparedStatement ps = con.prepareStatement(update_thanh_toan)) {
             ps.setObject(1, hd.getTongTien());
-            ps.setObject(2, hd.getTrangThai());
-            ps.setObject(3, ma);
+            ps.setObject(2, hd.isHinhThucThanhToan());
+            ps.setObject(3, hd.getTrangThai());
+            ps.setObject(4, ma);
             if (ps.executeUpdate() > 0) {
                 return "Thành công";
             }
@@ -231,6 +232,26 @@ public class BanHangRepository {
     // insert hóa đơn
     public String addHoaDon(HoaDonViewModel hd) {
         try (Connection con = JdbcHelper.openDbConnection(); PreparedStatement ps = con.prepareStatement(insert_hoadon)) {
+            // Truy vấn lấy mã hóa đơn lớn nhất hiện tại
+            String query = "SELECT MAX(MaHD) FROM HoaDon";
+            Statement statement = con.createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
+            if (resultSet.next()) {
+                String maxMaHD = resultSet.getString(1);
+                if (maxMaHD != null) {
+                    // Chuyển đổi mã hóa đơn thành kiểu số nguyên
+                    int maxMaHDNumber = Integer.parseInt(maxMaHD.replace("HD", ""));
+                    // Tăng giá trị mã hóa đơn lên 1
+                    int nextMaHDNumber = maxMaHDNumber + 1;
+                    // Tạo mã hóa đơn mới
+                    String nextMaHD = "HD" + String.format("%03d", nextMaHDNumber);
+                    hd.setMaHD(nextMaHD);
+                } else {
+                    // Nếu không có mã hóa đơn, tạo mã đầu tiên
+                    hd.setMaHD("HD001");
+                }
+            }
+            // Tiếp tục thêm hóa đơn với mã đã cập nhật
             ps.setObject(1, hd.getIdNV());
             ps.setObject(2, hd.getIdKH());
             ps.setObject(3, hd.getMaHD());

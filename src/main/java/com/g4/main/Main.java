@@ -30,9 +30,20 @@ public class Main extends javax.swing.JFrame {
         init(); 
     }
 
-    public void openKhachHangNhanh() {
+ public void openKhachHangNhanh() {
         DailogKhachHangBH dkh = new DailogKhachHangBH(this, true);
         dkh.setVisible(true);
+      
+
+        // Sau khi JDialog đóng, lấy giá trị từ JDialog
+        String maKH = dkh.getMaKH();
+        String tenKH = dkh.getTenKH();
+
+        // Truyền giá trị vào MyPanel
+      
+        banHangJPanel.setMaKH(maKH);
+        banHangJPanel.setTenKH(tenKH);
+
     }
 
     private void setForm(JComponent com) {
