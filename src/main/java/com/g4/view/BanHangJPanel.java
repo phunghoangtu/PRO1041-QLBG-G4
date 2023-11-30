@@ -773,6 +773,11 @@ public class BanHangJPanel extends javax.swing.JPanel {
         lblTienThua.setText("0");
 
         txtTienKhachDua.setForeground(new java.awt.Color(255, 0, 0));
+        txtTienKhachDua.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtTienKhachDuaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
@@ -1021,6 +1026,10 @@ public class BanHangJPanel extends javax.swing.JPanel {
             lblTienThua.setVisible(false);
         }
     }//GEN-LAST:event_cbbHTTTActionPerformed
+
+    private void txtTienKhachDuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTienKhachDuaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTienKhachDuaActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
