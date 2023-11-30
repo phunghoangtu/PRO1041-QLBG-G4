@@ -2,9 +2,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.g4.entity;
+package com.g4.viewmodel;
 
-import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,23 +11,23 @@ import lombok.Setter;
 
 /**
  *
- * @author tuphp
+ * @author Ddawng
  */
-
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CaLam {
+public class GiaoCaViewModel {
     
-    private int Id;
+    private String Id;
     
-    private Date NgayGiaoCa;
+    private String TenNV;
     
-    private int CaTrongNgay;
+    private String NgayGiaoCa;
     
-    private String GioBatDau;
+    private String gioBatDau;
     
-    private String GioKetThuc;
+    private String gioKetThu;
+    
     
 }

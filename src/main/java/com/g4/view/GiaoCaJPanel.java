@@ -4,6 +4,24 @@
  */
 package com.g4.view;
 
+import com.g4.entity.CaLam;
+import com.g4.entity.GiaoCa;
+import com.g4.entity.NhanVien;
+import com.g4.repository.impl.CaLamRepository;
+import com.g4.repository.impl.GiaoCaRepository;
+import com.g4.repository.impl.GiaoCaVMRepository;
+import com.g4.utils.Auth;
+import com.g4.viewmodel.GiaoCaViewModel;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.List;
+import java.util.Timer;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author tuphp
@@ -12,10 +30,128 @@ public class GiaoCaJPanel extends javax.swing.JPanel {
 
     /**
      * Creates new form GiaoCaJPanel
+     * 
+     * 
      */
+    
+    private GiaoCaVMRepository giaocaVMRepo = new GiaoCaVMRepository();
+    private CaLamRepository calamRepo = new CaLamRepository();
+    private GiaoCaRepository giaocaRepo = new GiaoCaRepository();
+    private DefaultTableModel defaultTableModel = new DefaultTableModel();
+    
     public GiaoCaJPanel() {
         initComponents();
+        lblTenNV.setText(Auth.user.getTenNV());
+        lblTrangThai.setText("Chưa vào ca");
+        loadDataGiaoCa();
     }
+    
+    public void loadDataGiaoCa(){
+        List<GiaoCaViewModel> list = giaocaVMRepo.selectAll();
+        defaultTableModel = (DefaultTableModel) tbGiaoCa.getModel();
+        defaultTableModel.setRowCount(0);
+        int i = 1;
+        for (GiaoCaViewModel x : list) {
+            defaultTableModel.addRow(new Object[]{
+            i, x.getId(), x.getTenNV(), x.getNgayGiaoCa(), x.getGioBatDau(), x.getGioKetThu()
+            });
+            i++;
+        }
+        
+        
+    }
+    
+    public CaLam inputCaLam(){
+      CaLam cl = new CaLam();
+
+        Date now = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        String formattedTime = sdf.format(now);
+
+        cl.setGioBatDau(formattedTime);
+
+        try {
+            Date ca1StartTime = sdf.parse("08:00");
+            Date ca1EndTime = sdf.parse("12:00");
+            Date ca2StartTime = sdf.parse("12:00");
+            Date ca2EndTime = sdf.parse("16:00");
+            Date ca3StartTime = sdf.parse("16:00");
+            Date ca3EndTime = sdf.parse("22:00");
+
+            Date formattedTimeAsDate = sdf.parse(formattedTime);
+
+            if (formattedTimeAsDate.compareTo(ca1StartTime) >= 0 && formattedTimeAsDate.before(ca1EndTime)) {
+                cl.setCaTrongNgay(1);
+            } else if (formattedTimeAsDate.compareTo(ca2StartTime) >= 0 && formattedTimeAsDate.before(ca2EndTime)) {
+                cl.setCaTrongNgay(2);
+            } else if (formattedTimeAsDate.compareTo(ca3StartTime) >= 0 && formattedTimeAsDate.before(ca3EndTime)) {
+                cl.setCaTrongNgay(3);
+            } else {
+                cl.setCaTrongNgay(4);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        lblTrangThai.setText("Đang trong ca làm");
+        lblGioBatDau.setText(formattedTime);
+        
+        return cl;
+    }
+    
+    public boolean validateCaLam(){
+        if(lblTrangThai.getText().equals("Đang trong ca làm")){
+            return false;
+        }
+        return true;
+    }
+    
+    public GiaoCa inputGiaoCa(){
+        GiaoCa gc = new GiaoCa();
+        gc.setIdNV(Auth.user.getId().toString());
+        int idcl = calamRepo.CaLamHienTai();
+        gc.setIdCL(idcl);
+        return gc;
+    }
+    
+     public void BatDauCaLam() {
+        if (validateCaLam()) {
+          CaLam cl = inputCaLam();
+            System.out.println("" + cl.getId());
+            try {
+                calamRepo.insert(cl);
+                GiaoCa gc = inputGiaoCa();
+                giaocaRepo.insert(gc);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            JOptionPane.showMessageDialog(this, "Bắt đầu ca làm thành công");
+            
+        }else{
+             JOptionPane.showMessageDialog(this, "Bạn đã bắt đầu ca làm rồi");
+        }
+        loadDataGiaoCa();
+         
+    }
+     
+     
+     public void KetThucCaLam(){
+         CaLam cl = new CaLam();
+        
+        Date now = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        String formattedTime = sdf.format(now);
+        
+        cl.setGioKetThuc(formattedTime);
+        int idcl = calamRepo.CaLamHienTai();
+
+        calamRepo.update2(formattedTime, idcl);
+        JOptionPane.showMessageDialog(this, "Kết thúc ca làm thành công");
+        lblTrangThai.setText("Kết thúc ca làm");
+        lblGioKetThuc.setText(formattedTime);
+        loadDataGiaoCa();
+     }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -27,28 +163,32 @@ public class GiaoCaJPanel extends javax.swing.JPanel {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tbGiaoCa = new javax.swing.JTable();
         jLabel3 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        lblTenNV = new javax.swing.JLabel();
+        btnGBD = new javax.swing.JButton();
+        btnGKT = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
+        lblTrangThai = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
+        lblGioBatDau = new javax.swing.JLabel();
+        lblGioKetThuc = new javax.swing.JLabel();
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tbGiaoCa.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"", null, null, null},
-                {"", null, null, null},
-                {"", null, null, null},
-                {"", null, null, null}
+                {null, null, "", null, null, null},
+                {null, null, "", null, null, null},
+                {null, null, "", null, null, null},
+                {null, null, "", null, null, null}
             },
             new String [] {
-                "Tên nhân viên", "Ngày giao ca", "Giờ bắt đầu", "Giờ kết thúc"
+                "STT", "ID", "Tên nhân viên", "Ngày giao ca", "Giờ bắt đầu", "Giờ kết thúc"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tbGiaoCa);
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel3.setText("Thông tin giao ca");
@@ -57,20 +197,33 @@ public class GiaoCaJPanel extends javax.swing.JPanel {
 
         jLabel1.setText("Tên nhân viên");
 
-        jLabel2.setText("?");
+        lblTenNV.setText("?");
 
-        jButton1.setText("Bắt đầu ");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnGBD.setText("Bắt đầu ");
+        btnGBD.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnGBDActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Kết thúc");
+        btnGKT.setText("Kết thúc");
+        btnGKT.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGKTActionPerformed(evt);
+            }
+        });
 
         jLabel4.setText("Trạng thái");
 
-        jLabel5.setText("?");
+        lblTrangThai.setText("?");
+
+        jLabel2.setText("Giờ kết thúc");
+
+        jLabel5.setText("Giờ bắt đầu");
+
+        lblGioBatDau.setText("?");
+
+        lblGioKetThuc.setText("?");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -81,19 +234,29 @@ public class GiaoCaJPanel extends javax.swing.JPanel {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel4)
                     .addComponent(jLabel1))
-                .addGap(84, 84, 84)
+                .addGap(45, 45, 45)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblTrangThai)
+                    .addComponent(lblTenNV))
+                .addGap(106, 106, 106)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel2))
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(274, 274, 274)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(91, 91, 91)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel5))
-                .addContainerGap(101, Short.MAX_VALUE))
+                        .addComponent(lblGioKetThuc)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(lblGioBatDau)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 204, Short.MAX_VALUE)
+                        .addComponent(btnGBD, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(48, 48, 48)))
+                .addComponent(btnGKT, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(54, 54, 54))
         );
 
-        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jButton1, jButton2});
+        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnGBD, btnGKT});
 
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -101,13 +264,17 @@ public class GiaoCaJPanel extends javax.swing.JPanel {
                 .addGap(33, 33, 33)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jLabel2)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblTenNV)
+                    .addComponent(btnGBD, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnGKT, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5)
+                    .addComponent(lblGioBatDau))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jLabel5))
+                    .addComponent(lblTrangThai)
+                    .addComponent(jLabel2)
+                    .addComponent(lblGioKetThuc))
                 .addContainerGap(36, Short.MAX_VALUE))
         );
 
@@ -140,14 +307,18 @@ public class GiaoCaJPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void btnGBDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGBDActionPerformed
+        BatDauCaLam();
+    }//GEN-LAST:event_btnGBDActionPerformed
+
+    private void btnGKTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGKTActionPerformed
+        KetThucCaLam();
+    }//GEN-LAST:event_btnGKTActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton btnGBD;
+    private javax.swing.JButton btnGKT;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -155,6 +326,10 @@ public class GiaoCaJPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JLabel lblGioBatDau;
+    private javax.swing.JLabel lblGioKetThuc;
+    private javax.swing.JLabel lblTenNV;
+    private javax.swing.JLabel lblTrangThai;
+    private javax.swing.JTable tbGiaoCa;
     // End of variables declaration//GEN-END:variables
 }
