@@ -122,6 +122,7 @@ public class GiaoCaJPanel extends javax.swing.JPanel {
                 calamRepo.insert(cl);
                 GiaoCa gc = inputGiaoCa();
                 giaocaRepo.insert(gc);
+                lblGioKetThuc.setText("");
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -136,6 +137,9 @@ public class GiaoCaJPanel extends javax.swing.JPanel {
      
      
      public void KetThucCaLam(){
+         if(lblTrangThai.getText().equals("Chưa vào ca") || lblTrangThai.getText().equals("Kết thúc ca làm")){
+             JOptionPane.showMessageDialog(this, "Bạn phải bắt đầu ca làm");
+         }
          CaLam cl = new CaLam();
         
         Date now = new Date();
@@ -149,6 +153,7 @@ public class GiaoCaJPanel extends javax.swing.JPanel {
         JOptionPane.showMessageDialog(this, "Kết thúc ca làm thành công");
         lblTrangThai.setText("Kết thúc ca làm");
         lblGioKetThuc.setText(formattedTime);
+        
         loadDataGiaoCa();
      }
     
