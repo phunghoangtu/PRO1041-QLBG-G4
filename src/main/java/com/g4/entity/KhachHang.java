@@ -12,10 +12,23 @@ import lombok.Setter;
 @AllArgsConstructor
 public class KhachHang {
 
-    private String id;
+    private int id;
     private String maKH;
     private String tenKH;
     private String sdt;
     private Date ngayTao;
+    private int trangThai;
 
+  
+
+    public KhachHang(String maKH, String tenKH, String sdt, Date ngayTao, int trangThai) {
+        this.maKH = maKH;
+        this.tenKH = tenKH;
+        this.sdt = sdt;
+        this.ngayTao = ngayTao;
+        this.trangThai = trangThai;
+    }
+    
+   
+    
 }
