@@ -420,7 +420,7 @@ public class BanHangJPanel extends javax.swing.JPanel {
                 listGH = bhs.getGioHang(maHd);
                 loadGioHang(listGH);
 
-                temp = JOptionPane.showConfirmDialog(this, "Bạn có muốn in hóa đơn không");
+                //temp = JOptionPane.showConfirmDialog(this, "Bạn có muốn in hóa đơn không");
 
                 btnThanhToan.setEnabled(false);
                 btnHuyHoaDon.setEnabled(false);
