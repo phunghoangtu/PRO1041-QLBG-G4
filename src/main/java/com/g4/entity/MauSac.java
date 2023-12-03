@@ -26,4 +26,10 @@ public class MauSac {
     private String tenmausac;
     private int trangthai;
 
+    @Override
+    public String toString() {
+        return this.tenmausac;
+    }
+
+    
 }

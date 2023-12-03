@@ -14,5 +14,11 @@ public class ThuongHieu {
     private int id;
     private String tenthuonghieu;
     private int trangthai;
+
+    @Override
+    public String toString() {
+        return this.tenthuonghieu;
+    }
+    
     
 }
