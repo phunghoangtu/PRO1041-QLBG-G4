@@ -107,17 +107,18 @@ public class KhuyenMaiJPanel extends javax.swing.JPanel {
         }
     }
     private String idbua;
-    public void mouseClick() throws ParseException{
+    public void mouseClick() throws ParseException, SQLException{
         dtm = (DefaultTableModel) tbl_khuyenMai.getModel();
         KhuyenMai km = new KhuyenMai();
         int row = tbl_khuyenMai.getSelectedRow();
+        
         txt_tenKM.setText(tbl_khuyenMai.getValueAt(row, 0).toString());
         txt_ngayBD2.setText(tbl_khuyenMai.getValueAt(row, 1).toString());
         txt_ngayKT2.setText(tbl_khuyenMai.getValueAt(row, 2).toString());
         txt_moTa2.setText(tbl_khuyenMai.getValueAt(row, 4).toString());
         txt_phanTramGiam2.setText(tbl_khuyenMai.getValueAt(row, 5).toString());
         
-        KhuyenMai bunhin = khmRepository.selectAll().get(row);
+        KhuyenMai bunhin = khmRepository.selectAll2(tukhoatimkiem).get(row);
         idbua = bunhin.getId();
         
         if(bunhin.isKieugiamGia()){
