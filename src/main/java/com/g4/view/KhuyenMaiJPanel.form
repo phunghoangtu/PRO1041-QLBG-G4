@@ -101,10 +101,10 @@
                       </Group>
                   </Group>
               </Group>
-              <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="-2" pref="58" max="-2" attributes="0"/>
-                  <Component id="cbo_kieuKM2" min="-2" pref="228" max="-2" attributes="0"/>
+              <Group type="102" alignment="1" attributes="0">
                   <EmptySpace max="32767" attributes="0"/>
+                  <Component id="cbo_kieuKM2" min="-2" pref="228" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -170,7 +170,10 @@
         <Component class="javax.swing.JComboBox" name="cbo_kieuKM2">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="0"/>
+              <StringArray count="2">
+                <StringItem index="0" value="Ph&#x1ea7;n tr&#x103;m"/>
+                <StringItem index="1" value="VND"/>
+              </StringArray>
             </Property>
           </Properties>
           <AuxValues>
@@ -242,6 +245,9 @@
             </Property>
             <Property name="text" type="java.lang.String" value="CLEAR"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_clearKM2ActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
