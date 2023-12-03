@@ -14,5 +14,12 @@ public class ChatLieu {
     private int id;
     private String tenchatlieu;
     private int trangthai;
+
+    @Override
+    public String toString() {
+        return this.tenchatlieu;
+    }
+    
+    
     
 }

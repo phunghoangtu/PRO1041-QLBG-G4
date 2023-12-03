@@ -20,5 +20,11 @@ public class KichCoGiay {
     private int id;
     private String kichco;
     private int trangthai;
+
+    @Override
+    public String toString() {
+        return this.kichco;
+    }
+    
     
 }
