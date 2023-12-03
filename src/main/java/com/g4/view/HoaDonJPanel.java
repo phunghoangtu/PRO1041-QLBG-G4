@@ -4,19 +4,57 @@
  */
 package com.g4.view;
 
+import javax.swing.table.DefaultTableModel;
+import com.g4.entity.HoaDon;
+import com.g4.entity.HoaDonChiTiet;
+import com.g4.viewmodel.HoaDonViewModel;
+import java.util.ArrayList;
+import java.util.List;
+import com.g4.repository.impl.HoaDonRepository;
+import com.g4.repository.impl.HDCTRepository;
+import javax.swing.JOptionPane;
 /**
  *
  * @author tuphp
  */
 public class HoaDonJPanel extends javax.swing.JPanel {
 
+    private DefaultTableModel dtm = new DefaultTableModel();
+    private HoaDonRepository hdrepo = new HoaDonRepository();
+    private HDCTRepository hdctrepo = new HDCTRepository();
     /**
      * Creates new form HoaDonJPanel
      */
     public HoaDonJPanel() {
         initComponents();
+        loadDataHD();
     }
 
+    public void loadDataHD() {
+        List<HoaDon> list = hdrepo.selectAll();
+        dtm = (DefaultTableModel) tbl_HD.getModel();
+        dtm.setRowCount(0);
+        for (HoaDon x : list) {
+            dtm.addRow(new Object[]{
+                x.getId(), x.getMaHD(), x.getNgayTao(), x.getNgayThanhToan(), x.getTongTien(), x.getGhiChu(), x.getTrangThai(), x.getHTTT()
+            });
+        }
+
+    }
+    public void loadDataHDCT(List<HoaDonChiTiet> lis) {
+        
+        dtm = (DefaultTableModel) tbl_HDCT.getModel();
+        dtm.setRowCount(0);
+        try {
+            for (HoaDonChiTiet x : lis) {
+            dtm.addRow(new Object[]{
+                x.getIdHD(), x.getIdHD(), x.getSoLuong(), x.getDonGia()
+            });
+        }
+        } catch (Exception e) {
+        }
+
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -60,6 +98,11 @@ public class HoaDonJPanel extends javax.swing.JPanel {
                 "HÓA ĐƠN", "NGÀY TẠO", "NGÀY THANH TOÁN", "TỔNG TIỀN", "GHI CHÚ", "TRẠNG THÁI", "TTTT", "ID NHÂN VIÊN"
             }
         ));
+        tbl_HD.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbl_HDMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(tbl_HD);
 
         btn_timKiem.setBackground(new java.awt.Color(255, 255, 204));
@@ -122,6 +165,19 @@ public class HoaDonJPanel extends javax.swing.JPanel {
                 .addContainerGap(56, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void tbl_HDMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_HDMouseClicked
+        // TODO add your handling code here:
+        try {
+            int vitri = tbl_HD.getSelectedRow();
+            //JOptionPane.showMessageDialog(this, hdrepo.selectAll().get(vitri).getId());
+            String hoadonthuN = hdrepo.selectAll().get(vitri).getId();
+            List<HoaDonChiTiet> lisHDCT = hdctrepo.selectByHoaDon(Integer.parseInt(hoadonthuN));
+            
+            loadDataHDCT(lisHDCT);
+        } catch (Exception e) {
+        }
+    }//GEN-LAST:event_tbl_HDMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

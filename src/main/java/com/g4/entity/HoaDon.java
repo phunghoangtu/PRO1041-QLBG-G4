@@ -14,12 +14,13 @@ import lombok.Setter;
 public class HoaDon {
 
     private String id;
-    private String idNV;  
+    private int idNV;  
     private String maHD;
     private Date ngayTao;
     private double TongTien;   
     private Date ngayThanhToan;
     private String ghiChu;
     private int trangThai;
+    private int HTTT;
   
 }

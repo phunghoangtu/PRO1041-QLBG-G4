@@ -4,7 +4,6 @@
  */
 package com.g4.entity;
 
-import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,21 +12,26 @@ import lombok.ToString;
 
 /**
  *
- * @author tuphp
+ * @author khuong duc
  */
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @ToString
-public class GiaoCa {
+
+public class KhuyenMai {
+    private String id;
     
-    private int Id;
+    private String tenKM;
     
-    private String IdNV;
+    private String ngaybatDau;
     
-    private int IdCL;
+    private String ngayketThuc;
     
+    private String moTa;
     
+    private String muctramGiam;
     
+    private boolean kieugiamGia; 
 }

@@ -34,7 +34,7 @@ public class NhanVienJPanel extends javax.swing.JPanel {
 
     public NhanVienJPanel() {
         initComponents();
-        loadData();
+//        loadData();
 
     }
 

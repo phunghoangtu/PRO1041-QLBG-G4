@@ -4,19 +4,132 @@
  */
 package com.g4.view;
 
+import com.g4.entity.KhuyenMai;
+import com.g4.viewmodel.KhuyenMaiViewModel;
+import com.g4.repository.impl.KhuyenMaiRepository;
+import java.sql.SQLException;
+import javax.swing.table.DefaultTableModel;
+import java.util.List;
+import javax.swing.JOptionPane;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.time.LocalDate;
+import java.util.Date;
 /**
  *
  * @author tuphp
  */
 public class KhuyenMaiJPanel extends javax.swing.JPanel {
 
+    private KhuyenMaiRepository khmRepository = new KhuyenMaiRepository();
+    private DefaultTableModel dtm = new DefaultTableModel();
+    
+    private String dftk = "";
     /**
      * Creates new form KhachHangJPanel
      */
     public KhuyenMaiJPanel() {
         initComponents();
+        loadData();
     }
 
+     public void loadData(){
+        List<KhuyenMai> list = khmRepository.selectAll();
+        dtm = (DefaultTableModel) tbl_khuyenMai.getModel();
+        dtm.setRowCount(0);
+        for (KhuyenMai x : list){
+            dtm.addRow(new Object[]{
+            x.getTenKM(), x.getNgaybatDau(), x.getNgayketThuc(), x.isKieugiamGia(), x.getMoTa(), x.getMuctramGiam()
+            });
+        }
+    }
+    
+    public boolean validateForm(){
+        if(txt_tenKM.getText().equals("")){
+            JOptionPane.showMessageDialog(this, "Ten khuyen mai");
+            return false;
+        }
+        if(txt_ngayBD2.getText().equals("")){
+            JOptionPane.showMessageDialog(this, "Ngay bat dau");
+            return false;
+        }
+        if(txt_ngayKT2.getText().equals("")){
+            JOptionPane.showMessageDialog(this, "Ngay ket thuc");
+            return false;
+        }
+        if(txt_phanTramGiam2.getText().equals("")){
+            JOptionPane.showMessageDialog(this, "Muc giam gia");
+            return false;
+        }
+        if(txt_moTa2.getText().equals("")){
+            JOptionPane.showMessageDialog(this, "Mo ta");
+            return false;
+        }
+        return true;
+    }
+    public KhuyenMai getKMinput(){
+        KhuyenMai km = new KhuyenMai();
+        km.setTenKM(txt_tenKM.getText());
+        km.setNgaybatDau(txt_ngayBD2.getText());
+        km.setNgayketThuc(txt_ngayKT2.getText());
+        km.setMuctramGiam(txt_phanTramGiam2.getText());
+        km.setMoTa(txt_moTa2.getText());
+        
+        return km;
+    }
+    public void save(){
+        if(validateForm()){
+            KhuyenMai km = getKMinput();
+            try{
+                khmRepository.insert(km);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            JOptionPane.showMessageDialog(this, "Them thanh cong");
+        }
+        loadData();
+    }
+    public void mouseClick() throws ParseException{
+        dtm = (DefaultTableModel) tbl_khuyenMai.getModel();
+        KhuyenMai km = new KhuyenMai();
+        int row = tbl_khuyenMai.getSelectedRow();
+        txt_tenKM.setText(tbl_khuyenMai.getValueAt(row, 0).toString());
+        txt_ngayBD2.setText(tbl_khuyenMai.getValueAt(row, 1).toString());
+        txt_ngayKT2.setText(tbl_khuyenMai.getValueAt(row, 2).toString());
+        txt_moTa2.setText(tbl_khuyenMai.getValueAt(row, 4).toString());
+        txt_phanTramGiam2.setText(tbl_khuyenMai.getValueAt(row, 5).toString());
+        
+    }
+    public void deleteKM() throws SQLException {
+        int row = tbl_khuyenMai.getSelectedRow();
+        if (row < 0) {
+            JOptionPane.showMessageDialog(this, "Hãy chọn 1 dòng");
+        }
+        String id = tbl_khuyenMai.getValueAt(row, 0).toString();
+        JOptionPane.showMessageDialog(this, "Xóa thành công");
+        khmRepository.delete(id);
+        loadData();
+
+    }
+    public void UpdateKM(){
+        int row = tbl_khuyenMai.getSelectedRow();
+        if (row<0){
+            JOptionPane.showMessageDialog(this, "Hãy chọn 1 dòng");
+        }
+        KhuyenMai km = new KhuyenMai();
+        km.setTenKM(txt_tenKM.getText());
+        km.setNgaybatDau(txt_ngayBD2.getText());
+        km.setNgayketThuc(txt_ngayKT2.getText());
+        km.setMoTa(txt_moTa2.getText());
+        km.setMuctramGiam(txt_phanTramGiam2.getText());
+
+
+        khmRepository.update(km);
+        JOptionPane.showMessageDialog(this, "Sửa thành công");
+        loadData();
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -27,7 +140,7 @@ public class KhuyenMaiJPanel extends javax.swing.JPanel {
     private void initComponents() {
 
         jPanel4 = new javax.swing.JPanel();
-        jTextField4 = new javax.swing.JTextField();
+        txt_tenKM = new javax.swing.JTextField();
         txt_ngayBD2 = new javax.swing.JTextField();
         txt_ngayKT2 = new javax.swing.JTextField();
         txt_phanTramGiam2 = new javax.swing.JTextField();
@@ -53,13 +166,11 @@ public class KhuyenMaiJPanel extends javax.swing.JPanel {
 
         jPanel4.setBackground(new java.awt.Color(204, 204, 204));
 
-        jTextField4.addActionListener(new java.awt.event.ActionListener() {
+        txt_tenKM.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField4ActionPerformed(evt);
+                txt_tenKMActionPerformed(evt);
             }
         });
-
-        cbo_kieuKM2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "KIỂU 1", "KIỂU 2", "KIỂU 3", "KIỂU 4", " " }));
 
         lbl_tenKM2.setText("TÊN KHUYẾN MÃI");
 
@@ -81,9 +192,19 @@ public class KhuyenMaiJPanel extends javax.swing.JPanel {
 
         btn_suaKM2.setBackground(new java.awt.Color(153, 255, 153));
         btn_suaKM2.setText("SỬA");
+        btn_suaKM2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_suaKM2ActionPerformed(evt);
+            }
+        });
 
         btn_xoaKM2.setBackground(new java.awt.Color(255, 51, 51));
         btn_xoaKM2.setText("XÓA");
+        btn_xoaKM2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_xoaKM2ActionPerformed(evt);
+            }
+        });
 
         btn_clearKM2.setBackground(new java.awt.Color(255, 255, 102));
         btn_clearKM2.setText("CLEAR");
@@ -114,7 +235,7 @@ public class KhuyenMaiJPanel extends javax.swing.JPanel {
                             .addGroup(jPanel4Layout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txt_tenKM, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txt_ngayBD2, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txt_ngayKT2, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addComponent(txt_moTa2, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -136,7 +257,7 @@ public class KhuyenMaiJPanel extends javax.swing.JPanel {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(34, 34, 34)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_tenKM, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lbl_tenKM2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -189,6 +310,11 @@ public class KhuyenMaiJPanel extends javax.swing.JPanel {
                 "TÊN", "BẮT ĐẦU", "KẾT THÚC", "KIỂU", "MÔ TẢ", "PHẦN TRĂM GIẢM"
             }
         ));
+        tbl_khuyenMai.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbl_khuyenMaiMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tbl_khuyenMai);
 
         lbl_DSKM.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -256,75 +382,67 @@ public class KhuyenMaiJPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
+    private void txt_tenKMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_tenKMActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField4ActionPerformed
+    }//GEN-LAST:event_txt_tenKMActionPerformed
 
     private void btn_themKH2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_themKH2ActionPerformed
         // TODO add your handling code here:
+         save();
     }//GEN-LAST:event_btn_themKH2ActionPerformed
 
     private void btn_timKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_timKiemActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btn_timKiemActionPerformed
 
+    private void btn_suaKM2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_suaKM2ActionPerformed
+        // TODO add your handling code here:
+        UpdateKM();
+    }//GEN-LAST:event_btn_suaKM2ActionPerformed
+
+    private void btn_xoaKM2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_xoaKM2ActionPerformed
+        // TODO add your handling code here:
+        try {
+            deleteKM();
+        } catch (SQLException ex) {
+            Logger.getLogger(NhanVienJPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btn_xoaKM2ActionPerformed
+
+    private void tbl_khuyenMaiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_khuyenMaiMouseClicked
+        // TODO add your handling code here:
+        try {
+            mouseClick();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_tbl_khuyenMaiMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btn_clearKM;
-    private javax.swing.JButton btn_clearKM1;
     private javax.swing.JButton btn_clearKM2;
-    private javax.swing.JButton btn_suaKM;
-    private javax.swing.JButton btn_suaKM1;
     private javax.swing.JButton btn_suaKM2;
-    private javax.swing.JButton btn_themKH;
-    private javax.swing.JButton btn_themKH1;
     private javax.swing.JButton btn_themKH2;
     private javax.swing.JButton btn_timKiem;
-    private javax.swing.JButton btn_xoaKM;
-    private javax.swing.JButton btn_xoaKM1;
     private javax.swing.JButton btn_xoaKM2;
-    private javax.swing.JComboBox<String> cbo_kieuKM;
-    private javax.swing.JComboBox<String> cbo_kieuKM1;
     private javax.swing.JComboBox<String> cbo_kieuKM2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
     private javax.swing.JLabel lbl_DSKM;
-    private javax.swing.JLabel lbl_moTa;
-    private javax.swing.JLabel lbl_moTa1;
     private javax.swing.JLabel lbl_moTa2;
-    private javax.swing.JLabel lbl_ngayBD;
-    private javax.swing.JLabel lbl_ngayBD1;
     private javax.swing.JLabel lbl_ngayBD2;
-    private javax.swing.JLabel lbl_ngayKT;
-    private javax.swing.JLabel lbl_ngayKT1;
     private javax.swing.JLabel lbl_ngayKT2;
-    private javax.swing.JLabel lbl_phanTramGiam;
-    private javax.swing.JLabel lbl_phanTramGiam1;
     private javax.swing.JLabel lbl_phanTramGiam2;
-    private javax.swing.JLabel lbl_tenKM;
-    private javax.swing.JLabel lbl_tenKM1;
     private javax.swing.JLabel lbl_tenKM2;
     private javax.swing.JLabel lbl_timKiem;
     private javax.swing.JTable tbl_khuyenMai;
-    private javax.swing.JTextField txt_moTa;
-    private javax.swing.JTextField txt_moTa1;
     private javax.swing.JTextField txt_moTa2;
-    private javax.swing.JTextField txt_ngayBD;
-    private javax.swing.JTextField txt_ngayBD1;
     private javax.swing.JTextField txt_ngayBD2;
-    private javax.swing.JTextField txt_ngayKT;
-    private javax.swing.JTextField txt_ngayKT1;
     private javax.swing.JTextField txt_ngayKT2;
-    private javax.swing.JTextField txt_phanTramGiam;
-    private javax.swing.JTextField txt_phanTramGiam1;
     private javax.swing.JTextField txt_phanTramGiam2;
+    private javax.swing.JTextField txt_tenKM;
     private javax.swing.JTextField txt_timKiem;
     // End of variables declaration//GEN-END:variables
 }
