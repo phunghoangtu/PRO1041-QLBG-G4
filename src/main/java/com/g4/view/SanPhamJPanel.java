@@ -1189,25 +1189,55 @@ public class SanPhamJPanel extends javax.swing.JPanel {
                         ThuongHieuRP.themHieu(hang);
                     }
                     
-                    SanPham tuXLSX = new SanPham();
-                    
-                    tuXLSX.setMasanpham(ma);
-                    tuXLSX.setTensanpham(ten);
-                    tuXLSX.setGiaban(giathat);
-                    tuXLSX.setSoluong(soThat);
-                    tuXLSX.setMota(mota);
-                    
-                    tuXLSX.setIdkichcogiay(KichCoRP.getBySoKichCo(String.valueOf((int) Double.parseDouble(kichco)) ).getId());
-                    tuXLSX.setIdmausac(MauSacRP.getByMau(mau).getId());
-                    tuXLSX.setIdchatlieugiay(ChatLieuRP.getByTenChatLieu(chatlieu).getId());
-                    tuXLSX.setIdthuonghieu(ThuongHieuRP.getByThuongHieu(hang).getId());
-                    
-                    tuXLSX.setTrangthai(1);
-                    
+                    boolean checktontai = false;
+                
                     try {
-                        SanPhamRP.luu(tuXLSX);
+                        for(SanPham kiemtra: SanPhamRP.getConBan("")){
+                            if(ma.equalsIgnoreCase(kiemtra.getMasanpham())){
+                                checktontai = true;
+                                break;
+                            }
+                        }
                     } catch (SQLException ex) {
                         Logger.getLogger(SanPhamJPanel.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    try {
+                        for(SanPham kiemtra: SanPhamRP.getDungBan()){
+                            if(ma.equalsIgnoreCase(kiemtra.getMasanpham())){
+                                checktontai = true;
+                                break;
+                            }
+                        }
+                    } catch (SQLException ex) {
+                        Logger.getLogger(SanPhamJPanel.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    
+                    if(checktontai==false){
+                        SanPham tuXLSX = new SanPham();
+                    
+                        tuXLSX.setMasanpham(ma);
+                        tuXLSX.setTensanpham(ten);
+                        tuXLSX.setGiaban(giathat);
+                        tuXLSX.setSoluong(soThat);
+                        tuXLSX.setMota(mota);
+
+                        tuXLSX.setIdkichcogiay(KichCoRP.getBySoKichCo(String.valueOf((int) Double.parseDouble(kichco)) ).getId());
+                        tuXLSX.setIdmausac(MauSacRP.getByMau(mau).getId());
+                        tuXLSX.setIdchatlieugiay(ChatLieuRP.getByTenChatLieu(chatlieu).getId());
+                        tuXLSX.setIdthuonghieu(ThuongHieuRP.getByThuongHieu(hang).getId());
+
+                        tuXLSX.setTrangthai(1);
+
+                        try {
+                            SanPhamRP.luu(tuXLSX);
+                        } catch (SQLException ex) {
+                            Logger.getLogger(SanPhamJPanel.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(this, "Mã sản phẩm "+ma+" đã tồn tại");
+                        break;
                     }
                     
                     fillConBan();
