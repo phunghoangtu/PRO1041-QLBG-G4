@@ -287,14 +287,14 @@ public class BanHangJPanel extends javax.swing.JPanel {
                     double thanhTien = 0;
                     double thanhToan = 0;
                     double giamGia = 0;
-
+                    double tienKhachDua = 0;
+                    
                     for (GioHangViewModel gha : listGH) {
-                        thanhTien += gha.getSoLuong() * gha.getDonGia();
+                        thanhTien += gha.getSoLuong() * gha.getDonGia();                       
                     }
 
                     lblThanhTien.setText(String.valueOf(fomat.format(thanhTien)));
-                    lblThanhToan.setText(String.valueOf(fomat.format(thanhToan = thanhTien)));
-
+                    lblThanhToan.setText(String.valueOf(fomat.format(thanhToan = thanhTien)));             
                 }
             }
         }
@@ -1228,7 +1228,8 @@ public class BanHangJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_btnHuyHoaDonActionPerformed
 
     private void btnLamMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLamMoiActionPerformed
-
+        listSP = bhs.getAllSP();
+        loadSanPham(listSP);
     }//GEN-LAST:event_btnLamMoiActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
