@@ -10,11 +10,9 @@ import com.g4.utils.JdbcHelper;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
-/**
- *
- * @author Ddawng
- */
 public class NhanVienRepository extends G4Repository<NhanVien, String> {
 
     String insert_sql = "Insert into NhanVien(MatKhau, TenNhanVien, vaiTro, GioiTinh, Email, DiaChi, NgaySinh, SoDienThoai)values(?,?,?,?,?,?,?,?)";
@@ -23,14 +21,33 @@ public class NhanVienRepository extends G4Repository<NhanVien, String> {
     String select_all_sql = "select * from NhanVien";
     String select_by_id_sql = "Select * from NhanVien Where MaNV = ?";
 
+    public static String encode(String password) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            md.update(password.getBytes());
+            byte[] digest = md.digest();
+            StringBuilder sb = new StringBuilder();
+            for (byte b : digest) {
+                sb.append(String.format("%02x", b & 0xff));
+            }
+            return sb.toString();
+        } catch (NoSuchAlgorithmException e) {
+            // Xử lý nếu thuật toán mã hóa không được hỗ trợ
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     @Override
     public void insert(NhanVien entity) {
-        JdbcHelper.update(insert_sql, entity.getMatKhau(), entity.getTenNV(), entity.isVaiTro(), entity.getGioiTinh(), entity.getEmail(), entity.getDiaChi(), entity.getNgaySinh(), entity.getSdt());
+        String hashedPassword = encode(entity.getMatKhau());
+        JdbcHelper.update(insert_sql, hashedPassword, entity.getTenNV(), entity.isVaiTro(), entity.getGioiTinh(), entity.getEmail(), entity.getDiaChi(), entity.getNgaySinh(), entity.getSdt());
     }
 
     @Override
     public void update(NhanVien entity) {
-        JdbcHelper.update(update_sql,entity.getMatKhau(), entity.getTenNV(), entity.isVaiTro(), entity.getGioiTinh(), entity.getEmail(), entity.getNgaySinh(), entity.getSdt(), entity.getDiaChi(), entity.getId());
+        String hashedPassword = encode(entity.getMatKhau());
+        JdbcHelper.update(update_sql, hashedPassword, entity.getTenNV(), entity.isVaiTro(), entity.getGioiTinh(), entity.getEmail(), entity.getNgaySinh(), entity.getSdt(), entity.getDiaChi(), entity.getId());
     }
 
     @Override
@@ -46,7 +63,7 @@ public class NhanVienRepository extends G4Repository<NhanVien, String> {
     @Override
     public NhanVien selectById(String id) {
         List<NhanVien> list = selectBySql(select_by_id_sql, id);
-        if(list.isEmpty()){
+        if (list.isEmpty()) {
             return null;
         }
         return list.get(0);
@@ -57,7 +74,7 @@ public class NhanVienRepository extends G4Repository<NhanVien, String> {
         List<NhanVien> list = new ArrayList<>();
         try {
             ResultSet rs = JdbcHelper.query(sql, args);
-            while(rs.next()){
+            while (rs.next()) {
                 NhanVien entity = new NhanVien();
                 entity.setId(rs.getString("Id"));
                 entity.setTenNV(rs.getString("TenNhanVien"));
