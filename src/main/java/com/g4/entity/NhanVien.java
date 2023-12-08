@@ -15,7 +15,7 @@ public class NhanVien {
     private String id;
     private String tenNV;
     private int gioiTinh;
-    private Date ngaySinh;
+    private String ngaySinh;
     private Date ngayTao;
     
     private String diaChi;

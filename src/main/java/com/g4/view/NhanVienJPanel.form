@@ -36,13 +36,6 @@
                           </Group>
                       </Group>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="date_ngaySInh" max="32767" attributes="0"/>
-                                  <Component id="txtTen" min="-2" pref="281" max="-2" attributes="0"/>
-                              </Group>
-                          </Group>
                           <Group type="102" alignment="1" attributes="0">
                               <EmptySpace max="32767" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
@@ -52,6 +45,13 @@
                                       <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
                                       <Component id="rdNu" min="-2" max="-2" attributes="0"/>
                                   </Group>
+                              </Group>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="txtNgaySinh" max="32767" attributes="0"/>
+                                  <Component id="txtTen" min="-2" pref="281" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -145,10 +145,10 @@
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
-                          <Component id="date_ngaySInh" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel3" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Component id="txtNgaySinh" alignment="1" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" pref="48" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="54" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="rdNam" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -395,14 +395,6 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnXoaActionPerformed"/>
       </Events>
     </Component>
-    <Component class="com.toedter.calendar.JDateChooser" name="date_ngaySInh">
-      <Properties>
-        <Property name="dateFormatString" type="java.lang.String" value="yyyy-MM-dd&#xa;"/>
-      </Properties>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value=""/>
-      </AuxValues>
-    </Component>
     <Component class="javax.swing.JButton" name="jButton1">
       <Properties>
         <Property name="text" type="java.lang.String" value="Load"/>
@@ -410,6 +402,11 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
       </Events>
+    </Component>
+    <Component class="com.toedter.calendar.JDateChooser" name="txtNgaySinh">
+      <Properties>
+        <Property name="dateFormatString" type="java.lang.String" value="yyyy/MM/dd"/>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>

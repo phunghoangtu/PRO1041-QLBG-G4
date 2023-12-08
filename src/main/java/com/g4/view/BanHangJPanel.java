@@ -461,7 +461,7 @@ public class BanHangJPanel extends javax.swing.JPanel {
 
                 if (hd.isHinhThucThanhToan()) { // If payment method is "Tiền mặt"
                     txtHoaDonPDF.append("Tiền khách đưa:     " + tienKhachDua1 + "   VNĐ" + "\n"
-                            + "Tiền thừa:              " + tienThua + ".000   VNĐ" + "\n");
+                            + "Tiền thừa:              " + tienThua + "   VNĐ" + "\n");
                 } else { // If payment method is "Chuyển khoản"
                     txtHoaDonPDF.append("Phương thức thanh toán:     Chuyển khoản" + "\n");
                 }
@@ -490,7 +490,7 @@ public class BanHangJPanel extends javax.swing.JPanel {
 
                     if (hd.isHinhThucThanhToan()) { // If payment method is "Tiền mặt"
                         document.add(new Paragraph("Tien khach dua:     " + tienKhachDua1 + "   VND", contentFont));
-                        document.add(new Paragraph("Tien thua:              " + tienThua + ".000   VND", contentFont));
+                        document.add(new Paragraph("Tien thua:              " + tienThua + "   VND", contentFont));
                     } else { // If payment method is "Chuyển khoản"
                         document.add(new Paragraph("Phuong thuc thanh toan:     Chuyen khoan", contentFont));
                     }
