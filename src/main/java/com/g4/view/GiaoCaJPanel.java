@@ -20,7 +20,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Timer;
 import javax.swing.JOptionPane;
+import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 /**
  *
@@ -30,39 +32,37 @@ public class GiaoCaJPanel extends javax.swing.JPanel {
 
     /**
      * Creates new form GiaoCaJPanel
-     * 
-     * 
+     *
+     *
      */
-    
     private GiaoCaVMRepository giaocaVMRepo = new GiaoCaVMRepository();
     private CaLamRepository calamRepo = new CaLamRepository();
     private GiaoCaRepository giaocaRepo = new GiaoCaRepository();
     private DefaultTableModel defaultTableModel = new DefaultTableModel();
-    
+
     public GiaoCaJPanel() {
         initComponents();
         lblTenNV.setText(Auth.user.getTenNV());
         lblTrangThai.setText("Chưa vào ca");
         loadDataGiaoCa();
     }
-    
-    public void loadDataGiaoCa(){
+
+    public void loadDataGiaoCa() {
         List<GiaoCaViewModel> list = giaocaVMRepo.selectAll();
         defaultTableModel = (DefaultTableModel) tbGiaoCa.getModel();
         defaultTableModel.setRowCount(0);
         int i = 1;
         for (GiaoCaViewModel x : list) {
             defaultTableModel.addRow(new Object[]{
-            i, x.getId(), x.getTenNV(), x.getNgayGiaoCa(), x.getGioBatDau(), x.getGioKetThu()
+                i, x.getId(), x.getTenNV(), x.getNgayGiaoCa(), x.getGioBatDau(), x.getGioKetThu()
             });
             i++;
         }
-        
-        
+
     }
-    
-    public CaLam inputCaLam(){
-      CaLam cl = new CaLam();
+
+    public CaLam inputCaLam() {
+        CaLam cl = new CaLam();
 
         Date now = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
@@ -95,68 +95,73 @@ public class GiaoCaJPanel extends javax.swing.JPanel {
 
         lblTrangThai.setText("Đang trong ca làm");
         lblGioBatDau.setText(formattedTime);
-        
+
         return cl;
     }
-    
-    public boolean validateCaLam(){
-        if(lblTrangThai.getText().equals("Đang trong ca làm")){
+
+    public boolean validateCaLam() {
+        if (lblTrangThai.getText().equals("Đang trong ca làm")) {
             return false;
         }
         return true;
     }
-    
-    public GiaoCa inputGiaoCa(){
+
+    public GiaoCa inputGiaoCa() {
         GiaoCa gc = new GiaoCa();
         gc.setIdNV(Auth.user.getId().toString());
         int idcl = calamRepo.CaLamHienTai();
         gc.setIdCL(idcl);
         return gc;
     }
-    
-     public void BatDauCaLam() {
-        if (validateCaLam()) {
-          CaLam cl = inputCaLam();
-            System.out.println("" + cl.getId());
-            try {
-                calamRepo.insert(cl);
-                GiaoCa gc = inputGiaoCa();
-                giaocaRepo.insert(gc);
-                lblGioKetThuc.setText("");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            JOptionPane.showMessageDialog(this, "Bắt đầu ca làm thành công");
-            
-        }else{
-             JOptionPane.showMessageDialog(this, "Bạn đã bắt đầu ca làm rồi");
-        }
-        loadDataGiaoCa();
-         
-    }
-     
-     
-     public void KetThucCaLam(){
-         if(lblTrangThai.getText().equals("Chưa vào ca") || lblTrangThai.getText().equals("Kết thúc ca làm")){
-             JOptionPane.showMessageDialog(this, "Bạn phải bắt đầu ca làm");
-         }
-         CaLam cl = new CaLam();
-        
-        Date now = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-        String formattedTime = sdf.format(now);
-        
-        cl.setGioKetThuc(formattedTime);
-        int idcl = calamRepo.CaLamHienTai();
 
-        calamRepo.update2(formattedTime, idcl);
-        JOptionPane.showMessageDialog(this, "Kết thúc ca làm thành công");
-        lblTrangThai.setText("Kết thúc ca làm");
-        lblGioKetThuc.setText(formattedTime);
-        
-        loadDataGiaoCa();
-     }
-    
+    public void BatDauCaLam() {
+        int tl = JOptionPane.showConfirmDialog(this, "Bạn có muốn bắt đầu ca làm không?", "Bắt đầu ca", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        if (tl == JOptionPane.YES_OPTION) {
+            if (validateCaLam()) {
+                CaLam cl = inputCaLam();
+                System.out.println("" + cl.getId());
+                try {
+                    calamRepo.insert(cl);
+                    GiaoCa gc = inputGiaoCa();
+                    giaocaRepo.insert(gc);
+                    lblGioKetThuc.setText("");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                JOptionPane.showMessageDialog(this, "Bắt đầu ca làm thành công");
+
+            } else {
+                JOptionPane.showMessageDialog(this, "Bạn đã bắt đầu ca làm rồi");
+            }
+            loadDataGiaoCa();
+        }
+
+    }
+
+    public void KetThucCaLam() {
+        int tl = JOptionPane.showConfirmDialog(this, "Bạn có muốn kết thúc ca làm không?", "Kết thúc ca", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        if (tl == JOptionPane.YES_OPTION) {
+            if (lblTrangThai.getText().equals("Chưa vào ca") || lblTrangThai.getText().equals("Kết thúc ca làm")) {
+                JOptionPane.showMessageDialog(this, "Bạn phải bắt đầu ca làm");
+            }
+            CaLam cl = new CaLam();
+
+            Date now = new Date();
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+            String formattedTime = sdf.format(now);
+
+            cl.setGioKetThuc(formattedTime);
+            int idcl = calamRepo.CaLamHienTai();
+
+            calamRepo.update2(formattedTime, idcl);
+            JOptionPane.showMessageDialog(this, "Kết thúc ca làm thành công");
+            lblTrangThai.setText("Kết thúc ca làm");
+            lblGioKetThuc.setText(formattedTime);
+
+            loadDataGiaoCa();
+        }
+
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -181,6 +186,8 @@ public class GiaoCaJPanel extends javax.swing.JPanel {
         jLabel5 = new javax.swing.JLabel();
         lblGioBatDau = new javax.swing.JLabel();
         lblGioKetThuc = new javax.swing.JLabel();
+        txtTimKiem = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
 
         tbGiaoCa.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -230,6 +237,14 @@ public class GiaoCaJPanel extends javax.swing.JPanel {
 
         lblGioKetThuc.setText("?");
 
+        txtTimKiem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtTimKiemActionPerformed(evt);
+            }
+        });
+
+        jLabel6.setText("Tìm kiếm ngày");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -250,15 +265,19 @@ public class GiaoCaJPanel extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(lblGioKetThuc)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(lblGioBatDau)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 204, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 207, Short.MAX_VALUE)
                         .addComponent(btnGBD, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(48, 48, 48)))
-                .addComponent(btnGKT, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(54, 54, 54))
+                        .addGap(48, 48, 48)
+                        .addComponent(btnGKT, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(54, 54, 54))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(lblGioKetThuc)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(107, 107, 107))))
         );
 
         jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnGBD, btnGKT});
@@ -274,13 +293,21 @@ public class GiaoCaJPanel extends javax.swing.JPanel {
                     .addComponent(btnGKT, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5)
                     .addComponent(lblGioBatDau))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(lblTrangThai)
-                    .addComponent(jLabel2)
-                    .addComponent(lblGioKetThuc))
-                .addContainerGap(36, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel4)
+                            .addComponent(lblTrangThai)
+                            .addComponent(jLabel2)
+                            .addComponent(lblGioKetThuc))
+                        .addContainerGap(36, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel6))
+                        .addGap(20, 20, 20))))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -288,16 +315,15 @@ public class GiaoCaJPanel extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(356, 356, 356)
-                        .addComponent(jLabel3))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(31, 31, 31)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jScrollPane1))))
-                .addGap(35, 35, 35))
+                .addGap(31, 31, 31)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(356, 356, 356)
+                .addComponent(jLabel3)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -320,6 +346,18 @@ public class GiaoCaJPanel extends javax.swing.JPanel {
         KetThucCaLam();
     }//GEN-LAST:event_btnGKTActionPerformed
 
+    private void txtTimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTimKiemActionPerformed
+        if (txtTimKiem == null) {
+            loadDataGiaoCa();
+        } else {
+            DefaultTableModel dmt = (DefaultTableModel) tbGiaoCa.getModel();
+            String search = txtTimKiem.getText().toLowerCase();
+            TableRowSorter<DefaultTableModel> tr = new TableRowSorter<DefaultTableModel>(dmt);
+            tbGiaoCa.setRowSorter(tr);
+            tr.setRowFilter(RowFilter.regexFilter(search));
+        }
+    }//GEN-LAST:event_txtTimKiemActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGBD;
@@ -329,6 +367,7 @@ public class GiaoCaJPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblGioBatDau;
@@ -336,5 +375,6 @@ public class GiaoCaJPanel extends javax.swing.JPanel {
     private javax.swing.JLabel lblTenNV;
     private javax.swing.JLabel lblTrangThai;
     private javax.swing.JTable tbGiaoCa;
+    private javax.swing.JTextField txtTimKiem;
     // End of variables declaration//GEN-END:variables
 }

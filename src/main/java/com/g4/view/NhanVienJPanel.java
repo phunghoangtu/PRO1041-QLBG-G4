@@ -35,7 +35,6 @@ public class NhanVienJPanel extends javax.swing.JPanel {
     public NhanVienJPanel() {
         initComponents();
         loadData();
-        
 
     }
 
@@ -51,7 +50,7 @@ public class NhanVienJPanel extends javax.swing.JPanel {
 
     }
 
-    public NhanVien getNVInput() {
+    public NhanVien getNVInput() throws ParseException {
         NhanVien nv = new NhanVien();
         nv.setTenNV(txtTen.getText());
         nv.setDiaChi(txtDiachi.getText());
@@ -62,9 +61,12 @@ public class NhanVienJPanel extends javax.swing.JPanel {
             nv.setGioiTinh(0);
         }
         nv.setMatKhau(new String(txtMatkhau.getPassword()));
-        
-        Date ngaytaoo = date_ngaySInh.getDate();
-        nv.setNgayTao(ngaytaoo);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        String ngaySinh = date_ngaySInh.getDate().toString();
+        Date ns = sdf.parse(ngaySinh);
+        System.out.println("Selected Date: " + date_ngaySInh.getDate());
+        nv.setNgaySinh(ns);
 
 //        if (date_ngaySInh.getDate() != null) {
 //            Date ngaySinh = date_ngaySInh.getDate();
@@ -73,7 +75,6 @@ public class NhanVienJPanel extends javax.swing.JPanel {
 //            JOptionPane.showMessageDialog(this, "Vui lòng nhập ngày sinh");
 //            return null;
 //        }
-
 //        if (date_ngaySInh.getDate() != null) {
 //            Date ngaySinh = date_ngaySInh.getDate();
 //            nv.setNgaySinh(ngaySinh);
@@ -116,22 +117,34 @@ public class NhanVienJPanel extends javax.swing.JPanel {
 //            JOptionPane.showMessageDialog(this, "Vui long chon gioi tinh");
 //            return false;
 //        }
-        if (txtMatkhau.getPassword().equals("")) {
+//        if (date_ngaySInh.getDate() == null) {
+//            JOptionPane.showMessageDialog(this, "Vui lòng nhập ngày sinh");
+//            return false;
+//        }
+//        if (date_ngaySInh.getDate() == null || date_ngaySInh.getDate().after(new Date())) {
+//            JOptionPane.showMessageDialog(this, "Vui lòng nhập ngày sinh hợp lệ");
+//            return false;
+//        }
+        if (txtMatkhau.getPassword().equals(" ")) {
             JOptionPane.showMessageDialog(this, "Vui long nhap mat khau");
         }
 
         return true;
     }
 
-    public void save() {
+    public void save() throws ParseException {
+
         if (validateform()) {
             NhanVien nv = getNVInput();
-            try {
-                repository.insert(nv);
-            } catch (Exception e) {
-                e.printStackTrace();
+            if (nv != null) {
+                try {
+                    repository.insert(nv);
+                    JOptionPane.showMessageDialog(this, "Them thanh cong");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-            JOptionPane.showMessageDialog(this, "Them thanh cong");
+
         }
         loadData();
     }
@@ -153,15 +166,18 @@ public class NhanVienJPanel extends javax.swing.JPanel {
             rdNam.setSelected(false);
         }
         txtMatkhau.setText((TBL.getValueAt(row, 5).toString()));
-        
-          SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-         try {
-            // Chuyển đổi chuỗi ngày thành đối tượng Date
-            String dateTable = TBL.getValueAt(row, 6).toString();
-            Date date = sdf.parse(dateTable);
-            date_ngaySInh.setDate(date);
-            // In ra giá trị ngày đã chuyển đổi
-            System.out.println("Converted Date: " + date);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Object dateValue = TBL.getValueAt(row, 6);
+            if (dateValue != null) {
+                String dateTable = dateValue.toString();
+                Date date = sdf.parse(dateTable);
+                date_ngaySInh.setDate(date);
+                System.out.println("Converted Date: " + date);
+            } else {
+                date_ngaySInh.setDate(null);
+            }
 
             // Bạn có thể sử dụng đối tượng Date này cho mục đích khác
         } catch (ParseException e) {
@@ -471,7 +487,11 @@ public class NhanVienJPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
-        save();
+        try {
+            save();
+        } catch (ParseException ex) {
+            Logger.getLogger(NhanVienJPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnThemActionPerformed
 
     private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
@@ -495,11 +515,16 @@ public class NhanVienJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_TBLMouseClicked
 
     private void txtTimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTimKiemActionPerformed
-        DefaultTableModel dmt = (DefaultTableModel) TBL.getModel();
-        String search = txtTimKiem.getText().toLowerCase();
-        TableRowSorter<DefaultTableModel> tr = new TableRowSorter<DefaultTableModel>(dmt);
-        TBL.setRowSorter(tr);
-        tr.setRowFilter(RowFilter.regexFilter(search));
+        if (txtTimKiem == null) {
+            loadData();
+        } else {
+            DefaultTableModel dmt = (DefaultTableModel) TBL.getModel();
+            String search = txtTimKiem.getText().toLowerCase();
+            TableRowSorter<DefaultTableModel> tr = new TableRowSorter<DefaultTableModel>(dmt);
+            TBL.setRowSorter(tr);
+            tr.setRowFilter(RowFilter.regexFilter(search));
+        }
+
     }//GEN-LAST:event_txtTimKiemActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
