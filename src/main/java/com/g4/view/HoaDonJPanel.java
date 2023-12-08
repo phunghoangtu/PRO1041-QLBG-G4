@@ -12,6 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 import com.g4.repository.impl.HoaDonRepository;
 import com.g4.repository.impl.HDCTRepository;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 /**
  *
@@ -22,21 +25,27 @@ public class HoaDonJPanel extends javax.swing.JPanel {
     private DefaultTableModel dtm = new DefaultTableModel();
     private HoaDonRepository hdrepo = new HoaDonRepository();
     private HDCTRepository hdctrepo = new HDCTRepository();
+    
+    int trangthaiHD=1;
     /**
      * Creates new form HoaDonJPanel
      */
-    public HoaDonJPanel() {
+    public HoaDonJPanel()  {
         initComponents();
-        loadDataHD();
+        try {
+            loadDataHD();
+        } catch (SQLException ex) {
+            Logger.getLogger(KhuyenMaiJPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
-    public void loadDataHD() {
-        List<HoaDon> list = hdrepo.selectAll();
+    public void loadDataHD() throws SQLException {
+        List<HoaDon> list = hdrepo.selectAll2(tukhoatimkiem, trangthaiHD);
         dtm = (DefaultTableModel) tbl_HD.getModel();
         dtm.setRowCount(0);
         for (HoaDon x : list) {
             dtm.addRow(new Object[]{
-                x.getId(), x.getMaHD(), x.getNgayTao(), x.getNgayThanhToan(), x.getTongTien(), x.getGhiChu(), x.getTrangThai(), x.getHTTT()
+                 x.getMaHD(), x.getNgayTao(), x.getNgayThanhToan(), x.getTongTien(), x.getGhiChu(), x.getTrangThai(), x.getHTTT(),x.getIdNV()
             });
         }
 
@@ -55,6 +64,8 @@ public class HoaDonJPanel extends javax.swing.JPanel {
         }
 
     }
+    
+    String tukhoatimkiem = "";
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -76,6 +87,7 @@ public class HoaDonJPanel extends javax.swing.JPanel {
         lblHoaDon = new javax.swing.JLabel();
         lbl_HDCT = new javax.swing.JLabel();
 
+        cbo_locHD.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Đã thanh toán", "Đang chờ", "Đã hủy" }));
         cbo_locHD.setToolTipText("Lọc");
 
         lbl_loc.setText("LỌC");
@@ -95,7 +107,7 @@ public class HoaDonJPanel extends javax.swing.JPanel {
 
             },
             new String [] {
-                "HÓA ĐƠN", "NGÀY TẠO", "NGÀY THANH TOÁN", "TỔNG TIỀN", "GHI CHÚ", "TRẠNG THÁI", "TTTT", "ID NHÂN VIÊN"
+                "HÓA ĐƠN", "NGÀY TẠO", "NGÀY THANH TOÁN", "TỔNG TIỀN", "GHI CHÚ", "TRẠNG THÁI", "HTTT", "ID NHAN VIEN"
             }
         ));
         tbl_HD.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -107,6 +119,11 @@ public class HoaDonJPanel extends javax.swing.JPanel {
 
         btn_timKiem.setBackground(new java.awt.Color(255, 255, 204));
         btn_timKiem.setText("TÌM KIẾM");
+        btn_timKiem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_timKiemActionPerformed(evt);
+            }
+        });
 
         btn_inHD.setBackground(new java.awt.Color(0, 102, 255));
         btn_inHD.setForeground(new java.awt.Color(255, 255, 255));
@@ -178,6 +195,25 @@ public class HoaDonJPanel extends javax.swing.JPanel {
         } catch (Exception e) {
         }
     }//GEN-LAST:event_tbl_HDMouseClicked
+    
+    private void btn_timKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_timKiemActionPerformed
+        tukhoatimkiem = txt_timKiem.getText().trim();
+        if(cbo_locHD.getSelectedItem().equals("Đã thanh toán")){
+            trangthaiHD=1;
+        }
+        else if(cbo_locHD.getSelectedItem().equals("Đang chờ")){
+            trangthaiHD=2;
+        }
+        else{
+            trangthaiHD=0;
+        }
+        
+        try {
+            loadDataHD();
+        } catch (SQLException ex) {
+            Logger.getLogger(KhuyenMaiJPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btn_timKiemActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

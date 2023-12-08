@@ -72,7 +72,11 @@
     <Component class="javax.swing.JComboBox" name="cbo_locHD">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="0"/>
+          <StringArray count="3">
+            <StringItem index="0" value="&#x110;&#xe3; thanh to&#xe1;n"/>
+            <StringItem index="1" value="&#x110;ang ch&#x1edd;"/>
+            <StringItem index="2" value="&#x110;&#xe3; h&#x1ee7;y"/>
+          </StringArray>
         </Property>
         <Property name="toolTipText" type="java.lang.String" value="L&#x1ecd;c"/>
       </Properties>
@@ -126,9 +130,53 @@
                 <Column editable="true" title="T&#x1ed4;NG TI&#x1ec0;N" type="java.lang.Object"/>
                 <Column editable="true" title="GHI CH&#xda;" type="java.lang.Object"/>
                 <Column editable="true" title="TR&#x1ea0;NG TH&#xc1;I" type="java.lang.Object"/>
-                <Column editable="true" title="TTTT" type="java.lang.Object"/>
-                <Column editable="true" title="ID NH&#xc2;N VI&#xca;N" type="java.lang.Object"/>
+                <Column editable="true" title="HTTT" type="java.lang.Object"/>
+                <Column editable="true" title="ID NHAN VIEN" type="java.lang.Object"/>
               </Table>
+            </Property>
+            <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
+              <TableColumnModel selectionModel="0">
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+              </TableColumnModel>
             </Property>
             <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
               <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
@@ -147,6 +195,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="T&#xcc;M KI&#x1ebe;M"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_timKiemActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btn_inHD">
       <Properties>
