@@ -199,10 +199,10 @@ public class HoaDonJPanel extends javax.swing.JPanel {
     private void btn_timKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_timKiemActionPerformed
         tukhoatimkiem = txt_timKiem.getText().trim();
         if(cbo_locHD.getSelectedItem().equals("Đã thanh toán")){
-            trangthaiHD=1;
+            trangthaiHD=3;
         }
         else if(cbo_locHD.getSelectedItem().equals("Đang chờ")){
-            trangthaiHD=2;
+            trangthaiHD=1;
         }
         else{
             trangthaiHD=0;
