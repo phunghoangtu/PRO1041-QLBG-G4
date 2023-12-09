@@ -1,14 +1,45 @@
 package com.g4.view;
 
+import com.g4.repository.impl.HDCTRepository;
+import com.g4.repository.impl.HoaDonRepository;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import javax.swing.table.DefaultTableModel;
 
 public class ThongKeJPanel extends javax.swing.JPanel {
 
-    
+    private HDCTRepository hDCTRepository = new HDCTRepository();
+    private HoaDonRepository hoaDonRepository = new HoaDonRepository();
+    private DefaultTableModel defaultTableModel = new DefaultTableModel();
+    SimpleDateFormat ft = new SimpleDateFormat("yyyy/MM/dd");
+
     public ThongKeJPanel() {
         initComponents();
+
+        String TSP = hDCTRepository.TongSLSP();
+        lbl_sanPhamtk.setText(TSP);
+
+        String THD = hoaDonRepository.TongHD();
+        lbl_hoaDon.setText(THD);
+
+        String TKH = hoaDonRepository.TongKH();
+        lbl_khachHang.setText(TKH);
+
+        lbl_doanhThu.setText(FormatNumber(hDCTRepository.TongDT()));
+        String t = FormatNumber(hDCTRepository.TongDT());
+        System.out.println(t);
+
+        double TDT = hDCTRepository.TongDT();
+        double TLN = TDT * 0.3;
+        lbl_loinhuan.setText(FormatNumber(TLN));
+
     }
 
-   
+    public String FormatNumber(double number) {
+        DecimalFormat format = new DecimalFormat("#,###");
+        return format.format(number);
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -453,15 +484,19 @@ public class ThongKeJPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_resetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_resetActionPerformed
-       
+
     }//GEN-LAST:event_btn_resetActionPerformed
 
     private void btn_thongKeLBLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_thongKeLBLActionPerformed
-
+        try {
+            System.out.println(date_batDau.getDate().toString());
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_btn_thongKeLBLActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        
+
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
 

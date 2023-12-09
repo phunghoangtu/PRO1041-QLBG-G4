@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
@@ -76,19 +77,19 @@ public class NhanVienJPanel extends javax.swing.JPanel {
     }
 
     public boolean validateform() {
-        if (txtTen.getText().equals(" ")) {
+        if (txtTen.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Ten nhan vien trong");
             return false;
         }
-        if (txtDiachi.getText().equals(" ")) {
+        if (txtDiachi.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Dia chi trong");
             return false;
         }
-        if (txtEmail.getText().equals(" ")) {
+        if (txtEmail.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Email trong");
             return false;
         }
-        if (txtSDT.getText().equals(" ")) {
+        if (txtSDT.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "So dien thoai trong");
             return false;
         }
@@ -100,13 +101,19 @@ public class NhanVienJPanel extends javax.swing.JPanel {
 //            JOptionPane.showMessageDialog(this, "Vui long chon gioi tinh");
 //            return false;
 //        }
-        if (txtMatkhau.getPassword().equals("")) {
+        if (!isPasswordFieldNotEmpty(txtMatkhau)) {
             JOptionPane.showMessageDialog(this, "Vui long nhap mat khau");
+            return false;
         }
-
+        System.out.println(txtMatkhau.getPassword());
         return true;
     }
 
+    public static boolean isPasswordFieldNotEmpty(JPasswordField passwordField) {
+        char[] password = passwordField.getPassword();
+        return password.length > 0;
+    }
+    
     public void save() {
         if (validateform()) {
             NhanVien nv = getNVInput();
@@ -136,7 +143,7 @@ public class NhanVienJPanel extends javax.swing.JPanel {
             rdNu.setSelected(true);
             rdNam.setSelected(false);
         }
-        txtMatkhau.setText((TBL.getValueAt(row, 5).toString()));
+//        txtMatkhau.setText((TBL.getValueAt(row, 5).toString()));
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         try {
@@ -185,6 +192,8 @@ public class NhanVienJPanel extends javax.swing.JPanel {
         nv.setMatKhau(new String(txtMatkhau.getPassword()));
         nv.setSdt(txtSDT.getText());
         nv.setTenNV(txtTen.getText());
+        String ngaySinh = ft.format(txtNgaySinh.getDate());
+        nv.setNgaySinh(ngaySinh);
         nv.setSdt(txtSDT.getText());
         if (cbVaitro.getSelectedItem().equals("Nhan vien")) {
             nv.setVaiTro(true);
