@@ -19,6 +19,9 @@ import java.util.List;
 public class HDCTRepository  extends G4Repository<HoaDonChiTiet, String>{
     String select_all_sql = "select * from HoaDonChiTiet";
     String select_by_id_sql = "Select * from HoaDonChiTiet Where idHoaDon like ?";
+    String select_SoLuong_sql = "select sum(SoLuong) from HoaDonChiTiet";
+    String select_SLDG_sql = "select soluong, dongia from hoadonchitiet";
+    
     
     @Override
     public void insert(HoaDonChiTiet entity) {
@@ -73,4 +76,35 @@ public class HDCTRepository  extends G4Repository<HoaDonChiTiet, String>{
         }
         return list;
         }
+    
+    public String TongSLSP(){
+        try {
+            ResultSet rs = JdbcHelper.query(select_SoLuong_sql);
+            if(rs.next()){
+                return rs.getString(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        return "0";
+    }
+    
+    public double TongDT(){
+        try {
+            ResultSet rs = JdbcHelper.query(select_SLDG_sql);
+            double tong = 0;
+            int soluong = 0;
+            double dongia = 0;
+            while (rs.next()){
+                soluong = rs.getInt(1);
+                dongia = rs.getDouble(2);
+                tong += soluong * dongia;
+            }
+            return tong;
+        } catch (Exception e) {
+        }
+        return 0;
+    }
+    
 }

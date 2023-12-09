@@ -21,6 +21,8 @@ import java.util.List;
 public class HoaDonRepository extends G4Repository<HoaDon, String>{
     String select_all_sql = "select * from HoaDon where MaHD like ? and TrangThai like ?";
     String select_by_id_sql = "Select * from HoaDon Where id = ?";
+    String select_TongHD_sql = "select count(id) from HoaDon";
+    String select_TongKH_sql = "select COUNT(DISTINCT idKhachHang) from HoaDon";
     
     public List<HoaDon> selectAll() {
         return selectBySql(select_all_sql);
@@ -107,5 +109,28 @@ public class HoaDonRepository extends G4Repository<HoaDon, String>{
         conn.close();
         return list;
     
+    }
+    
+    public String TongHD(){
+        try {
+            ResultSet rs = JdbcHelper.query(select_TongHD_sql);
+            if(rs.next()){
+                return rs.getString(1);
+            }
+        } catch (Exception e) {
+        }
+        
+        return "0";
+    }
+    
+    public String TongKH(){
+        try {
+            ResultSet rs = JdbcHelper.query(select_TongKH_sql);
+            if(rs.next()){
+                return rs.getString(1);
+            }
+        } catch (Exception e) {
+        }
+        return "0";
     }
 }
