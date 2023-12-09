@@ -82,7 +82,6 @@ public class HoaDonJPanel extends javax.swing.JPanel {
         jScrollPane2 = new javax.swing.JScrollPane();
         tbl_HD = new javax.swing.JTable();
         btn_timKiem = new javax.swing.JButton();
-        btn_inHD = new javax.swing.JButton();
         txt_timKiem = new javax.swing.JTextField();
         lblHoaDon = new javax.swing.JLabel();
         lbl_HDCT = new javax.swing.JLabel();
@@ -125,10 +124,6 @@ public class HoaDonJPanel extends javax.swing.JPanel {
             }
         });
 
-        btn_inHD.setBackground(new java.awt.Color(0, 102, 255));
-        btn_inHD.setForeground(new java.awt.Color(255, 255, 255));
-        btn_inHD.setText("IN HÓA ĐƠN");
-
         lblHoaDon.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblHoaDon.setText("HÓA ĐƠN");
 
@@ -152,9 +147,7 @@ public class HoaDonJPanel extends javax.swing.JPanel {
                             .addComponent(txt_timKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 303, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                             .addComponent(btn_timKiem)
-                            .addGap(83, 83, 83)
-                            .addComponent(btn_inHD)
-                            .addGap(43, 43, 43))
+                            .addGap(229, 229, 229))
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblHoaDon)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 963, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -169,7 +162,6 @@ public class HoaDonJPanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_timKiem)
-                    .addComponent(btn_inHD)
                     .addComponent(txt_timKiem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cbo_locHD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lbl_loc))
@@ -217,7 +209,6 @@ public class HoaDonJPanel extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btn_inHD;
     private javax.swing.JButton btn_timKiem;
     private javax.swing.JComboBox<String> cbo_locHD;
     private javax.swing.JScrollPane jScrollPane1;
