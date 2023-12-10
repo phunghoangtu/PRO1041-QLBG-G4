@@ -19,6 +19,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.Timer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
@@ -51,14 +53,24 @@ public class GiaoCaJPanel extends javax.swing.JPanel {
         List<GiaoCaViewModel> list = giaocaVMRepo.selectAll();
         defaultTableModel = (DefaultTableModel) tbGiaoCa.getModel();
         defaultTableModel.setRowCount(0);
-        int i = 1;
         for (GiaoCaViewModel x : list) {
             defaultTableModel.addRow(new Object[]{
-                i, x.getId(), x.getTenNV(), x.getNgayGiaoCa(), x.getGioBatDau(), x.getGioKetThu()
+                x.getId(), x.getTenNV(), x.getNgayGiaoCa(), x.getGioBatDau(), x.getGioKetThu()
             });
-            i++;
+
         }
 
+    }
+
+    public void TimKiem(Date date) {
+        List<GiaoCaViewModel> list = giaocaVMRepo.timNgay(date);
+        defaultTableModel = (DefaultTableModel) tbGiaoCa.getModel();
+        defaultTableModel.setRowCount(0);
+        for (GiaoCaViewModel x : list) {
+            defaultTableModel.addRow(new Object[]{
+                x.getId(), x.getTenNV(), x.getNgayGiaoCa(), x.getGioBatDau(), x.getGioKetThu()
+            });
+        }
     }
 
     public CaLam inputCaLam() {
@@ -188,16 +200,17 @@ public class GiaoCaJPanel extends javax.swing.JPanel {
         lblGioKetThuc = new javax.swing.JLabel();
         txtTimKiem = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
         tbGiaoCa.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, "", null, null, null},
-                {null, null, "", null, null, null},
-                {null, null, "", null, null, null},
-                {null, null, "", null, null, null}
+                {null, "", null, null, null},
+                {null, "", null, null, null},
+                {null, "", null, null, null},
+                {null, "", null, null, null}
             },
             new String [] {
-                "STT", "ID", "Tên nhân viên", "Ngày giao ca", "Giờ bắt đầu", "Giờ kết thúc"
+                "ID", "Tên nhân viên", "Ngày giao ca", "Giờ bắt đầu", "Giờ kết thúc"
             }
         ));
         jScrollPane1.setViewportView(tbGiaoCa);
@@ -310,6 +323,13 @@ public class GiaoCaJPanel extends javax.swing.JPanel {
                         .addGap(20, 20, 20))))
         );
 
+        jButton1.setText("Reset");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -323,7 +343,9 @@ public class GiaoCaJPanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(356, 356, 356)
                 .addComponent(jLabel3)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton1)
+                .addGap(23, 23, 23))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -331,8 +353,13 @@ public class GiaoCaJPanel extends javax.swing.JPanel {
                 .addContainerGap(10, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jLabel3)
-                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addGap(18, 18, 18))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jButton1)
+                        .addGap(9, 9, 9)))
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 361, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(39, 39, 39))
         );
@@ -347,21 +374,30 @@ public class GiaoCaJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_btnGKTActionPerformed
 
     private void txtTimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTimKiemActionPerformed
-        if (txtTimKiem == null) {
+        if (txtTimKiem.getText() == null) {
             loadDataGiaoCa();
         } else {
-            DefaultTableModel dmt = (DefaultTableModel) tbGiaoCa.getModel();
-            String search = txtTimKiem.getText().toLowerCase();
-            TableRowSorter<DefaultTableModel> tr = new TableRowSorter<DefaultTableModel>(dmt);
-            tbGiaoCa.setRowSorter(tr);
-            tr.setRowFilter(RowFilter.regexFilter(search));
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Date date;
+            try {
+                date = dateFormat.parse(txtTimKiem.getText().toString());
+                TimKiem(date);
+            } catch (ParseException ex) {
+                Logger.getLogger(GiaoCaJPanel.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
         }
     }//GEN-LAST:event_txtTimKiemActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        loadDataGiaoCa();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGBD;
     private javax.swing.JButton btnGKT;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

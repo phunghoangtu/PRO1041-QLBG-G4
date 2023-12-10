@@ -7,6 +7,7 @@ package com.g4.repository.impl;
 import com.g4.entity.NhanVien;
 import com.g4.repository.G4Repository;
 import com.g4.utils.JdbcHelper;
+import com.g4.viewmodel.NhanVienViewModel;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,9 +18,10 @@ public class NhanVienRepository extends G4Repository<NhanVien, String> {
 
     String insert_sql = "Insert into NhanVien(MatKhau, TenNhanVien, vaiTro, GioiTinh, Email, DiaChi, NgaySinh, SoDienThoai)values(?,?,?,?,?,?,?,?)";
     String update_sql = "Update NhanVien set MatKhau = ?, TenNhanVien = ?, VaiTro = ?, GioiTinh = ?, Email = ?, NgaySinh = ?, SoDienThoai = ?, DiaChi = ? Where Id = ?";
-    String delete_sql = "Delete from NhanVien Where Id = ?";
-    String select_all_sql = "select * from NhanVien";
+    String delete_sql = "Update NhanVien set trangthai = 0 Where Id = ?";
+    String select_all_sql = "select * from NhanVien where trangthai = '1'";
     String select_by_id_sql = "Select * from NhanVien Where MaNV = ?";
+    String select_TimKiem_sql = "select * from NhanVien where TenNhanVien = ?";
 
     public static String encode(String password) {
         try {
@@ -87,6 +89,31 @@ public class NhanVienRepository extends G4Repository<NhanVien, String> {
                 entity.setMatKhau(rs.getString("MatKhau"));
                 entity.setVaiTro(rs.getBoolean("VaiTro"));
                 list.add(entity);
+            }
+        } catch (Exception e) {
+        }
+        return list;
+    }
+
+    public List<NhanVienViewModel> TimKiem(String ten) {
+        List<NhanVienViewModel> list = new ArrayList<>();
+        try {
+            ResultSet rs = JdbcHelper.query(select_TimKiem_sql, ten);
+            while (rs.next()) {
+                NhanVienViewModel nv = new NhanVienViewModel();
+
+                nv.setId(rs.getString(1));
+                nv.setTenNV(rs.getString(2));
+                nv.setGioiTinh(rs.getInt(3));
+                nv.setNgaySinh(rs.getString(4));
+                nv.setSdt(rs.getString(5));
+                nv.setDiaChi(rs.getString(6));
+                nv.setEmail(rs.getString(7));
+                nv.setNgayTao(rs.getDate(8));
+                nv.setMatKhau(rs.getString(9));
+                nv.setVaiTro(rs.getBoolean(10));
+//                nv.setTrangThai(rs.getInt(11));
+                list.add(nv);
             }
         } catch (Exception e) {
         }

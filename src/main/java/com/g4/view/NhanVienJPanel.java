@@ -6,6 +6,7 @@ package com.g4.view;
 
 import com.g4.entity.NhanVien;
 import com.g4.repository.impl.NhanVienRepository;
+import com.g4.viewmodel.NhanVienViewModel;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -43,6 +44,18 @@ public class NhanVienJPanel extends javax.swing.JPanel {
         defaultTableModel = (DefaultTableModel) TBL.getModel();
         defaultTableModel.setRowCount(0);
         for (NhanVien x : list) {
+            defaultTableModel.addRow(new Object[]{
+                x.getId(), x.getTenNV(), x.GioiTinh(x.getGioiTinh()), x.getEmail(), x.getSdt(), x.getMatKhau(), x.getNgaySinh(), x.getNgayTao(), x.getDiaChi(), x.VaiTro(x.isVaiTro()), x.TrangThai(x.getTrangThai())
+            });
+        }
+
+    }
+
+    public void TimKiem(String ten) {
+        List<NhanVienViewModel> list = repository.TimKiem(ten);
+        defaultTableModel = (DefaultTableModel) TBL.getModel();
+        defaultTableModel.setRowCount(0);
+        for (NhanVienViewModel x : list) {
             defaultTableModel.addRow(new Object[]{
                 x.getId(), x.getTenNV(), x.GioiTinh(x.getGioiTinh()), x.getEmail(), x.getSdt(), x.getMatKhau(), x.getNgaySinh(), x.getNgayTao(), x.getDiaChi(), x.VaiTro(x.isVaiTro()), x.TrangThai(x.getTrangThai())
             });
@@ -93,10 +106,10 @@ public class NhanVienJPanel extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "So dien thoai trong");
             return false;
         }
-//        if (date_ngaySInh.equals("")) {
-//            JOptionPane.showMessageDialog(this, "Ngay sinh trong");
-//            return false;
-//        }
+        if (txtNgaySinh.getDate() == null) {
+            JOptionPane.showMessageDialog(this, "Ngay sinh trong");
+            return false;
+        }
 //        if (!rdNam.isSelected() || !rdNu.isSelected()) {
 //            JOptionPane.showMessageDialog(this, "Vui long chon gioi tinh");
 //            return false;
@@ -113,7 +126,7 @@ public class NhanVienJPanel extends javax.swing.JPanel {
         char[] password = passwordField.getPassword();
         return password.length > 0;
     }
-    
+
     public void save() {
         if (validateform()) {
             NhanVien nv = getNVInput();
@@ -178,36 +191,37 @@ public class NhanVienJPanel extends javax.swing.JPanel {
         int row = TBL.getSelectedRow();
         if (row < 0) {
             JOptionPane.showMessageDialog(this, "Hãy chọn 1 dòng");
-        }
-        NhanVien nv = new NhanVien();
-        nv.setDiaChi(txtDiachi.getText());
-        nv.setEmail(txtEmail.getText());
-        if (rdNam.isSelected()) {
-            nv.setGioiTinh(1);
-        } else {
-            nv.setGioiTinh(0);
-        }
-        nv.setMatKhau(new String(txtMatkhau.getPassword()));
-        nv.setSdt(txtSDT.getText());
-        nv.setTenNV(txtTen.getText());
-        String ngaySinh = ft.format(txtNgaySinh.getDate());
-        nv.setNgaySinh(ngaySinh);
-        nv.setSdt(txtSDT.getText());
-        if (cbVaitro.getSelectedItem().equals("Nhan vien")) {
-            nv.setVaiTro(true);
-        } else {
-            nv.setVaiTro(false);
-        }
+        } else if (validateform()) {
+            NhanVien nv = new NhanVien();
+            nv.setDiaChi(txtDiachi.getText());
+            nv.setEmail(txtEmail.getText());
+            if (rdNam.isSelected()) {
+                nv.setGioiTinh(1);
+            } else {
+                nv.setGioiTinh(0);
+            }
+            nv.setMatKhau(new String(txtMatkhau.getPassword()));
+            nv.setSdt(txtSDT.getText());
+            nv.setTenNV(txtTen.getText());
+            String ngaySinh = ft.format(txtNgaySinh.getDate());
+            nv.setNgaySinh(ngaySinh);
+            nv.setSdt(txtSDT.getText());
+            if (cbVaitro.getSelectedItem().equals("Nhan vien")) {
+                nv.setVaiTro(true);
+            } else {
+                nv.setVaiTro(false);
+            }
 
-        if (rdNam.isSelected()) {
-            nv.setGioiTinh(1);
-        } else {
-            nv.setGioiTinh(0);
+            if (rdNam.isSelected()) {
+                nv.setGioiTinh(1);
+            } else {
+                nv.setGioiTinh(0);
+            }
+            nv.setId(TBL.getValueAt(row, 0).toString());
+            repository.update(nv);
+            JOptionPane.showMessageDialog(this, "Sửa thành công");
+            loadData();
         }
-        nv.setId(TBL.getValueAt(row, 0).toString());
-        repository.update(nv);
-        JOptionPane.showMessageDialog(this, "Sửa thành công");
-        loadData();
 
     }
 
@@ -486,11 +500,8 @@ public class NhanVienJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_TBLMouseClicked
 
     private void txtTimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTimKiemActionPerformed
-        DefaultTableModel dmt = (DefaultTableModel) TBL.getModel();
-        String search = txtTimKiem.getText().toLowerCase();
-        TableRowSorter<DefaultTableModel> tr = new TableRowSorter<DefaultTableModel>(dmt);
-        TBL.setRowSorter(tr);
-        tr.setRowFilter(RowFilter.regexFilter(search));
+        TimKiem(txtTimKiem.getText());
+        System.out.println(txtTimKiem.getText());
     }//GEN-LAST:event_txtTimKiemActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
