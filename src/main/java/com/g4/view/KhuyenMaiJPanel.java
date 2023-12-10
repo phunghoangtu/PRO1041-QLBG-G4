@@ -78,7 +78,7 @@ public class KhuyenMaiJPanel extends javax.swing.JPanel {
         km.setTenKM(txt_tenKM.getText());
         km.setNgaybatDau(txt_ngayBD2.getText());
         km.setNgayketThuc(txt_ngayKT2.getText());
-        km.setMuctramGiam(txt_phanTramGiam2.getText());
+        km.setMuctramGiam(Double.valueOf(txt_phanTramGiam2.getText()));
         km.setMoTa(txt_moTa2.getText());
         //km.setKieugiamGia(true);
         if(cbo_kieuKM2.getSelectedItem().equals("Phần trăm")){

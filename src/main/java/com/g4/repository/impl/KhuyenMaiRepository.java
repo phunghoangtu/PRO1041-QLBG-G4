@@ -65,7 +65,7 @@ public class KhuyenMaiRepository extends G4Repository<KhuyenMai, String>{
                 entity.setTenKM(rs.getString("TenKhuyenMai"));
                 entity.setMoTa(rs.getString("MoTa"));
                 entity.setKieugiamGia(rs.getBoolean("KieuGiamGia"));
-                entity.setMuctramGiam(rs.getString("MucGiamGia"));
+                entity.setMuctramGiam(rs.getDouble("MucGiamGia"));
                 entity.setNgaybatDau(rs.getString("NgayBatDau"));
                 entity.setNgayketThuc(rs.getString("NgayKetThuc")); 
                 list.add(entity);
@@ -85,7 +85,7 @@ public class KhuyenMaiRepository extends G4Repository<KhuyenMai, String>{
         stm.setString(1, kmmoi.getTenKM());
         stm.setString(5, kmmoi.getNgaybatDau());
         stm.setString(6, kmmoi.getNgayketThuc());
-        stm.setString(4, kmmoi.getMuctramGiam());
+        stm.setDouble(4, kmmoi.getMuctramGiam());
         stm.setBoolean(3, kmmoi.isKieugiamGia());
         stm.setString(2, kmmoi.getMoTa());
         
@@ -107,7 +107,7 @@ public class KhuyenMaiRepository extends G4Repository<KhuyenMai, String>{
         stm.setString(1, kmmoi.getTenKM());
         stm.setString(5, kmmoi.getNgaybatDau());
         stm.setString(6, kmmoi.getNgayketThuc());
-        stm.setString(4, kmmoi.getMuctramGiam());
+        stm.setDouble(4, kmmoi.getMuctramGiam());
         stm.setBoolean(3, kmmoi.isKieugiamGia());
         stm.setString(2, kmmoi.getMoTa());
         stm.setInt(7, Integer.parseInt(id));
@@ -155,7 +155,7 @@ public class KhuyenMaiRepository extends G4Repository<KhuyenMai, String>{
                 entity.setTenKM(rs.getString("TenKhuyenMai"));
                 entity.setMoTa(rs.getString("MoTa"));
                 entity.setKieugiamGia(rs.getBoolean("KieuGiamGia"));
-                entity.setMuctramGiam(rs.getString("MucGiamGia"));
+                entity.setMuctramGiam(rs.getDouble("MucGiamGia"));
                 entity.setNgaybatDau(rs.getString("NgayBatDau"));
                 entity.setNgayketThuc(rs.getString("NgayKetThuc")); 
                 list.add(entity);

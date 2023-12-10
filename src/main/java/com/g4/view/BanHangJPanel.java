@@ -2,6 +2,7 @@ package com.g4.view;
 
 import com.g4.entity.ChatLieu;
 import com.g4.entity.HoaDonChiTiet;
+import com.g4.entity.KhuyenMai;
 import com.g4.entity.KichCoGiay;
 import com.g4.entity.MauSac;
 import com.g4.entity.SanPham;
@@ -9,6 +10,7 @@ import com.g4.entity.ThuongHieu;
 import com.g4.main.Main;
 import com.g4.repository.impl.BanHangRepository;
 import com.g4.repository.impl.ChatLieuReporitory;
+import com.g4.repository.impl.KhuyenMaiRepository;
 import com.g4.repository.impl.KichCoRepository;
 import com.g4.repository.impl.MauSacRepository;
 import com.g4.repository.impl.ThuongHieuRepository;
@@ -35,6 +37,7 @@ import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import javax.swing.SwingUtilities;
 
 public class BanHangJPanel extends javax.swing.JPanel {
 
@@ -48,11 +51,20 @@ public class BanHangJPanel extends javax.swing.JPanel {
     private List<GioHangViewModel> listGH = new ArrayList<>();
     private List<SanPhamViewModel> listSP = new ArrayList<>();
     private List<HoaDonViewModel> listHD = new ArrayList<>();
+    private List<KhuyenMai> listKM = new ArrayList<>();
+
+    private List<MauSac> listMS = new ArrayList<>();
+    private List<ThuongHieu> listTH = new ArrayList<>();
+    private List<ChatLieu> listCL = new ArrayList<>();
+    private List<KichCoGiay> listKCG = new ArrayList<>();
 
     private KichCoRepository kichCoRepository = new KichCoRepository();
     private MauSacRepository mauSacRepository = new MauSacRepository();
     private ChatLieuReporitory chatLieuReporitory = new ChatLieuReporitory();
     private ThuongHieuRepository thuongHieuRepository = new ThuongHieuRepository();
+    private KhuyenMaiRepository khuyenMaiRepository = new KhuyenMaiRepository();
+
+    private DefaultComboBoxModel cbbModelVC = new DefaultComboBoxModel();
 
     public BanHangJPanel() {
         initComponents();
@@ -69,6 +81,20 @@ public class BanHangJPanel extends javax.swing.JPanel {
         loadChatLieu();
         loadThuongHieu();
         loadMauSac();
+        // loadCBBKM();
+
+        listCL.forEach((dsp) -> {
+            cbbChatLieuGiay.addItem(dsp.getTenchatlieu());
+        });
+        listTH.forEach((dg) -> {
+            cbbThuongHieu.addItem(dg.getTenthuonghieu());
+        });
+        listMS.forEach((ms) -> {
+            cbbMauSac.addItem(ms.getTenmausac());
+        });
+        listKCG.forEach((ms) -> {
+            cbbKichThuoc.addItem(ms.getKichco());
+        });
 
         if (demTrangThai() > 4) {
             btnTaoHoaDon.setEnabled(false);
@@ -91,6 +117,31 @@ public class BanHangJPanel extends javax.swing.JPanel {
         };
         txtTienKhachDua.addActionListener(action);
 
+        refreshComboBox();
+    }
+
+    private void refreshComboBox() {
+        cbbGiaGiam.removeAllItems();
+
+        List<KhuyenMai> listKM = bhs.selectAllKM();
+
+        if (listKM != null && !listKM.isEmpty()) {
+            listKM.forEach((vc) -> {
+                String discount = vc.giamGiaTT();
+                if (!discount.equals("0%")) {
+                    cbbGiaGiam.addItem(discount);
+                }
+            });
+
+            listKM.forEach((vc) -> {
+                String discount = vc.giamGiaTT1();
+                if (!discount.equals("0")) {
+                    cbbGiaGiam.addItem(discount);
+                }
+            });
+        } else {
+            cbbGiaGiam.addItem("0%");
+        }
     }
 
     private int demTrangThai() {
@@ -199,13 +250,43 @@ public class BanHangJPanel extends javax.swing.JPanel {
                         //Fill thành tiền, thanh toán, giảm giá
                         double thanhTien = 0;
                         double thanhToan = 0;
+
+                        String cbbVoucher = cbbGiaGiam.getSelectedItem().toString();
                         double giamGia = 0;
 
+                        if (cbbVoucher.endsWith("%")) {
+                            String giamGiaStr = cbbVoucher.replace("%", "");
+                            giamGia = Double.parseDouble(giamGiaStr) / 100.0;
+                        } else if (cbbVoucher.equals("VND")) {
+                            giamGia = 1.0; // Không có giảm giá
+                        } else {
+                            String giamGiaStr = cbbVoucher.replace(",", ""); // Loại bỏ dấu phẩy
+                            giamGia = Double.parseDouble(giamGiaStr);
+                        }
+
                         for (GioHangViewModel gha : listGH) {
-                            thanhTien += gha.getSoLuong() * gh.getDonGia();
+                            thanhTien += gha.getSoLuong() * gha.getDonGia();
+                        }
+
+                        if (thanhTien > 0) {
+                            double soTienBiTru = 0;
+                            if (giamGia < 1) {
+                                soTienBiTru = thanhTien * giamGia;
+                            } else {
+                                soTienBiTru = giamGia;
+                            }
+                            thanhToan = thanhTien - soTienBiTru;
+
+                            // Check if the selected option is "VND"
+                            if (cbbVoucher.equals("VND")) {
+                                lblThanhToan.setText(fomat.format(thanhToan) + " VND");
+                            } else {
+                                lblThanhToan.setText(fomat.format(thanhToan));
+                            }
+                        } else {
+                            lblThanhToan.setText("0"); // Hoặc giá trị khác tùy theo yêu cầu của bạn
                         }
                         lblThanhTien.setText(String.valueOf(fomat.format(thanhTien)));
-                        lblThanhToan.setText(String.valueOf(fomat.format(thanhToan = thanhTien)));
                     }
                 }
             }
@@ -232,14 +313,44 @@ public class BanHangJPanel extends javax.swing.JPanel {
 
         double thanhTien = 0;
         double thanhToan = 0;
+
+        String cbbVoucher = cbbGiaGiam.getSelectedItem().toString();
         double giamGia = 0;
 
-        for (GioHangViewModel gh : listGH) {
-            thanhTien += gh.getSoLuong() * gh.getDonGia();
+        if (cbbVoucher.endsWith("%")) {
+            String giamGiaStr = cbbVoucher.replace("%", "");
+            giamGia = Double.parseDouble(giamGiaStr) / 100.0;
+        } else if (cbbVoucher.equals("VND")) {
+            giamGia = 1.0; // Không có giảm giá
+        } else {
+            String giamGiaStr = cbbVoucher.replace(",", ""); // Loại bỏ dấu phẩy
+            giamGia = Double.parseDouble(giamGiaStr);
         }
 
+        for (GioHangViewModel gha : listGH) {
+            thanhTien += gha.getSoLuong() * gha.getDonGia();
+        }
+
+        if (thanhTien > 0) {
+            double soTienBiTru = 0;
+            if (giamGia < 1) {
+                soTienBiTru = thanhTien * giamGia;
+            } else {
+                soTienBiTru = giamGia;
+            }
+            thanhToan = thanhTien - soTienBiTru;
+
+            // Check if the selected option is "VND"
+            if (cbbVoucher.equals("VND")) {
+                lblThanhToan.setText(fomat.format(thanhToan) + " VND");
+            } else {
+                lblThanhToan.setText(fomat.format(thanhToan));
+            }
+        } else {
+            lblThanhToan.setText("0"); // Hoặc giá trị khác tùy theo yêu cầu của bạn
+        }
         lblThanhTien.setText(String.valueOf(fomat.format(thanhTien)));
-        lblThanhToan.setText(String.valueOf(fomat.format(thanhToan = thanhTien)));
+
         fillDataHD(index);
 
         txtTienKhachDua.setText("");
@@ -286,15 +397,43 @@ public class BanHangJPanel extends javax.swing.JPanel {
                     loadSanPham(listSP);
                     double thanhTien = 0;
                     double thanhToan = 0;
+
+                    String cbbVoucher = cbbGiaGiam.getSelectedItem().toString();
                     double giamGia = 0;
-                    double tienKhachDua = 0;
-                    
-                    for (GioHangViewModel gha : listGH) {
-                        thanhTien += gha.getSoLuong() * gha.getDonGia();                       
+
+                    if (cbbVoucher.endsWith("%")) {
+                        String giamGiaStr = cbbVoucher.replace("%", "");
+                        giamGia = Double.parseDouble(giamGiaStr) / 100.0;
+                    } else if (cbbVoucher.equals("VND")) {
+                        giamGia = 1.0; // Không có giảm giá
+                    } else {
+                        String giamGiaStr = cbbVoucher.replace(",", ""); // Loại bỏ dấu phẩy
+                        giamGia = Double.parseDouble(giamGiaStr);
                     }
 
+                    for (GioHangViewModel gha : listGH) {
+                        thanhTien += gha.getSoLuong() * gha.getDonGia();
+                    }
+
+                    if (thanhTien > 0) {
+                        double soTienBiTru = 0;
+                        if (giamGia < 1) {
+                            soTienBiTru = thanhTien * giamGia;
+                        } else {
+                            soTienBiTru = giamGia;
+                        }
+                        thanhToan = thanhTien - soTienBiTru;
+
+                        // Check if the selected option is "VND"
+                        if (cbbVoucher.equals("VND")) {
+                            lblThanhToan.setText(fomat.format(thanhToan) + " VND");
+                        } else {
+                            lblThanhToan.setText(fomat.format(thanhToan));
+                        }
+                    } else {
+                        lblThanhToan.setText("0"); // Hoặc giá trị khác tùy theo yêu cầu của bạn
+                    }
                     lblThanhTien.setText(String.valueOf(fomat.format(thanhTien)));
-                    lblThanhToan.setText(String.valueOf(fomat.format(thanhToan = thanhTien)));             
                 }
             }
         }
@@ -325,36 +464,47 @@ public class BanHangJPanel extends javax.swing.JPanel {
 
                 loadGioHang(listGH);
                 loadSanPham(listSP);
+
                 double thanhTien = 0;
                 double thanhToan = 0;
-                double giamGia = 0;
+
                 String cbbVoucher = cbbGiaGiam.getSelectedItem().toString();
+                double giamGia = 0;
+
+                if (cbbVoucher.endsWith("%")) {
+                    String giamGiaStr = cbbVoucher.replace("%", "");
+                    giamGia = Double.parseDouble(giamGiaStr) / 100.0;
+                } else if (cbbVoucher.equals("VND")) {
+                    giamGia = 1.0; // Không có giảm giá
+                } else {
+                    String giamGiaStr = cbbVoucher.replace(",", ""); // Loại bỏ dấu phẩy
+                    giamGia = Double.parseDouble(giamGiaStr);
+                }
+
                 for (GioHangViewModel gha : listGH) {
                     thanhTien += gha.getSoLuong() * gha.getDonGia();
                 }
-                if (cbbVoucher.equals("5%")) {
-                    giamGia = 0.95;
-                } else if (cbbVoucher.equals("10%")) {
-                    giamGia = 0.90;
-                } else if (cbbVoucher.equals("15%")) {
-                    giamGia = 0.85;
-                } else if (cbbVoucher.equals("20%")) {
-                    giamGia = 0.80;
-                } else if (cbbVoucher.equals("25%")) {
-                    giamGia = 0.75;
-                } else if (cbbVoucher.equals("30%")) {
-                    giamGia = 0.70;
-                } else if (cbbVoucher.equals("35%")) {
-                    giamGia = 0.65;
-                } else if (cbbVoucher.equals("40%")) {
-                    giamGia = 0.60;
-                } else if (cbbVoucher.equals("45%")) {
-                    giamGia = 0.55;
+
+                if (thanhTien > 0) {
+                    double soTienBiTru = 0;
+                    if (giamGia < 1) {
+                        soTienBiTru = thanhTien * giamGia;
+                    } else {
+                        soTienBiTru = giamGia;
+                    }
+                    thanhToan = thanhTien - soTienBiTru;
+
+                    // Check if the selected option is "VND"
+                    if (cbbVoucher.equals("VND")) {
+                        lblThanhToan.setText(fomat.format(thanhToan) + " VND");
+                    } else {
+                        lblThanhToan.setText(fomat.format(thanhToan));
+                    }
                 } else {
-                    giamGia = 0.5;
+                    lblThanhToan.setText("0"); // Hoặc giá trị khác tùy theo yêu cầu của bạn
                 }
+
                 lblThanhTien.setText(String.valueOf(fomat.format(thanhTien)));
-                lblThanhToan.setText(String.valueOf(fomat.format(thanhToan = thanhTien * giamGia)));
 
             }
         }
@@ -471,7 +621,7 @@ public class BanHangJPanel extends javax.swing.JPanel {
                 temp = JOptionPane.showConfirmDialog(this, "Bạn có muốn in hóa đơn không");
 
                 String filePath = "src/main/resources/com/g4/bills/bill.pdf"; // Specify the file path where the PDF will be saved
-                
+
                 try {
                     Document document = new Document();
                     PdfWriter.getInstance(document, new FileOutputStream(filePath));
@@ -635,6 +785,7 @@ public class BanHangJPanel extends javax.swing.JPanel {
         lblTenTienThua = new javax.swing.JLabel();
         lblTienThua = new javax.swing.JLabel();
         txtTienKhachDua = new javax.swing.JTextField();
+        lblTenVoucher = new javax.swing.JLabel();
         btnThanhToan = new javax.swing.JButton();
         btnHuyHoaDon = new javax.swing.JButton();
         btnLamMoi = new javax.swing.JButton();
@@ -957,7 +1108,11 @@ public class BanHangJPanel extends javax.swing.JPanel {
         lblThanhTien.setForeground(new java.awt.Color(255, 0, 0));
         lblThanhTien.setText("0");
 
-        cbbGiaGiam.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0" }));
+        cbbGiaGiam.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbbGiaGiamActionPerformed(evt);
+            }
+        });
 
         lblThanhToan.setForeground(new java.awt.Color(255, 0, 0));
         lblThanhToan.setText("0");
@@ -1017,6 +1172,8 @@ public class BanHangJPanel extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        lblTenVoucher.setText("Voucher");
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
@@ -1034,16 +1191,18 @@ public class BanHangJPanel extends javax.swing.JPanel {
                             .addComponent(jLabel7)
                             .addComponent(lblTenTienThua1))
                         .addGap(36, 36, 36)
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(cbbGiaGiam, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblNgayTao)
-                            .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addComponent(lblMaHD)
-                                .addGap(69, 69, 69)
-                                .addComponent(btnTaoHoaDon))
-                            .addComponent(lblThanhTien)
-                            .addComponent(lblThanhToan)
-                            .addComponent(cbbHTTT, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblTenVoucher)
+                            .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(lblNgayTao)
+                                .addGroup(jPanel5Layout.createSequentialGroup()
+                                    .addComponent(lblMaHD)
+                                    .addGap(69, 69, 69)
+                                    .addComponent(btnTaoHoaDon))
+                                .addComponent(lblThanhTien)
+                                .addComponent(lblThanhToan)
+                                .addComponent(cbbHTTT, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(cbbGiaGiam, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
@@ -1062,11 +1221,13 @@ public class BanHangJPanel extends javax.swing.JPanel {
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
                     .addComponent(lblThanhTien))
-                .addGap(28, 28, 28)
+                .addGap(18, 18, 18)
+                .addComponent(lblTenVoucher)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(cbbGiaGiam, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(27, 27, 27)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(lblThanhToan))
@@ -1136,9 +1297,9 @@ public class BanHangJPanel extends javax.swing.JPanel {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnLamMoi))
                             .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(0, 8, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -1152,7 +1313,7 @@ public class BanHangJPanel extends javax.swing.JPanel {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel24)
                     .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnThanhToan)
                     .addComponent(btnHuyHoaDon)
@@ -1228,8 +1389,17 @@ public class BanHangJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_btnHuyHoaDonActionPerformed
 
     private void btnLamMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLamMoiActionPerformed
+        lblMaHD.setText("HD++");
+        lblNgayTao.setText("date");
+        lblThanhTien.setText("0");
+        cbbGiaGiam.setSelectedItem("0");
+        lblThanhToan.setText("0");
+        txtTienKhachDua.setText("0");
+        lblTienThua.setText("0");
         listSP = bhs.getAllSP();
         loadSanPham(listSP);
+        cbbGiaGiam.setSelectedItem("0");
+        refreshComboBox();
     }//GEN-LAST:event_btnLamMoiActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -1275,6 +1445,52 @@ public class BanHangJPanel extends javax.swing.JPanel {
         listSP = bhs.SearchSPBH(cbbThuongHieu.getSelectedItem().toString());
         loadSanPham(listSP);
     }//GEN-LAST:event_cbbThuongHieuActionPerformed
+
+    private void cbbGiaGiamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbGiaGiamActionPerformed
+        int index = cbbGiaGiam.getSelectedIndex();
+        if (index >= 0 && index < listKM.size()) {
+            KhuyenMai kh = listKM.get(index);
+
+            lblTenVoucher.setText(kh.getTenKM());
+            double thanhTien = 0;
+            double thanhToan = 0;
+
+            String cbbVoucher = cbbGiaGiam.getSelectedItem().toString();
+            double giamGia = 0;
+
+            if (cbbVoucher.endsWith("%")) {
+                String giamGiaStr = cbbVoucher.replace("%", "");
+                giamGia = Double.parseDouble(giamGiaStr) / 100.0;
+            } else {
+                String giamGiaStr = cbbVoucher.replace(",", ""); // Loại bỏ dấu phẩy
+                giamGia = Double.parseDouble(giamGiaStr);
+            }
+
+            for (GioHangViewModel gha : listGH) {
+                thanhTien += gha.getSoLuong() * gha.getDonGia();
+            }
+
+            if (thanhTien > 0) {
+                double soTienBiTru = 0;
+                if (giamGia < 1) {
+                    soTienBiTru = thanhTien * giamGia;
+                } else {
+                    soTienBiTru = giamGia;
+                }
+                thanhToan = thanhTien - soTienBiTru;
+
+                // Check if the selected option is "VND"
+                if (cbbVoucher.equals("VND")) {
+                    lblThanhToan.setText(fomat.format(thanhToan) + " VND");
+                } else {
+                    lblThanhToan.setText(fomat.format(thanhToan));
+                }
+            } else {
+                lblThanhToan.setText("0"); // Hoặc giá trị khác tùy theo yêu cầu của bạn
+            }
+        }
+
+    }//GEN-LAST:event_cbbGiaGiamActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -1324,6 +1540,7 @@ public class BanHangJPanel extends javax.swing.JPanel {
     private javax.swing.JLabel lblTenTienKhachDua;
     private javax.swing.JLabel lblTenTienThua;
     private javax.swing.JLabel lblTenTienThua1;
+    private javax.swing.JLabel lblTenVoucher;
     private javax.swing.JLabel lblThanhTien;
     private javax.swing.JLabel lblThanhToan;
     private javax.swing.JLabel lblTienThua;
