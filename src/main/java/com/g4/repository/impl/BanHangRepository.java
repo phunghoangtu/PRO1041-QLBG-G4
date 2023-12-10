@@ -6,6 +6,7 @@ package com.g4.repository.impl;
 
 import com.g4.entity.HoaDon;
 import com.g4.entity.HoaDonChiTiet;
+import com.g4.entity.KhuyenMai;
 import com.g4.entity.SanPham;
 import com.g4.utils.JdbcHelper;
 import com.g4.viewmodel.GioHangViewModel;
@@ -58,6 +59,7 @@ public class BanHangRepository {
 
     String findByIdKH_ma = "SELECT Id FROM KhachHang WHERE MaKhachHang = ?";
     String select_KHN = "select * from KhachHang";
+    String select_KM = "select * from KhuyenMai where TrangThai = 1";
 
     String timKiem_sp = "SELECT SP.MaSanPham, SP.TenSanPham, KT.KichCo, MS.TenMauSac, CLG.TenChatLieu, TH.TenThuongHieu, SP.SoLuong, SP.GiaBan\n"
             + "       FROM dbo.SanPham SP\n"
@@ -71,6 +73,30 @@ public class BanHangRepository {
             + "			OR MS.TenMauSac LIKE ? \n"
             + "          	OR CLG.TenChatLieu LIKE ? \n"
             + "         	OR TH.TenThuongHieu LIKE ? ;";
+
+    public List<KhuyenMai> selectAllKM() {
+        return getVoucherTrangThai(select_KM);
+    }
+
+    public List<KhuyenMai> getVoucherTrangThai(String sql, Object... args) {
+        List<KhuyenMai> list = new ArrayList<>();
+        try {
+            ResultSet rs = JdbcHelper.query(sql, args);
+            while (rs.next()) {
+                KhuyenMai entity = new KhuyenMai();
+                entity.setId(rs.getString("Id"));
+                entity.setTenKM(rs.getString("TenKhuyenMai"));
+                entity.setMoTa(rs.getString("MoTa"));
+                entity.setKieugiamGia(rs.getBoolean("KieuGiamGia"));
+                entity.setMuctramGiam(rs.getDouble("MucGiamGia"));
+                entity.setNgaybatDau(rs.getString("NgayBatDau"));
+                entity.setNgayketThuc(rs.getString("NgayKetThuc"));
+                list.add(entity);
+            }
+        } catch (Exception e) {
+        }
+        return list;
+    }
 
     public List<SanPhamViewModel> SearchSPBH(String input) {
         List<SanPhamViewModel> listNV = new ArrayList<>();

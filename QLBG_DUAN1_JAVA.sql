@@ -43,7 +43,7 @@ CREATE TABLE KhuyenMai(
 	TenKhuyenMai NVARCHAR(30) DEFAULT NULL,
 	MoTa TEXT DEFAULT NULL,
 	KieuGiamGia BIT, -- 1 % | 0 VND
-	MucGiamGia DECIMAL(20,0) DEFAULT NULL,
+	MucGiamGia Float DEFAULT NULL,
 	NgayBatDau DATE DEFAULT NULL,
 	NgayKetThuc DATE DEFAULT NULL,
 	TrangThai INT DEFAULT 1
@@ -58,7 +58,7 @@ CREATE TABLE HoaDon (
 	NgayThanhToan DATETIME2 DEFAULT NULL, 
 	TongTien DECIMAL(20,0) DEFAULT NULL,
     GhiChu TEXT DEFAULT NULL,
-	ChietKhau DECIMAL(20,0) DEFAULT NULL,
+	ChietKhau DECIMAL(5,2) DEFAULT NULL,
 	HinhThucThanhToan BIT DEFAULT 1, -- 1 tiền mặt | 0 chuyển khoản
     TrangThai INT DEFAULT 1, -- 0 Hủy | 1 chưa thanh toán | 2 đã thanh toán
     FOREIGN KEY (IdNhanVien) REFERENCES NhanVien(Id), 
@@ -186,9 +186,7 @@ CREATE TABLE NhapHangChiTiet (
     ('1', '2', 8, 800, 6400);
 
 	INSERT INTO KhuyenMai (TenKhuyenMai, MoTa, MucGiamGia,KieuGiamGia, NgayBatDau, NgayKetThuc) VALUES
-    ('KM001', 'Khuyến mãi 1', 10 , 10 , '2023-01-01', '2023-01-31'),
-    ('KM002', 'Khuyến mãi 2', 20 , 20 , '2023-02-01', '2023-02-28'),
-    ('KM003', 'Khuyến mãi 3', 15 , 30 , '2023-03-01', '2023-03-31');
+    (N'Lễ giáng sinh', N'Khuyến mãi 3', 0.95 , 1 , '2023-03-01', '2023-03-31');
 
 	INSERT INTO KhachHang(MaKhachHang,TenKhachHang,SoDienThoai) VALUES
     ('KH00', N'Khách vãng lai','12321456'),
