@@ -150,15 +150,55 @@ CREATE TABLE NhapHangChiTiet (
 
 -- INSERT dữ liệu
 
-	INSERT INTO ThuongHieu(TenThuongHieu) VALUES ('Brand A'),('Brand B'),('Brand C'),('Brand D'),('Brand E');
-	INSERT INTO ChatLieuGiay(TenChatLieu) VALUES ('Type A'),('Type B'),('Type C'),('Type D'),('Type E');
-	INSERT INTO MauSac (TenMauSac) VALUES ('Color A'),('Color B'),('Color C'),('Color D'),('Color E');
-	INSERT INTO KichCoGiay (KichCo) VALUES ('36'),('37'),('38'),('39'),('40');
+	INSERT INTO ThuongHieu(TenThuongHieu) VALUES ('Nike'),('Adidas'),('Puma'),('New Balance'),('Vans');
+	INSERT INTO ChatLieuGiay(TenChatLieu) VALUES ('Da'),(N'Vải'),('Cao su');
+	INSERT INTO MauSac (TenMauSac) VALUES (N'Trắng'),(N'Đen'),(N'Xám'),(N'Đỏ'),(N'Xanh');
+	INSERT INTO KichCoGiay (KichCo) VALUES ('39'),('40'),('41'),('42'),('43'),('44'),('45'),('46');
 
-	INSERT INTO SanPham (IdKichCoGiay, IdMauSac, IdChatLieuGiay, IdThuongHieu, MaSanPham, TenSanPham, GiaBan, SoLuong, MoTa) VALUES
-				('1', '1', '1', '1', 'SP001', 'Product 1', 100000, 50, 'Product 1 description'),
-				('2', '2', '2', '2', 'SP002', 'Product 2', 150000, 30, 'Product 2 description'),  
-				('3', '3', '3', '3', 'SP005', 'Product 5', 300000, 10, 'Product 5 description');
+	
+	INSERT INTO SanPham (IdKichCoGiay, IdMauSac, IdChatLieuGiay, IdThuongHieu, MaSanPham, TenSanPham, GiaBan, SoLuong, MoTa) 
+	VALUES
+	-- Sản phẩm 1
+	('1', '1', '1', '1', 'SP001', 'Nike Product 1', 100000, 50, 'Product 1 description'),
+	-- Sản phẩm 2
+	('2', '2', '2', '2', 'SP002', 'Adidas Product 2', 150000, 30, 'Product 2 description'),
+	-- Sản phẩm 3
+	('3', '3', '3', '3', 'SP003', 'Puma Product 3', 200000, 20, 'Product 3 description'),
+	-- Sản phẩm 4
+	('4', '4', '1', '4', 'SP004', 'New Balance Product 4', 250000, 40, 'Product 4 description'),
+	-- Sản phẩm 5
+	('5', '1', '2', '5', 'SP005', 'Vans Product 5', 300000, 10, 'Product 5 description'),
+	-- Sản phẩm 6
+	('6', '2', '3', '1', 'SP006', 'Nike Product 6', 350000, 15, 'Product 6 description'),
+	-- Sản phẩm 7
+	('7', '3', '1', '2', 'SP007', 'Adidas Product 7', 400000, 25, 'Product 7 description'),
+	-- Sản phẩm 8
+	('8', '4', '2', '3', 'SP008', 'Puma Product 8', 450000, 35, 'Product 8 description'),
+	-- Sản phẩm 9
+	('1', '1', '3', '4', 'SP009', 'New Balance Product 9', 500000, 45, 'Product 9 description'),
+	-- Sản phẩm 10
+	('2', '2', '1', '5', 'SP010', 'Vans Product 10', 550000, 5, 'Product 10 description'),
+	-- Sản phẩm 11
+	('1', '3', '2', '1', 'SP011', 'Nike Product 11', 600000, 50, 'Product 11 description'),
+	-- Sản phẩm 12
+	('2', '4', '3', '2', 'SP012', 'Adidas Product 12', 650000, 30, 'Product 12 description'),
+	-- Sản phẩm 13
+	('3', '1', '1', '3', 'SP013', 'Puma Product 13', 700000, 20, 'Product 13 description'),
+	-- Sản phẩm 14
+	('4', '2', '2', '4', 'SP014', 'New Balance Product 14', 750000, 40, 'Product 14 description'),
+	-- Sản phẩm 15
+	('5', '3', '3', '5', 'SP015', 'Vans Product 15', 800000, 10, 'Product 15 description'),
+	-- Sản phẩm 16
+	('6', '1', '1', '1', 'SP016', 'Nike Product 16', 850000, 15, 'Product 16 description'),
+	-- Sản phẩm 17
+	('7', '2', '2', '2', 'SP017', 'Adidas Product 17', 900000, 25, 'Product 17 description'),
+	-- Sản phẩm 18
+	('8', '3', '3', '3', 'SP018', 'Puma Product 18', 950000, 35, 'Product 18 description'),
+	-- Sản phẩm 19
+	('2', '4', '1', '4', 'SP019', 'New Balance Product 19', 1000000, 45, 'Product 19 description'),
+	-- Sản phẩm 20
+	('4', '4', '1', '4', 'SP020', 'New Balance Product 20', 1000000, 45, 'Product 19 description');
+
 
 	INSERT INTO NhanVien (TenNhanVien, GioiTinh, NgaySinh, SoDienThoai, DiaChi, Email, MatKhau, VaiTro) VALUES
     ('Employee 1', 1, '1990-01-01', '123456789', 'Address 1', 'sa', '123456', 0),
@@ -186,7 +226,7 @@ CREATE TABLE NhapHangChiTiet (
     ('1', '2', 8, 800, 6400);
 
 	INSERT INTO KhuyenMai (TenKhuyenMai, MoTa, MucGiamGia,KieuGiamGia, NgayBatDau, NgayKetThuc) VALUES
-    (N'Lễ giáng sinh', N'Khuyến mãi 3', 0.95 , 1 , '2023-03-01', '2023-03-31');
+    (N'Lễ giáng sinh', N'Khuyến mãi 3', 0.95 , 1 , '2023-12-11', '2023-12-12');
 
 	INSERT INTO KhachHang(MaKhachHang,TenKhachHang,SoDienThoai) VALUES
     ('KH00', N'Khách vãng lai','12321456'),
