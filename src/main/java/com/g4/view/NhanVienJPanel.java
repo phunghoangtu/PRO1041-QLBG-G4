@@ -147,17 +147,15 @@ public class NhanVienJPanel extends javax.swing.JPanel {
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         try {
-            // Chuyển đổi chuỗi ngày thành đối tượng Date
             String dateTable = TBL.getValueAt(row, 6).toString();
             Date date = sdf.parse(dateTable);
             txtNgaySinh.setDate(date);
-            // In ra giá trị ngày đã chuyển đổi
             System.out.println("Converted Date: " + date);
 
-            // Bạn có thể sử dụng đối tượng Date này cho mục đích khác
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        txtMatkhau.setText("");
 
         defaultTableModel = (DefaultTableModel) TBL.getModel();
         String vaiTroValue = TBL.getValueAt(row, 10).toString();
