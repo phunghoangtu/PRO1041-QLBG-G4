@@ -1545,16 +1545,22 @@ public class SanPhamJPanel extends javax.swing.JPanel {
             List<SanPham> conban = SanPhamRP.getConBan(dfkw);
             modelSPConBan.setRowCount(0);
             for(SanPham sp: conban){
+                
+                String kichthuoc = KichCoRP.getByID(sp.getIdkichcogiay()).getKichco();
+                String mausac = MauSacRP.getByID(sp.getIdmausac()).getTenmausac();
+                String chatlieu = ChatLieuRP.getByID(sp.getIdchatlieugiay()).getTenchatlieu();
+                String thuonghieu = ThuongHieuRP.getByID(sp.getIdthuonghieu()).getTenthuonghieu();
+                
                 modelSPConBan.addRow(new Object[]{
                     sp.getMasanpham(),
                     sp.getTensanpham(),
                     sp.getGiaban(),
                     sp.getSoluong(),
                     sp.getMota(),
-                    sp.getIdkichcogiay(),
-                    sp.getIdmausac(),
-                    sp.getIdchatlieugiay(),
-                    sp.getIdthuonghieu()
+                    kichthuoc,
+                    mausac,
+                    chatlieu,
+                    thuonghieu
                 });
             }
         } catch (Exception e) {
@@ -1566,16 +1572,22 @@ public class SanPhamJPanel extends javax.swing.JPanel {
             List<SanPham> conban = SanPhamRP.getDungBan();
             modelSPDaDung.setRowCount(0);
             for(SanPham sp: conban){
+                
+                String kichthuoc = KichCoRP.getByID(sp.getIdkichcogiay()).getKichco();
+                String mausac = MauSacRP.getByID(sp.getIdmausac()).getTenmausac();
+                String chatlieu = ChatLieuRP.getByID(sp.getIdchatlieugiay()).getTenchatlieu();
+                String thuonghieu = ThuongHieuRP.getByID(sp.getIdthuonghieu()).getTenthuonghieu();
+                
                 modelSPDaDung.addRow(new Object[]{
                     sp.getMasanpham(),
                     sp.getTensanpham(),
                     sp.getGiaban(),
                     sp.getSoluong(),
                     sp.getMota(),
-                    sp.getIdkichcogiay(),
-                    sp.getIdmausac(),
-                    sp.getIdchatlieugiay(),
-                    sp.getIdthuonghieu()
+                    kichthuoc,
+                    mausac,
+                    chatlieu,
+                    thuonghieu
                 });
             }
         } catch (Exception e) {
