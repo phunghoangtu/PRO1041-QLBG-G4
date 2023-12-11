@@ -163,41 +163,22 @@ CREATE TABLE NhapHangChiTiet (
 	-- Sản phẩm 2
 	('2', '2', '2', '2', 'SP002', 'Adidas Product 2', 150000, 30, 'Product 2 description'),
 	-- Sản phẩm 3
-	('3', '3', '3', '3', 'SP003', 'Puma Product 3', 200000, 20, 'Product 3 description'),
+	('3', '3', '3', '3', 'SP003', 'Puma Product 3', 90000, 20, 'Product 3 description'),
 	-- Sản phẩm 4
-	('4', '4', '1', '4', 'SP004', 'New Balance Product 4', 250000, 40, 'Product 4 description'),
+	('4', '4', '1', '4', 'SP004', 'New Balance Product 4', 80000, 40, 'Product 4 description'),
 	-- Sản phẩm 5
-	('5', '1', '2', '5', 'SP005', 'Vans Product 5', 300000, 10, 'Product 5 description'),
+	('5', '1', '2', '5', 'SP005', 'Vans Product 5', 20000, 10, 'Product 5 description'),
 	-- Sản phẩm 6
-	('6', '2', '3', '1', 'SP006', 'Nike Product 6', 350000, 15, 'Product 6 description'),
+	('6', '2', '3', '1', 'SP006', 'Nike Product 6', 10000, 15, 'Product 6 description'),
 	-- Sản phẩm 7
-	('7', '3', '1', '2', 'SP007', 'Adidas Product 7', 400000, 25, 'Product 7 description'),
+	('7', '3', '1', '2', 'SP007', 'Adidas Product 7', 40000, 25, 'Product 7 description'),
 	-- Sản phẩm 8
-	('8', '4', '2', '3', 'SP008', 'Puma Product 8', 450000, 35, 'Product 8 description'),
+	('8', '4', '2', '3', 'SP008', 'Puma Product 8', 10000, 35, 'Product 8 description'),
 	-- Sản phẩm 9
-	('1', '1', '3', '4', 'SP009', 'New Balance Product 9', 500000, 45, 'Product 9 description'),
+	('1', '1', '3', '4', 'SP009', 'New Balance Product 9', 60000, 45, 'Product 9 description'),
 	-- Sản phẩm 10
-	('2', '2', '1', '5', 'SP010', 'Vans Product 10', 550000, 5, 'Product 10 description'),
-	-- Sản phẩm 11
-	('1', '3', '2', '1', 'SP011', 'Nike Product 11', 600000, 50, 'Product 11 description'),
-	-- Sản phẩm 12
-	('2', '4', '3', '2', 'SP012', 'Adidas Product 12', 650000, 30, 'Product 12 description'),
-	-- Sản phẩm 13
-	('3', '1', '1', '3', 'SP013', 'Puma Product 13', 700000, 20, 'Product 13 description'),
-	-- Sản phẩm 14
-	('4', '2', '2', '4', 'SP014', 'New Balance Product 14', 750000, 40, 'Product 14 description'),
-	-- Sản phẩm 15
-	('5', '3', '3', '5', 'SP015', 'Vans Product 15', 800000, 10, 'Product 15 description'),
-	-- Sản phẩm 16
-	('6', '1', '1', '1', 'SP016', 'Nike Product 16', 850000, 15, 'Product 16 description'),
-	-- Sản phẩm 17
-	('7', '2', '2', '2', 'SP017', 'Adidas Product 17', 900000, 25, 'Product 17 description'),
-	-- Sản phẩm 18
-	('8', '3', '3', '3', 'SP018', 'Puma Product 18', 950000, 35, 'Product 18 description'),
-	-- Sản phẩm 19
-	('2', '4', '1', '4', 'SP019', 'New Balance Product 19', 1000000, 45, 'Product 19 description'),
-	-- Sản phẩm 20
-	('4', '4', '1', '4', 'SP020', 'New Balance Product 20', 1000000, 45, 'Product 19 description');
+	('2', '2', '1', '5', 'SP010', 'Vans Product 10', 50000, 5, 'Product 10 description');
+	
 
 
 	INSERT INTO NhanVien (TenNhanVien, GioiTinh, NgaySinh, SoDienThoai, DiaChi, Email, MatKhau, VaiTro) VALUES

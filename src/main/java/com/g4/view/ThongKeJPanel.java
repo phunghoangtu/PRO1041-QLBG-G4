@@ -484,7 +484,22 @@ public class ThongKeJPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_resetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_resetActionPerformed
+        String TSP = hDCTRepository.TongSLSP();
+        lbl_sanPhamtk.setText(TSP);
 
+        String THD = hoaDonRepository.TongHD();
+        lbl_hoaDon.setText(THD);
+
+        String TKH = hoaDonRepository.TongKH();
+        lbl_khachHang.setText(TKH);
+
+        lbl_doanhThu.setText(FormatNumber(hDCTRepository.TongDT()));
+        String t = FormatNumber(hDCTRepository.TongDT());
+        System.out.println(t);
+
+        double TDT = hDCTRepository.TongDT();
+        double TLN = TDT * 0.3;
+        lbl_loinhuan.setText(FormatNumber(TLN));
     }//GEN-LAST:event_btn_resetActionPerformed
 
     private void btn_thongKeLBLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_thongKeLBLActionPerformed

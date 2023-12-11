@@ -658,7 +658,7 @@ public class BanHangJPanel extends javax.swing.JPanel {
 
                 btnThanhToan.setEnabled(false);
                 btnHuyHoaDon.setEnabled(false);
-                btnLamMoi.setEnabled(false);
+                
 
             }
             lblMaHD.setText("HD++");
